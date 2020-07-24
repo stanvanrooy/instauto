@@ -1,0 +1,11 @@
+package p000X;
+
+/* renamed from: X.AVW */
+public enum AVW {
+    UNINITIALIZED,
+    INITIALIZED_BROADCAST,
+    INITIALIZED_STREAMING,
+    STARTED_STREAMING,
+    STOPPED_STREAMING,
+    FINISHED
+}

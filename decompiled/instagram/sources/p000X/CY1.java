@@ -1,0 +1,19 @@
+package p000X;
+
+/* renamed from: X.CY1 */
+public enum CY1 {
+    UNSET_OR_UNRECOGNIZED_ENUM_VALUE,
+    AUDIO_CONTROL_FLOATING,
+    AUDIO_MUTED,
+    ENABLE_SWIPE_TO_OPEN,
+    PREFETCH_SWIPE_TO_OPEN_WEBVIEW,
+    NO_AUDIO_MODE,
+    BACK_BUTTON_FILL_STYLE,
+    MINISHOP_THEME,
+    MINISHOP_YOUR_ITEMS,
+    MINISHOP_RECENTLY_VIDEWED_SEE_ALL;
+
+    public final String toString() {
+        return name();
+    }
+}

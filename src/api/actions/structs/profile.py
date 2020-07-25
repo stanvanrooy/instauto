@@ -60,6 +60,7 @@ class ProfileSetGender(_ProfileBase):
 
 
 class ProfileSetBiography(_ProfileBase):
+    raw_text: str = None
     @classmethod
     def create(cls, biography: str, **kwargs):
         i = cls()

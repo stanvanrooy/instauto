@@ -50,7 +50,7 @@ class RequestMixIn:
             'x-cm-latency': '-1.000',
             'x-ads-opt-out': str(int(self.state.ads_opt_out)),
             'x-ig-app-locale': self.state.app_locale,
-            'x-device-id': self.state.device_id,
+            'x-ig-app-startup-country': self.state.startup_country,
             'x-ig-device-locale': self.state.device_locale,
             'x-ig-mapped-locale': self.state.device_locale,
             'x-ig-connection-speed': self.state.connection_speed,

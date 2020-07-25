@@ -192,7 +192,7 @@ class State:
     @property
     def bandwidth_speed_kbps(self):
         """Randomizes the bandwidth speed"""
-        return f"{random.randint(1000, 5000)}.{random.randint(1000, 9999)}"
+        return f"{random.randint(1000, 5000)}.{random.randint(100, 999)}"
 
     @property
     def android_id(self):
@@ -203,6 +203,10 @@ class State:
     def valid(self) -> bool:
         """Sessions older then 90 days will not work anymore."""
         return self.created + 60 * 60 * 24 * 90 > time.time()
+
+    @property
+    def startup_country(self) -> str:
+        return self.app_locale.split('_')[-1]
 
     def __repr__(self):
         return pprint.pformat(vars(self))

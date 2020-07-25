@@ -48,7 +48,7 @@ class AuthenticationMixIn:
         _ = self._request('qe/sync/', Method.POST, data=data1)
 
         data2 = {
-            'jazoest': self._create_jazoest(),
+            'jazoest': '22475',  # self._create_jazoest(),
             'phone_id': self.state.phone_id,
             'device_id': self.state.android_id,
             'guid': self.state.uuid,
@@ -56,14 +56,12 @@ class AuthenticationMixIn:
             'adid': self.state.ad_id,
             'google_tokens': '[]',
             'username': self._user_name,
-            'country_codes': [{
-                'country_code': "31", 'source': 'default'
-            }],
+            'country_codes': "[{\"country_code\":\"31\",\"source\": \"default\"}]",
             'enc_password': self._encrypted_password,
             'login_attempt_count': "0",
         }
         # does the actual login
-        resp = self._request('accounts/login/', Method.POST, data=data2)
+        resp = self._request('accounts/login/', Method.POST, data=data2, signed=True)
         self.state.logged_in_account_data = LoggedInAccountData(**resp.json()['logged_in_user'])
 
     def _build_initial_headers(self) -> Dict[str, str]:

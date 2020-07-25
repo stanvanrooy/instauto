@@ -52,8 +52,8 @@ class ProfileSetGender(_ProfileBase):
         kwargs
         """
         i = cls()
-        if gender == WhichGender.prefer_not_to_say:
-            i._create(gender=gender, custom_gender=custom_gender, **kwargs)
+        if gender == WhichGender.other:
+            i._create(gender=gender.value, custom_gender=custom_gender, **kwargs)
         else:
             i._create(gender=gender, **kwargs)
         return i

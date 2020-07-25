@@ -20,8 +20,8 @@ Method = enum.Enum("Method", "GET POST")
 class WhichGender(enum.Enum):
     male = 1
     female = 2
-    other = 3
-    prefer_not_to_say = 4
+    prefer_not_to_say = 3
+    other = 4
 
 
 #: Struct that is used to specify where a post should be posted

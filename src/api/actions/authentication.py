@@ -2,13 +2,12 @@ from requests import Session
 import datetime
 import base64
 import struct
-import json
 
 from typing import Dict, Callable
-from os import urandom
 
 from Cryptodome.Cipher import AES, PKCS1_v1_5
 from Cryptodome.PublicKey import RSA
+from Cryptodome import Random
 
 from ..structs import Method, State, IGProfile, LoggedInAccountData
 
@@ -93,25 +92,31 @@ class AuthenticationMixIn:
         """Encrypts the raw password into a form that Instagram accepts."""
         if not self.state.public_api_key: return  # the api key will be retrieved from the first request, so it will not
                                                   # be present during the initial request
-        key = urandom(32)
-        iv = urandom(12)
-        timestamp = int(datetime.datetime.now().timestamp())
-        rsa_key = RSA.importKey(base64.b64decode(self.state.public_api_key))
-        cipher = PKCS1_v1_5.new(rsa_key)  # we do actually expect an RSA_KEY as input
-        enc_key = cipher.encrypt(key)
+        key = Random.get_random_bytes(32)
+        iv = Random.get_random_bytes(12)
+        time = int(datetime.datetime.now().timestamp())
+
+        pubkey = base64.b64decode(self.state.public_api_key)
+
+        rsa_key = RSA.importKey(pubkey)
+        rsa_cipher = PKCS1_v1_5.new(rsa_key)
+        encrypted_key = rsa_cipher.encrypt(key)
+
         aes = AES.new(key, AES.MODE_GCM, nonce=iv)
-        aes.update(str(timestamp).encode('utf-8'))
-        enc_pw, auth_tag = aes.encrypt_and_digest(bytes(self._unencrypted_password, 'utf-8'))
+        aes.update(str(time).encode('utf-8'))
+
+        encrypted_password, cipher_tag = aes.encrypt_and_digest(bytes(self._unencrypted_password, 'utf-8'))
 
         encrypted = bytes([1,
                            int(self.state.public_api_key_id),
                            *list(iv),
-                           *list(struct.pack('<h', len(enc_pw))),
-                           *list(enc_key),
-                           *list(auth_tag),
-                           *list(enc_pw)])
+                           *list(struct.pack('<h', len(encrypted_key))),
+                           *list(encrypted_key),
+                           *list(cipher_tag),
+                           *list(encrypted_password)])
         encrypted = base64.b64encode(encrypted).decode('utf-8')
-        self._encrypted_password = f'#PWD_INSTAGRAM:4:{timestamp}:{encrypted}'
+
+        self._encrypted_password = f'#PWD_INSTAGRAM:4:{time}:{encrypted}'
 
     def _update_token(self):
         """Only used on initial login."""

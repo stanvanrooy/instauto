@@ -27,8 +27,7 @@ class _PostBase:
     container_module: str = None
     media_id: str = None
 
-    @classmethod
-    def create(cls, **kwargs):
+    def _create(self, **kwargs):
         """Creates an instance of the class, this method should be overwritten in the individual classes with
         arguments that are required, so it is clear which arguments are needed for which action.
 
@@ -36,13 +35,11 @@ class _PostBase:
         attribute. This is probably not used often, since the default values should work for basically all cases,
         but it is nice to have the option.
         """
-        i = cls()
         for k, v in kwargs.items():
-            if hasattr(i, k):
-                setattr(i, k, v)
+            if hasattr(self,  k):
+                setattr(self, k, v)
             else:
                 logger.warning("{} was sent as a keyword argument, but isn't supported.")
-        return i
 
 
 @dataclass
@@ -65,7 +62,7 @@ class PostUnlike(_PostBase):
             The newly instantiated class instance.
         """
         i = cls()
-        super(i).create(media_id=media_id, **kwargs)
+        i._create(media_id=media_id, **kwargs)
         return i
 
 
@@ -88,7 +85,7 @@ class PostLike(_PostBase):
             The newly instantiated class instance.
         """
         i = cls()
-        super(i).create(media_id=media_id, **kwargs)
+        i._create(media_id=media_id, **kwargs)
         return i
 
 
@@ -111,7 +108,7 @@ class PostSave(_PostBase):
             The newly instantiated class instance.
         """
         i = cls()
-        super(i).create(media_id=media_id, **kwargs)
+        i._create(media_id=media_id, **kwargs)
         return i
 
 
@@ -139,7 +136,7 @@ class PostComment(_PostBase):
             The newly instantiated class instance.
         """
         i = cls()
-        super(i).create(media_id=media_id, comment_text=comment_text, **kwargs)
+        i._create(media_id=media_id, comment_text=comment_text, **kwargs)
         return i
 
 
@@ -167,7 +164,7 @@ class PostUpdateCaption(_PostBase):
             The newly instantiated class instance.
         """
         i = cls()
-        super(i).create(media_id=media_id, caption_text=caption_text, **kwargs)
+        i._create(media_id=media_id, caption_text=caption_text, **kwargs)
         return i
 
 

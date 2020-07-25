@@ -204,11 +204,12 @@ class RequestMixIn:
 
         logger.debug(
             f'{"*" * 20} START REQUEST {"*" * 20}\n'
-            f'METHOD: {resp.request.method}\m'
+            f'METHOD: {resp.request.method}\n'
             f'URL: {url}\n'
             f'DATA: {data}\n'
             f'HEADERS: {headers}\n'
-            f'{"*" * 20} START REQUEST {"*" * 20}'
+            f'RESPONSE: {resp.content}\n'
+            f'{"*" * 20} END REQUEST {"*" * 20}'
         )
         return resp
 

@@ -2,6 +2,7 @@ from requests import Session
 import datetime
 import base64
 import struct
+import json
 
 from typing import Dict, Callable
 from os import urandom
@@ -14,7 +15,7 @@ from ..structs import Method, State, IGProfile, LoggedInAccountData
 
 class AuthenticationMixIn:
     """This class handles everything authentication related."""
-    session: Session
+    _session: Session
     state: State
     _request: Callable
     _update_token: Callable
@@ -38,7 +39,7 @@ class AuthenticationMixIn:
         """Logs in the account with the `username` and `password`"""
         self._update_token()
         data1 = {
-            '_csrftoken': self.session.cookies['csrftoken'],
+            '_csrftoken': self._session.cookies['csrftoken'],
             'id': self.state.device_id,
             'sever_config_retrieval': "1",
             'experiments': "ig_android_device_detection_info_upload,ig_android_gmail_oauth_in_reg,ig_android_account_linking_upsell_universe,ig_android_direct_main_tab_universe_v2,ig_android_sign_in_help_only_one_account_family_universe,ig_android_sms_retriever_backtest_universe,ig_android_vc_interop_use_test_igid_universe,ig_android_direct_add_direct_to_android_native_photo_share_sheet,ig_growth_android_profile_pic_prefill_with_fb_pic_2,ig_account_identity_logged_out_signals_global_holdout_universe,ig_android_notification_unpack_universe,ig_android_quickcapture_keep_screen_on,ig_android_device_based_country_verification,ig_android_login_identifier_fuzzy_match,ig_android_reg_modularization_universe,ig_android_video_render_codec_low_memory_gc,ig_android_device_verification_separate_endpoint,ig_android_email_fuzzy_matching_universe,ig_android_suma_landing_page,ig_android_smartlock_hints_universe,ig_android_video_ffmpegutil_pts_fix,ig_android_multi_tap_login_new,ig_android_retry_create_account_universe,ig_android_caption_typeahead_fix_on_o_universe,ig_android_enable_keyboardlistener_redesign,ig_android_reg_nux_headers_cleanup_universe,ig_android_get_cookie_with_concurrent_session_universe,ig_android_nux_add_email_device,ig_android_device_info_foreground_reporting,ig_android_shortcuts_2019,ig_android_device_verification_fb_signup,ig_android_passwordless_account_password_creation_universe,ig_android_black_out_toggle_universe,ig_video_debug_overlay,ig_android_ask_for_permissions_on_reg,ig_assisted_login_universe,ig_android_security_intent_switchoff,ig_android_recovery_one_tap_holdout_universe,ig_android_sim_info_upload,ig_android_mobile_http_flow_device_universe,ig_android_fb_account_linking_sampling_freq_universe,ig_android_access_flow_prefill"
@@ -49,14 +50,14 @@ class AuthenticationMixIn:
         data2 = {
             'jazoest': self._create_jazoest(),
             'phone_id': self.state.phone_id,
-            'device_id': self.state.device_id,
+            'device_id': self.state.android_id,
             'guid': self.state.uuid,
             '_csrftoken': self._session.cookies['csrftoken'],  # if csrf_token is not available, app should crash.
             'adid': self.state.ad_id,
             'google_tokens': '[]',
             'username': self._user_name,
             'country_codes': [{
-                'country_code': "1", 'source': 'default'
+                'country_code': "31", 'source': 'default'
             }],
             'enc_password': self._encrypted_password,
             'login_attempt_count': "0",

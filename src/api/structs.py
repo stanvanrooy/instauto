@@ -17,6 +17,13 @@ from .constants import (DEFAULT_SIGNATURE_KEY, DEFAULT_HTTP_ENGINE, DEFAULT_IG_C
 Method = enum.Enum("Method", "GET POST")
 
 
+class WhichGender(enum.Enum):
+    male = 1
+    female = 2
+    other = 3
+    prefer_not_to_say = 4
+
+
 #: Struct that is used to specify where a post should be posted
 class WhereToPost(enum.Enum):
     story = 3
@@ -162,7 +169,7 @@ class State:
         """
         self.uuid = f()
         self.device_id = f()
-        self.ad_id = ""
+        self.ad_id = f()
         self.session_id = f()
         self.phone_id = f()
         self.pigeon_session_id = f()

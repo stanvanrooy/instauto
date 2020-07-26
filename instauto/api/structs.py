@@ -221,7 +221,7 @@ class LoggedInAccountData:
                  professional_conversion_suggested_account_type: int, profile_pic_id: str, profile_pic_url: str,
                  show_insights_terms: bool, total_igtv_videos: int, username: str,
                  is_private: bool, is_verified: bool, reel_auto_archive: str, is_using_unified_inbox_for_direct:
-            bool, can_hide_category: str, can_hide_public_contacts: str, *args, **kwargs):
+            bool, can_hide_category: str = None, can_hide_public_contacts: str = None, *args, **kwargs):
         self.account_badges = account_badges
         self.account_type = account_type
         self.allow_contacts_sync = allow_contacts_sync

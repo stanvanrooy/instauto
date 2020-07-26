@@ -1,6 +1,6 @@
-from src.api.client import ApiClient
-from src.api.structs import PostLocation
-from src.api.actions.structs.post import PostPost
+from instauto.api.client import ApiClient
+from instauto.api.structs import PostLocation
+from instauto.api.actions.structs.post import PostPost
 import os
 
 

@@ -15,9 +15,9 @@ and stable state.
 ```python
 import random
 import os
-from src.api.client import ApiClient
+from instauto.api.client import ApiClient
 from time import sleep
-from src.api.actions.structs.friendships import ShowFriendshipFollowers
+from instauto.api.actions.structs.friendships import ShowFriendshipFollowers
 
 client = ApiClient.initiate_from_file('./.instauto.save')
 

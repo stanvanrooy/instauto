@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from typing import Optional, List, Union
 
 from ..helpers import get_image_type
-from src.api.structs import WhereToPost
+from instauto.api.structs import WhereToPost
 
 logger = logging.getLogger(__name__)
 

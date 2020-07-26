@@ -1,7 +1,7 @@
-from src.api.client import ApiClient
+from instauto.api.client import ApiClient
 import os
-from src.api.actions.structs.profile import ProfileSetGender
-from src.api.structs import WhichGender
+from instauto.api.actions.structs.profile import ProfileSetGender
+from instauto.api.structs import WhichGender
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):

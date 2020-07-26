@@ -1,7 +1,7 @@
 import logging
 
 from dataclasses import dataclass
-from src.api.structs import WhichGender
+from instauto.api.structs import WhichGender
 
 logger = logging.getLogger(__name__)
 

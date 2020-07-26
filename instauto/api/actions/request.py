@@ -6,9 +6,9 @@ import logging
 
 from typing import Dict, Callable
 
-from src.api.structs import DeviceProfile, IGProfile, State, Method
-from src.api.constants import API_BASE_URL
-from src.api.exceptions import WrongMethodException
+from instauto.api.structs import DeviceProfile, IGProfile, State, Method
+from instauto.api.constants import API_BASE_URL
+from instauto.api.exceptions import WrongMethodException
 
 logger = logging.getLogger(__name__)
 logging.captureWarnings(True)

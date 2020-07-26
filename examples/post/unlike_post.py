@@ -1,5 +1,5 @@
-from src.api.client import ApiClient
-from src.api.actions.structs.post import PostUnlike
+from instauto.api.client import ApiClient
+from instauto.api.actions.structs.post import PostUnlike
 import os
 
 

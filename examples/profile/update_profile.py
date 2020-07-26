@@ -1,6 +1,6 @@
-from src.api.client import ApiClient
+from instauto.api.client import ApiClient
 import os
-from src.api.actions.structs.profile import ProfileUpdate
+from instauto.api.actions.structs.profile import ProfileUpdate
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):

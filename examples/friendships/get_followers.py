@@ -1,10 +1,10 @@
 import random
 import os
 
-from src.api.client import ApiClient
+from instauto.api.client import ApiClient
 from time import sleep
 
-from src.api.actions.structs.friendships import ShowFriendshipFollowers
+from instauto.api.actions.structs.friendships import ShowFriendshipFollowers
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
-from src.api.client import ApiClient
+from instauto.api.client import ApiClient
 import os
 
-from src.api.actions.structs.friendships import ApproveFollowRequest, PendingFollowRequests
+from instauto.api.actions.structs.friendships import ApproveFollowRequest, PendingFollowRequests
 
 
 if __name__ == '__main__':

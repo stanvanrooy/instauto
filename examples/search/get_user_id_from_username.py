@@ -1,7 +1,7 @@
-from src.api.client import ApiClient
+from instauto.api.client import ApiClient
 import os
 
-from src.api.actions.structs.search import SearchUsername
+from instauto.api.actions.structs.search import SearchUsername
 
 
 if __name__ == '__main__':

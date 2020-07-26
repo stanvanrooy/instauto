@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'instauto',         # How you named your package folder (MyLib)
   packages = ['instauto'],   # Chose the same as "name"
-  version = '0.0.3',      # Start with a small number and increase it with every change you make
+  version = '0.0.4',      # Start with a small number and increase it with every change you make
   license='GNU GPLv3',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
   description = 'Python wrapper for the private Instagram API',   # Give a short description about your library
   author = 'Stan van Rooy',                   # Type in your name

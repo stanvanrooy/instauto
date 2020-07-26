@@ -1,7 +1,7 @@
 from requests import Session, Response
-from typing import Union, Callable, Tuple
+from typing import Union, Callable, Tuple, List
 from .structs.friendships import CreateFriendship, DestroyFriendship, RemoveFriendship, ShowFriendship, \
-    ShowFriendshipFollowers, ShowFriendshipFollowing
+    ShowFriendshipFollowers, ShowFriendshipFollowing, PendingFollowRequests, ApproveFollowRequest
 from ..structs import State, Method
 
 
@@ -142,3 +142,33 @@ class FriendshipsMixin:
         obj.max_id = as_json['next_max_id']
         obj.page += 1
         return obj, resp
+
+    def get_follow_requests(self, obj: PendingFollowRequests) -> List[dict]:
+        """
+        Returns
+        -------
+        List[dict]
+            A list which contains all pending follow requests. If successfull, it will return an list of the
+            following structures:
+            {
+                "account_badges": [],
+                "full_name": "",
+                "has_anonymous_profile_picture": false,
+                "is_private": true,
+                "is_verified": false,
+                "latest_reel_media": 0,
+                "pk": 2097017052,
+                "profile_pic_id": "",
+                "profile_pic_url": "",
+                "username": ""
+              }
+        """
+        resp = self._request('friendships/pending/', Method.GET)
+        parsed = resp.json()
+        return parsed['users']
+
+    def approve_follow_request(self, obj: ApproveFollowRequest) -> Response:
+        obj._csrftoken = self._session.cookies.get('csrftoken', domain='instagram.com')
+        obj._uid = self.state.user_id
+        obj._uuid = self.state.uuid
+        return self._request(f'friendships/approve/{obj.user_id}/', Method.POST, data=obj.__dict__)

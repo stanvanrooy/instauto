@@ -127,3 +127,29 @@ class ShowFriendshipFollowing:
         i.user_id = user_id
         i.rank_token = uuid.uuid4()
         return i
+
+
+class PendingFollowRequests:
+    @classmethod
+    def create(cls):
+        return cls()
+
+
+class ApproveFollowRequest:
+    surface: str = 'follow_requests'
+    radio_type: str = 'wifi-none'
+    user_id: str = None
+    _csrftoken: str = None
+    _uid: str = None
+    _uuid: str = None
+
+    @classmethod
+    def create(cls, user_id, **kwargs):
+        i = cls()
+        for k, v in kwargs.items():
+            if hasattr(i, k):
+                setattr(i, k, v)
+            else:
+                logger.warning("{} was sent as a keyword argument, but isn't supported.")
+        i.user_id = user_id
+        return i

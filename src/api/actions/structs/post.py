@@ -23,7 +23,7 @@ class _PostBase:
     _uuid: str = None
     delivery_class: str = 'organic'
     radio_type: str = 'wifi-none'
-    is_carousel_bumped_post: str = 'false'
+    is_carousel_bumped_post: str = 'False'
     container_module: str = None
     media_id: str = None
 

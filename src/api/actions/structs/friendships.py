@@ -75,17 +75,17 @@ class RemoveFriendship(_BaseFriendship):
 class ShowFriendship:
     """Retrieves the following information for a friendship:
     {
-      "blocking": false,
-      "followed_by": false,
-      "following": false,
-      "incoming_request": false,
-      "is_bestie": false,
-      "is_blocking_reel": false,
-      "is_muting_reel": false,
-      "is_private": false,
-      "is_restricted": false,
-      "muting": false,
-      "outgoing_request": false,
+      "blocking": False,
+      "followed_by": False,
+      "following": False,
+      "incoming_request": False,
+      "is_bestie": False,
+      "is_blocking_reel": False,
+      "is_muting_reel": False,
+      "is_private": False,
+      "is_restricted": False,
+      "muting": False,
+      "outgoing_request": False,
       "status": "ok"
     }
     """

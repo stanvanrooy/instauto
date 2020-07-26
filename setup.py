@@ -16,7 +16,7 @@ setup(
           'requests',
           'apscheduler',
           'pycryptodomex',
-          'imagesize',
+          'imagesize'
       ],
   classifiers=[
     'Development Status :: 3 - Alpha',

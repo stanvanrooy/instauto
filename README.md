@@ -8,18 +8,23 @@ Instauto in it's current state, should not be used for production systems.
 For feature requests, ideas, comments, etc., please open an issue. 
 
 ## Installation
-The package is still under development and hasn't been published to PyPi yet. This will be done once it is in a more finished
-and stable state.
+The package is still under development, but an alpha version has been published to PyPy. The package can be installed with the following pip command:
+```pip install instauto```
 
 ## Usage
+Here is an example that extracts all followers from an Instagram account: 
+
 ```python
 import random
 import os
-from instauto.api.client import ApiClient
-from time import sleep
-from instauto.api.actions.structs.friendships import ShowFriendshipFollowers
 
-client = ApiClient.initiate_from_file('./.instauto.save')
+from time import sleep
+
+from instauto import ApiClient
+from instauto.friendships_structs import ShowFriendshipFollowers
+
+client = ApiClient(user_name="yourusername", password="yourpassword")
+client.login()
 
 f = ShowFriendshipFollowers.create(user_id="2283025667")
 obj, result = client.get_followers(f)  # grabs first page

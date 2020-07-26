@@ -1,6 +1,7 @@
 from requests import Session, Response
-from typing import Union, Callable
-from .structs.friendships import CreateFriendship, DestroyFriendship, RemoveFriendship, ShowFriendship
+from typing import Union, Callable, Tuple
+from .structs.friendships import CreateFriendship, DestroyFriendship, RemoveFriendship, ShowFriendship, \
+    ShowFriendshipFollowers, ShowFriendshipFollowing
 from ..structs import State, Method
 
 
@@ -31,3 +32,38 @@ class FriendshipsMixin:
     def show_follower(self, obj: ShowFriendship) -> Response:
         # doesn't use _friendship_act, because it is a GET request.
         return self._request(f"friendships/{obj.endpoint}/{obj.user_id}/", Method.GET)
+    
+    def get_followers(self, obj: ShowFriendshipFollowers) -> Tuple[ShowFriendshipFollowers, Union[Response, bool]]:
+        if obj.max_id is None and obj.page > 0:
+            return obj, False
+        query_params = {
+            'search_surface': obj.search_surface,
+            'order': 'default',
+            'enable_groups': "true",
+            "query": "",
+            "rank_token": obj.rank_token
+        }
+        if obj.page > 0:  # make sure we don't include max_id on the first request
+            query_params['max_id'] = obj.max_id
+        resp = self._request(f'friendships/{obj.user_id}/followers/', Method.GET, query=query_params)
+        as_json = resp.json()
+        obj.max_id = as_json['next_max_id']
+        obj.page += 1
+        return obj, resp
+
+    def get_following(self, obj: ShowFriendshipFollowing) -> Tuple[ShowFriendshipFollowing, Union[Response, bool]]:
+        if obj.max_id is None and obj.page > 0:  # max_id get's set to None when there are no more results.
+            return obj, False
+        query_params = {
+            'search_surface': obj.search_surface,
+            'query': '',
+            'enable_groups': 'true',
+            'rank_token': obj.rank_token,
+        }
+        if obj.page > 0:  # make sure we don't include max_id on the first request
+            query_params['max_id'] = obj.max_id
+        resp = self._request(f'friendships/{obj.user_id}/following/', Method.GET, query=query_params)
+        as_json = resp.json()
+        obj.max_id = as_json['next_max_id']
+        obj.page += 1
+        return obj, resp

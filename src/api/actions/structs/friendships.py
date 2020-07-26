@@ -1,4 +1,5 @@
 import logging
+import uuid
 
 logger = logging.getLogger(__name__)
 
@@ -95,4 +96,34 @@ class ShowFriendship:
     def create(cls, user_id: str) -> "ShowFriendship":
         i = cls()
         i.user_id = user_id
+        return i
+
+
+class ShowFriendshipFollowers:
+    user_id: str = None
+    page: int = 0
+    max_id: str = None
+    rank_token: str = None
+    search_surface: str = 'follow_list_page'
+
+    @classmethod
+    def create(cls, user_id: str) -> "ShowFriendshipFollowers":
+        i = cls()
+        i.user_id = user_id
+        i.rank_token = uuid.uuid4()
+        return i
+
+
+class ShowFriendshipFollowing:
+    user_id: str = None
+    page: int = 0
+    max_id: str = None
+    rank_token: str = None
+    search_surface: str = 'follow_list_page'
+
+    @classmethod
+    def create(cls, user_id: str) -> "ShowFriendshipFollowing":
+        i = cls()
+        i.user_id = user_id
+        i.rank_token = uuid.uuid4()
         return i

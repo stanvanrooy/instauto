@@ -1,7 +1,6 @@
 from src.api.client import ApiClient
 import os
 
-from src.api.actions.structs.search import SearchUsername
 from src.api.actions.structs.friendships import ApproveFollowRequest, PendingFollowRequests
 
 

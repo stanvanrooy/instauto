@@ -23,7 +23,7 @@ from time import sleep
 from instauto import ApiClient
 from instauto.friendships_structs import ShowFriendshipFollowers
 
-client = ApiClient(username="yourusername", password="yourpassword")
+client = ApiClient(user_name="yourusername", password="yourpassword")
 client.login()
 
 f = ShowFriendshipFollowers.create(user_id="2283025667")

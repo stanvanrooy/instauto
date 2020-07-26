@@ -6,6 +6,7 @@ from .structs.profile import ProfileSetGender, ProfileSetBiography, ProfileUpdat
 
 
 class ProfileMixin:
+    """Handles everything related to updating an Instagram profile."""
     _session: Session
     ig_profile: IGProfile
     state: State
@@ -35,6 +36,7 @@ class ProfileMixin:
         return self._request(endpoint, Method.POST, data=obj.__dict__, signed=True)
 
     def profile_set_biography(self, obj: ProfileSetBiography) -> Response:
+        """Sets the biography of the currently logged in user"""
         obj._csrftoken = self._session.cookies['csrftoken']
         obj._uuid = self.state.uuid
         obj._uid = self.state.user_id
@@ -42,10 +44,12 @@ class ProfileMixin:
         return self._request('accounts/set_biography/', Method.POST, data=obj.__dict__)
 
     def profile_set_gender(self, obj: ProfileSetGender) -> Response:
+        """Sets the gender of the currently logged in user"""
         obj._csrftoken = self._session.cookies['csrftoken']
         obj._uuid = self.state.uuid
 
         return self._request('accounts/set_gender/', Method.POST, data=obj.__dict__, signed=False)
 
     def profile_update(self, obj: ProfileUpdate):
+        """Updates the name, username, email, phone number and url for the currently logged in user."""
         self._profile_act(obj)

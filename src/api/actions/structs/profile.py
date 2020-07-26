@@ -36,6 +36,7 @@ class _ProfileBase:
 
 @dataclass
 class ProfileSetGender(_ProfileBase):
+    """Is used for specifying what to set the gender to"""
     custom_gender: str = None
     gender: int = None
 
@@ -48,7 +49,7 @@ class ProfileSetGender(_ProfileBase):
             specifies which gender to set the profile to, if set to WhichGender.prefer_not_to_say the custom_gender
             argument is required.
         custom_gender : str
-            what the custom gender should be. Only used if gender is set to WhichGender.prefer_not_to_say
+            what the custom gender should be. Only used if gender is set to WhichGender.custom
         kwargs
         """
         i = cls()
@@ -61,17 +62,37 @@ class ProfileSetGender(_ProfileBase):
 
 class ProfileSetBiography(_ProfileBase):
     raw_text: str = None
+
     @classmethod
     def create(cls, biography: str, **kwargs):
+        """
+        Parameters
+        ----------
+        biography : str
+            The new biography
+        """
         i = cls()
         i._create(raw_text=biography, **kwargs)
         return i
 
 
 class ProfileUpdate(_ProfileBase):
+    """Is used specifying to what to update the url, phone number, username, first name and email"""
     @classmethod
     def create(cls, external_url: str = None, phone_number: str = None, username: str = None, first_name: str = None,
                email: str = None, **kwargs):
+        """If no params are provided, the profile will stay as it currently is. If one param is provided, that param
+        is updated on the profile and the rest stays how it currently is, if you provide two params, two values in
+        the profile are updated, etc.
+
+        Parameters
+        ----------
+        external_url : str, optional
+        phone_number : str, optional
+        username : str, optional
+        first_name : str, optional
+        email : str, optional
+        """
         i = cls()
         i._create(external_url=external_url, phone_number=phone_number, username=username, first_name=first_name,
                   email=email, **kwargs)

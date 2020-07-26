@@ -9,5 +9,20 @@ class NoAuthDetailsProvided(Exception):
 
 
 class WrongMethodException(Exception):
-    """Raised when a wrong method is used."""
+    """Raised when (presumable) the wrong method is used for a request."""
+    pass
+
+
+class IncorrectLoginDetails(Exception):
+    """Raised when the provided loging details are incorrect."""
+    pass
+
+
+class InvalidUserId(Exception):
+    """Raised when an invalid user id is provided"""
+    pass
+
+
+class CorruptedSaveData(Exception):
+    """Raised when the save data can't be read"""
     pass

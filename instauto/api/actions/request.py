@@ -8,7 +8,7 @@ from typing import Dict, Callable
 
 from instauto.api.structs import DeviceProfile, IGProfile, State, Method
 from instauto.api.constants import API_BASE_URL
-from instauto.api.exceptions import WrongMethodException
+from instauto.api.exceptions import WrongMethodException, IncorrectLoginDetails, InvalidUserId
 
 logger = logging.getLogger(__name__)
 logging.captureWarnings(True)
@@ -214,5 +214,18 @@ class RequestMixIn:
         return resp
 
     def _check_response_for_errors(self, resp):
-        # TODO: implement this function :)
-        pass
+        try:
+            parsed = resp.json()
+        except json.JSONDecodeError:
+            if not resp.ok:
+                if resp.status_code == 404 and '/friendships/' in resp.url:
+                    raise InvalidUserId(f"url: {resp.url} is not recognized by Instagram")
+
+                logger.exception(f"response received: \n{resp.content}\nurl: {resp.url}")
+                raise Exception("Received a non-200 response from Instagram")
+            return
+        if not resp.ok and parsed.get('description') == 'invalid password':
+            raise IncorrectLoginDetails("Instagram does not recognize the provided login details")
+
+
+

@@ -11,7 +11,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from .structs import IGProfile, DeviceProfile, State
 from .constants import (DEFAULT_IG_PROFILE, DEFAULT_DEVICE_PROFILE, DEFAULT_STATE)
-from .exceptions import StateExpired, NoAuthDetailsProvided
+from .exceptions import StateExpired, NoAuthDetailsProvided, CorruptedSaveData
 
 from .actions import AuthenticationMixIn, PostMixin, RequestMixIn, ProfileMixin, FriendshipsMixin, SearchMixin
 
@@ -126,13 +126,15 @@ class ApiClient(PostMixin, AuthenticationMixIn, RequestMixIn, ProfileMixin, Frie
 
         try:
             with open(file_name, "w" if not over_write else "w+") as f:
-                l = self.state.logged_in_account_data
-                self.state.logged_in_account_data = None
+                state_as_dict = self.state.__dict__
+                try:
+                    logged_in_data = state_as_dict.pop('logged_in_account_data').__dict__
+                except KeyError: logged_in_data = {}
                 json.dump({
-                    'State': self.state.__dict__,
+                    'State': state_as_dict,
                     'IGProfile': self.ig_profile.__dict__,
                     'DeviceProfile': self.device_profile.__dict__,
-                    'LoggedInAccountData': l.__dict__,
+                    'LoggedInAccountData': logged_in_data,
                     'session.cookies': cookies
                 }, f)
         except Exception as e:
@@ -153,7 +155,10 @@ class ApiClient(PostMixin, AuthenticationMixIn, RequestMixIn, ProfileMixin, Frie
             An instance of this class, initiated with all values stored in the save file.
         """
         with open(file_name, "rb") as f:
-            data = json.load(f)
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                raise CorruptedSaveData(f"Save file {file_name} couldn't be parsed.")
         state = data['State']
         state['logged_in_account_data'] = data['LoggedInAccountData']
         ig_profile = data['IGProfile']

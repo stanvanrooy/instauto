@@ -13,14 +13,22 @@ and stable state.
 
 ## Usage
 ```python
+import random
+import os
 from src.api.client import ApiClient
-from src.api.actions.structs import PostLike
+from time import sleep
+from src.api.actions.structs.friendships import ShowFriendshipFollowers
 
-client = ApiClient(user_name="your_username", password="your_password")
-client.login()
+client = ApiClient.initiate_from_file('./.instauto.save')
 
-like = PostLike.create(media_id="1734612737423614055_6400760974")
-client.post_like(like)
+f = ShowFriendshipFollowers.create(user_id="2283025667")
+obj, result = client.get_followers(f)  # grabs first page
+while result:  # paginates until all followers are extracted
+    parsed = result.json()
+    print(f"Extracted {len(parsed['users'])} followers")
+    print(f"The username of the first extracted follower is {parsed['users'][0]['username']}")
+    obj, result = client.get_followers(obj)
+    sleep(random.randint(10, 60))
 ```
 A few other examples of how to use the package, can be found in the examples directory.
 

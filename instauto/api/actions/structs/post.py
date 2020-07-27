@@ -26,6 +26,7 @@ class _PostBase:
     is_carousel_bumped_post: str = 'False'
     container_module: str = None
     media_id: str = None
+    feed_position: str = None
 
     def _create(self, **kwargs):
         """Creates an instance of the class, this method should be overwritten in the individual classes with

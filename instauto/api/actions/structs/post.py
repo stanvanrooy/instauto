@@ -60,6 +60,10 @@ class PostUnlike(_PostBase):
         -------
         PostUnlike
             The newly instantiated class instance.
+        Other Parameters
+        -------
+        feed_position : str
+            Specifies which post from the feed it is, starts at 0.
         """
         i = cls()
         i._create(media_id=media_id, **kwargs)
@@ -83,6 +87,10 @@ class PostLike(_PostBase):
         -------
         PostLike
             The newly instantiated class instance.
+        Other Parameters
+        -------
+        feed_position : str
+            Specifies which post from the feed it is, starts at 0.
         """
         i = cls()
         i._create(media_id=media_id, **kwargs)
@@ -106,6 +114,10 @@ class PostSave(_PostBase):
         -------
         PostSave
             The newly instantiated class instance.
+        Other Parameters
+        -------
+        feed_position : str
+            Specifies which post from the feed it is, starts at 0.
         """
         i = cls()
         i._create(media_id=media_id, **kwargs)
@@ -134,6 +146,10 @@ class PostComment(_PostBase):
         -------
         PostComment
             The newly instantiated class instance.
+        Other Parameters
+        -------
+        feed_position : str
+            Specifies which post from the feed it is, starts at 0.
         """
         i = cls()
         i._create(media_id=media_id, comment_text=comment_text, **kwargs)
@@ -162,6 +178,10 @@ class PostUpdateCaption(_PostBase):
         -------
         PostUpdateCaption
             The newly instantiated class instance.
+        Other Parameters
+        -------
+        feed_position : str
+            Specifies which post from the feed it is, starts at 0.
         """
         i = cls()
         i._create(media_id=media_id, caption_text=caption_text, **kwargs)

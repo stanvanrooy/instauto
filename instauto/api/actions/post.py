@@ -35,7 +35,7 @@ class PostMixin:
 
     def post_like(self, obj: PostLike) -> Response:
         """Likes a post"""
-        return self._request(obj)
+        return self._post_act(obj)
 
     def post_unlike(self, obj: PostUnlike) -> Response:
         """Unlikes a post"""

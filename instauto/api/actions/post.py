@@ -29,6 +29,8 @@ class PostMixin:
         obj._csrftoken = self._session.cookies['csrftoken']
         obj._uid = self.state.user_id
         obj._uuid = self.state.uuid
+        if obj.feed_position is None:
+            delattr(obj, 'feed_position')
 
         endpoint = f'media/{obj.media_id}/{obj.action}/'
         return self._request(endpoint, Method.POST, data=obj.__dict__, signed=True)

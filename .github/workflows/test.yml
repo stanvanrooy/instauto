@@ -30,3 +30,6 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+      env:
+        INSTAUTO_TESTS_USERNAME: test_usernme
+        INSTAUTO_TESTS_PASSWORD: test_password

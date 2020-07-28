@@ -211,6 +211,12 @@ class State:
     def __repr__(self):
         return pprint.pformat(vars(self))
 
+    def refresh(self, f: Callable):
+        self.uuid = f()
+        self.device_id = f()
+        self.ad_id = f()
+        self.session_id = f()
+
 
 class LoggedInAccountData:
     """Structure that stores information about the Instagram account"""

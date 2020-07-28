@@ -47,7 +47,7 @@ class AuthenticationMixIn:
         _ = self._request('qe/sync/', Method.POST, data=data1)
 
         data2 = {
-            'jazoest': '22475',  # self._create_jazoest(),
+            'jazoest': self._create_jazoest(),
             'phone_id': self.state.phone_id,
             'device_id': self.state.android_id,
             'guid': self.state.uuid,
@@ -123,7 +123,8 @@ class AuthenticationMixIn:
         query = {'device_id': self.state.android_id, 'token_hash': '', 'custom_device_id': self.state.device_id,
                  'fetch_reason': 'token_expired'}
         # do initial request, this retrieves the first x-mid header, required for sending other requests
-        _ = self._request('zr/token/result/', Method.GET, query, headers=self._build_initial_headers(), default_headers=False)
+        _ = self._request('zr/token/result/', Method.GET, query=query, headers=self._build_initial_headers(),
+                          default_headers=False)
 
     def _update_session_id(self) -> None:
         """Updates the session id, to simulate a close and open of the app."""

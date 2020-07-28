@@ -1,4 +1,6 @@
 # Instauto
+![Tests](https://github.com/stanvanrooy/instauto/workflows/Tests/badge.svg)
+[![PyPI version](https://badge.fury.io/py/instauto.svg)](https://badge.fury.io/py/instauto)
 
 Instauto is a Python package for automating various parts of Instagram, making use of the private Instagram API.
 

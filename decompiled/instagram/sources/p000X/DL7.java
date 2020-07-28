@@ -1,9 +1,0 @@
-package p000X;
-
-/* renamed from: X.DL7 */
-public enum DL7 {
-    BYTE_SEGMENTS,
-    ERROR_CORRECTION_LEVEL,
-    STRUCTURED_APPEND_SEQUENCE,
-    STRUCTURED_APPEND_PARITY
-}

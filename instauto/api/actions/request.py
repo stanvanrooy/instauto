@@ -144,12 +144,14 @@ class RequestMixIn:
             be send along with GET requests. It is most likely that it either was mistaken for the `query` argument,
             or that the method should be set to POST.
         """
-
         if query is None: query = {}
         if data is None: data = {}
         if default_headers is None: default_headers = True
         if headers is None: headers = {}
         if signed is None: signed = False
+
+        if endpoint.startswith('/'):
+            logger.warning("Are you sure that the endpoint starts with a slash?")
 
         # This isn't the cleanest, but it works. This makes sure we can just pass in the full url for endpoints that
         # do not start with /api/v1 (pretty much only for uploading pictures/videos), without adding an extra boolean
@@ -221,11 +223,8 @@ class RequestMixIn:
                 if resp.status_code == 404 and '/friendships/' in resp.url:
                     raise InvalidUserId(f"url: {resp.url} is not recognized by Instagram")
 
-                logger.exception(f"response received: \n{resp.content}\nurl: {resp.url}")
+                logger.exception(f"response received: \n{resp.text}\nurl: {resp.url}\nstatus code: {resp.status_code}")
                 raise Exception("Received a non-200 response from Instagram")
             return
         if not resp.ok and parsed.get('description') == 'invalid password':
             raise IncorrectLoginDetails("Instagram does not recognize the provided login details")
-
-
-

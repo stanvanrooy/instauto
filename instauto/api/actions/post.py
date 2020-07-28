@@ -112,15 +112,27 @@ class PostMixin:
         }
         return self._request('media/configure/', Method.POST, data=as_dict, headers=headers, signed=True)
 
-    def post_retrieve_by_user(self, obj: PostRetrieveByUser):
-        if obj.max_id is None:
-            delattr(obj, 'max_id')
-        as_dict = obj.__dict__
+    def post_retrieve_by_user(self, obj: PostRetrieveByUser) -> (PostRetrieveByUser, Union[dict, bool]):
+        """Retrieves 12 posts of the user at a time. If there was a response / if there were any more posts
+        available, the response can be found in original_requests/post.json:4
 
+        Returns
+        --------
+        PostRetrieveByUser, (dict, bool)
+            Will return the updated object and the response if there were any posts left, returns the object and
+            False if not.
+        """
+        as_dict = obj.__dict__.copy()
+
+        if obj.page > 0 and obj.max_id is None:
+            return obj, False
+
+        as_dict.pop('max_id')
         as_dict.pop('user_id')
 
-        resp = self._request(f'/feed/user/{obj.user_id}/', Method.GET, query=as_dict)
+        resp = self._request(f'feed/user/{obj.user_id}/', Method.GET, query=as_dict)
         resp_as_json = resp.json()
 
-        obj.max_id = resp_as_json['max_id']
+        obj.max_id = resp_as_json['next_max_id']
+        obj.page += 1
         return obj, resp_as_json['items']

@@ -3,7 +3,7 @@ import random
 import time
 import imagesize
 import logging
-import enum
+import pprint
 import json
 
 from pathlib import Path
@@ -42,6 +42,9 @@ class _PostBase:
                 setattr(self, k, v)
             else:
                 logger.warning("{} was sent as a keyword argument, but isn't supported.")
+
+    def __repr__(self):
+        return pprint.pformat(self.__dict__)
 
 
 @dataclass
@@ -201,6 +204,9 @@ class PostPostLocation:
     facebook_places: str = ""
     facebook_places_id: str = ""
 
+    def __repr__(self):
+        return pprint.pformat(self.__dict__)
+
 
 @dataclass
 class PostPostDevice:
@@ -211,6 +217,9 @@ class PostPostDevice:
     android_version: int
     android_release: str
 
+    def __repr__(self):
+        return pprint.pformat(self.__dict__)
+
 
 @dataclass
 class PostPostEdits:
@@ -219,12 +228,18 @@ class PostPostEdits:
     crop_center: List[float] = field(default_factory=lambda: [0.0, 0.0])
     crop_zoom: float = 1.0
 
+    def __repr__(self):
+        return pprint.pformat(self.__dict__)
+
 
 @dataclass
 class PostPostExtra:
     """Contains information about the image uploaded. Defaults to the actual size of the image."""
     source_width: int
     source_height: int
+
+    def __repr__(self):
+        return pprint.pformat(self.__dict__)
 
 
 @dataclass
@@ -315,17 +330,34 @@ class PostPost(_PostBase):
         return instance
 
 
-class PostRetrieveByUser(enum.Enum):
+@dataclass
+class PostRetrieveByUser:
     user_id: str = None
     max_id: str = None
-    exclude_comment: bool = True
-    only_fetch_first_carousel_media: bool = False
+    exclude_comment: str = 'true'
+    only_fetch_first_carousel_media: str = 'false'
+    page = 0
 
     @classmethod
     def create(cls, user_id: str, **kwargs) -> "PostRetrieveByUser":
+        """
+        Parameters
+        ----------
+        user_id : str
+        Other Parameters
+        ----------
+        exclude_comment : str
+            'true' will only retrieve the posts, 'false' will retrieve the posts + top comments
+        only_fetch_first_carousel_media : str
+            'true' will retrieve only the first post, if it's a carousel post (multiple images / videos),
+            'false' will return all media.
+        """
         i = cls()
         i.user_id = user_id
         for k, v in kwargs.items():
             if hasattr(i, k):
                 setattr(i, k, v)
         return i
+
+    def __repr__(self):
+        return pprint.pformat(self.__dict__)

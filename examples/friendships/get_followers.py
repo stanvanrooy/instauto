@@ -1,11 +1,10 @@
 import random
 import os
 
-from instauto.api.client import ApiClient
+from instauto import ApiClient
+from instauto import friendships as fs
+
 from time import sleep
-
-from instauto.api.actions.structs.friendships import ShowFriendshipFollowers
-
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -15,7 +14,7 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    f = ShowFriendshipFollowers.create(user_id="2283025667")
+    f = fs.ShowFriendshipFollowers.create(user_id="2283025667")
     obj, result = client.get_followers(f)  # grabs first page
     while result:  # paginates until all followers are extracted
         parsed = result.json()

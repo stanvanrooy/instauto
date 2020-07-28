@@ -1,9 +1,8 @@
-from instauto.api.client import ApiClient
 import os
 
-from instauto.api.actions.structs.search import SearchUsername
-from instauto.api.actions.structs.friendships import ApproveFollowRequest
-
+from instauto import ApiClient
+from instauto import search as se
+from instauto import friendships as fs
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -13,9 +12,9 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    s = SearchUsername.create("stan058_", 1)
+    s = se.SearchUsername.create("stan058_", 1)
     resp = client.search_username(s).json()
     user_id = resp['users'][0]['pk']
 
-    a = ApproveFollowRequest.create(user_id)
+    a = fs.ApproveFollowRequest.create(user_id)
     resp = client.approve_follow_request(a)

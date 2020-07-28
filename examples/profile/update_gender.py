@@ -1,7 +1,8 @@
-from instauto.api.client import ApiClient
 import os
-from instauto.api.actions.structs.profile import ProfileSetGender
-from instauto.api.structs import WhichGender
+
+from instauto import ApiClient
+from instauto import profile as pr
+from instauto import structs as st
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -18,8 +19,8 @@ if __name__ == '__main__':
     # )
 
     # FOR MALE / FEMALE / PREFER NOT TO SAY
-    p = ProfileSetGender.create(
-        gender=WhichGender.male,
+    p = pr.ProfileSetGender.create(
+        gender=st.WhichGender.male,
     )
 
     client.profile_set_gender(p)

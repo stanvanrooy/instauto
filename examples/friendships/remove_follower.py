@@ -1,7 +1,7 @@
-from instauto.api.client import ApiClient
 import os
 
-from instauto.api.actions.structs.friendships import RemoveFriendship
+from instauto import ApiClient
+from instauto import friendships as fs
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -11,5 +11,5 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    f = RemoveFriendship.create(user_id="38720650610")
+    f = fs.RemoveFriendship.create(user_id="38720650610")
     client.remove_follower(f)

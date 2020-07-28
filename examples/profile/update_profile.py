@@ -1,6 +1,7 @@
-from instauto.api.client import ApiClient
 import os
-from instauto.api.actions.structs.profile import ProfileUpdate
+
+from instauto import profile as pr
+from instauto import ApiClient
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -10,7 +11,7 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    p = ProfileUpdate.create(
+    p = pr.ProfileUpdate.create(
         external_url="https://google.com",
         first_name="Hello! It's me!"
     )

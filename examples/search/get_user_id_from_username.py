@@ -1,8 +1,7 @@
-from instauto.api.client import ApiClient
 import os
 
-from instauto.api.actions.structs.search import SearchUsername
-
+from instauto import ApiClient
+from instauto import search as se
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -12,6 +11,6 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    s = SearchUsername.create("instapowr", 1)
+    s = se.SearchUsername.create("instapowr", 1)
     resp = client.search_username(s).json()
     user_id = resp['users'][0]['pk']

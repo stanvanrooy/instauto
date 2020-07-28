@@ -23,12 +23,12 @@ import os
 from time import sleep
 
 from instauto import ApiClient
-from instauto.friendships_structs import ShowFriendshipFollowers
+from instauto import friendships as fs
 
 client = ApiClient(user_name="yourusername", password="yourpassword")
 client.login()
 
-f = ShowFriendshipFollowers.create(user_id="2283025667")
+f = fs.ShowFriendshipFollowers.create(user_id="2283025667")
 obj, result = client.get_followers(f)  # grabs first page
 while result:  # paginates until all followers are extracted
     parsed = result.json()

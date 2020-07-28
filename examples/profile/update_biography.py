@@ -1,6 +1,7 @@
-from instauto.api.client import ApiClient
 import os
-from instauto.api.actions.structs.profile import ProfileSetBiography
+
+from instauto import ApiClient
+from instauto import profile as pr
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -10,7 +11,7 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    p = ProfileSetBiography.create(
+    p = pr.ProfileSetBiography.create(
         biography="Does it work? Of course it works!"
     )
     client.profile_set_biography(p)

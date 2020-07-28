@@ -1,7 +1,7 @@
-from instauto.api.client import ApiClient
-from instauto.api.actions.structs.post import PostSave
 import os
 
+from instauto import ApiClient
+from instauto import post as ps
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -11,7 +11,7 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    like = PostSave.create(
+    like = ps.PostSave.create(
         media_id="1734612737423614055_6400760974",
     )
     client.post_save(like)

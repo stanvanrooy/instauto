@@ -1,8 +1,8 @@
-from instauto.api.client import ApiClient
-from instauto.api.actions.structs.post import PostRetrieveByUser
-from instauto.api.actions.structs.search import SearchUsername
 import os
 
+from instauto import ApiClient
+from instauto import post as ps
+from instauto import search as se
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -12,12 +12,12 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    s = SearchUsername.create('instagram', 1)
+    s = se.SearchUsername.create('instagram', 1)
     resp = client.search_username(s).json()
     user = resp['users'][0]
     user_id = user['pk']
 
-    r = PostRetrieveByUser.create(user_id)
+    r = ps.PostRetrieveByUser.create(user_id)
 
     obj, result = client.post_retrieve_by_user(r)
     retrieved_items = []

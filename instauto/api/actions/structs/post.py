@@ -285,7 +285,7 @@ class PostPost(_PostBase):
         extra
         Returns
         -------
-        PostUpdateCaption
+        PostPost
             The newly instantiated class instance.
         """
         source_type = str(source_type)

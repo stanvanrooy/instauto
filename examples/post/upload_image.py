@@ -1,8 +1,8 @@
-from instauto.api.client import ApiClient
-from instauto.api.structs import PostLocation
-from instauto.api.actions.structs.post import PostPost
 import os
 
+from instauto import ApiClient
+from instauto import structs as st
+from instauto import post as ps
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -12,9 +12,9 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    post = PostPost.create(
+    post = ps.PostPost.create(
         path='./black_square.jpg',
-        source_type=PostLocation.Feed,
+        source_type=st.WhereToPost.Feed,
         caption='This is an example. Follow me!'
     )
 

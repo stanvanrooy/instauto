@@ -6,7 +6,7 @@ from typing import Callable, Union
 from dataclasses import asdict
 
 from ..structs import Method, State, DeviceProfile, IGProfile
-from .structs.post import PostPost, PostComment, PostUpdateCaption, PostSave, PostLike, PostUnlike, PostPostDevice
+from .structs.post import PostPost, PostComment, PostUpdateCaption, PostSave, PostLike, PostUnlike, PostPostDevice, PostRetrieveByUser
 
 from .helpers import build_default_rupload_params
 
@@ -111,3 +111,16 @@ class PostMixin:
             'retry_context': json.dumps({"num_reupload": 0, "num_step_auto_retry": 0, "num_step_manual_retry": 0})
         }
         return self._request('media/configure/', Method.POST, data=as_dict, headers=headers, signed=True)
+
+    def post_retrieve_by_user(self, obj: PostRetrieveByUser):
+        if obj.max_id is None:
+            delattr(obj, 'max_id')
+        as_dict = obj.__dict__
+
+        as_dict.pop('user_id')
+
+        resp = self._request(f'/feed/user/{obj.user_id}/', Method.GET, query=as_dict)
+        resp_as_json = resp.json()
+
+        obj.max_id = resp_as_json['max_id']
+        return obj, resp_as_json['items']

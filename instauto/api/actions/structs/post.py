@@ -3,6 +3,7 @@ import random
 import time
 import imagesize
 import logging
+import enum
 import json
 
 from pathlib import Path
@@ -312,3 +313,19 @@ class PostPost(_PostBase):
             setattr(instance, k, v)
 
         return instance
+
+
+class PostRetrieveByUser(enum.Enum):
+    user_id: str = None
+    max_id: str = None
+    exclude_comment: bool = True
+    only_fetch_first_carousel_media: bool = False
+
+    @classmethod
+    def create(cls, user_id: str, **kwargs) -> "PostRetrieveByUser":
+        i = cls()
+        i.user_id = user_id
+        for k, v in kwargs.items():
+            if hasattr(i, k):
+                setattr(i, k, v)
+        return i

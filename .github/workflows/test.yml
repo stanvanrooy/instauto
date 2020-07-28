@@ -1,5 +1,4 @@
-name: Test application
-
+name: Tests
 on:
   push:
     branches: [ master ]

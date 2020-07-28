@@ -71,7 +71,7 @@ class ApiClient(PostMixin, AuthenticationMixIn, RequestMixIn, ProfileMixin, Frie
             self.state.fill(self._gen_uuid)
             logger.info("No state provided. Logging in...")
         else:
-            self.state.refresh()
+            self.state.refresh(self._gen_uuid)
 
         if (user_name is None or password is None) and (state is None or session_cookies is None):
             raise NoAuthDetailsProvided("username, password and state are all not provided.")

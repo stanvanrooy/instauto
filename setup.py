@@ -2,16 +2,16 @@ import setuptools
 from distutils.core import setup
 
 setup(
-  name = 'instauto',
-  packages = setuptools.find_packages(),
-  version = '0.0.8',
+  name='instauto',
+  packages=setuptools.find_packages(),
+  version='0.0.9',
   license='GNU GPLv3',
-  description = 'Python wrapper for the private Instagram API',
-  author = 'Stan van Rooy',
-  author_email = 'stan@rooy.dev',
-  url = 'https://github.com/stanvanrooy/instauto',
-  download_url = 'https://github.com/stanvanrooy/instauto/archive/0.0.7.tar.gz',
-  keywords = ['instagram api', 'private instagram api'],
+  description='Python wrapper for the private Instagram API',
+  author='Stan van Rooy',
+  author_email='stan@rooy.dev',
+  url='https://github.com/stanvanrooy/instauto',
+  download_url='https://github.com/stanvanrooy/instauto/archive/0.0.7.tar.gz',
+  keywords=['instagram api', 'private instagram api'],
   install_requires=[
           'requests',
           'apscheduler',

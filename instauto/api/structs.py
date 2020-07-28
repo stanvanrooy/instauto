@@ -214,14 +214,15 @@ class State:
 
 class LoggedInAccountData:
     """Structure that stores information about the Instagram account"""
-    def __init__(self, account_badges: list, account_type: int, allow_contacts_sync: bool, allowed_commenter_type:
-    str, can_boost_post: bool, can_see_organic_insights: bool, can_see_primary_country_in_settings: bool, full_name:
-    str, has_anonymous_profile_picture: bool, has_placed_orders: bool, interop_messaging_user_fbid: int, is_business:
-    bool, is_call_to_action_enabled: Union[bool, None], nametag: dict, phone_number: str, pk: int,
-                 professional_conversion_suggested_account_type: int, profile_pic_id: str, profile_pic_url: str,
-                 show_insights_terms: bool, total_igtv_videos: int, username: str,
-                 is_private: bool, is_verified: bool, reel_auto_archive: str, is_using_unified_inbox_for_direct:
-            bool, can_hide_category: str = None, can_hide_public_contacts: str = None, *args, **kwargs):
+    def __init__(self, account_type: int = None, account_badges: list = None, allow_contacts_sync: bool = None,
+                 allowed_commenter_type:
+    str = None, can_boost_post: bool = None, can_see_organic_insights: bool = None, can_see_primary_country_in_settings: bool = None, full_name:
+    str = None, has_anonymous_profile_picture: bool = None, has_placed_orders: bool = None, interop_messaging_user_fbid: int = None, is_business:
+    bool = None, is_call_to_action_enabled: Union[bool, None] = None, nametag: dict = None, phone_number: str = None, pk: int = None,
+                 professional_conversion_suggested_account_type: int = None, profile_pic_id: str = None, profile_pic_url: str = None,
+                 show_insights_terms: bool = None, total_igtv_videos: int = None, username: str = None,
+                 is_private: bool = None, is_verified: bool = None, reel_auto_archive: str = None, is_using_unified_inbox_for_direct:
+            bool = None, can_hide_category: str = None, can_hide_public_contacts: str = None, *args, **kwargs):
         self.account_badges = account_badges
         self.account_type = account_type
         self.allow_contacts_sync = allow_contacts_sync

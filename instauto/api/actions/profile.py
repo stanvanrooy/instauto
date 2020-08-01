@@ -54,7 +54,7 @@ class ProfileMixin:
         """Updates the name, username, email, phone number and url for the currently logged in user."""
         self._profile_act(obj)
 
-    def profile_info(self, obj: ProfileInfo):
+    def profile_info(self, obj: ProfileInfo) -> Response:
         if obj.user_id is None:
             obj.user_id = self.state.user_id
         return self._request(f'users/{obj.user_id}/info/')

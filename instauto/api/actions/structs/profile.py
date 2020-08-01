@@ -97,3 +97,13 @@ class ProfileUpdate(_ProfileBase):
         i._create(external_url=external_url, phone_number=phone_number, username=username, first_name=first_name,
                   email=email, **kwargs)
         return i
+
+
+class ProfileInfo:
+    user_id: int = None
+
+    @classmethod
+    def create(cls, user_id: int = None) -> "ProfileInfo":
+        i = cls()
+        i.user_id = user_id
+        return i

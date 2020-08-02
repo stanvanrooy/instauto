@@ -133,6 +133,6 @@ class PostMixin:
         resp = self._request(f'feed/user/{obj.user_id}/', Method.GET, query=as_dict)
         resp_as_json = resp.json()
 
-        obj.max_id = resp_as_json['next_max_id']
+        obj.max_id = resp_as_json.get('next_max_id')
         obj.page += 1
         return obj, resp_as_json['items']

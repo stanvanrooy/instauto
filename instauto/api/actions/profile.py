@@ -57,4 +57,7 @@ class ProfileMixin:
     def profile_info(self, obj: ProfileInfo) -> Response:
         if obj.user_id is None:
             obj.user_id = self.state.user_id
-        return self._request(f'users/{obj.user_id}/info/')
+        data = self._request(f'users/{obj.user_id}/info/').json()
+        if data['status'] == 'ok':
+            return data['users']
+        return data['status']

@@ -14,7 +14,7 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    f = fs.ShowFriendshipFollowers.create(user_id="2283025667")
+    f = fs.ShowFollowers.create(user_id="2283025667")
     obj, result = client.get_followers(f)  # grabs first page
     while result:  # paginates until all followers are extracted
         parsed = result.json()

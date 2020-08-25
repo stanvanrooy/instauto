@@ -4,7 +4,7 @@ import uuid
 logger = logging.getLogger(__name__)
 
 
-class _BaseFriendship:
+class _Base:
     _csrftoken: str = None
     radio_type: str = 'wifi-none'
     device_id: str = None
@@ -27,24 +27,24 @@ class _BaseFriendship:
                 logger.warning("{} was sent as a keyword argument, but isn't supported.")
 
 
-class CreateFriendship(_BaseFriendship):
+class Create(_Base):
     """Follow an account"""
     endpoint: str = 'create'
 
     @classmethod
-    def create(cls, user_id: str, **kwargs) -> "CreateFriendship":
+    def create(cls, user_id: str, **kwargs) -> "Create":
         i = cls()
         i._create(user_id=user_id, **kwargs)
         return i
 
 
-class DestroyFriendship(_BaseFriendship):
+class Destroy(_Base):
     """Unfollow an account"""
     surface: str = "following_sheet"
     endpoint = 'destroy'
 
     @classmethod
-    def create(cls, user_id: str, surface: str = None, **kwargs) -> "DestroyFriendship":
+    def create(cls, user_id: str, surface: str = None, **kwargs) -> "Destroy":
         """
         Parameters
         ----------
@@ -61,18 +61,18 @@ class DestroyFriendship(_BaseFriendship):
         return i
 
 
-class RemoveFriendship(_BaseFriendship):
+class Remove(_Base):
     """Force an account to unfollow you."""
     endpoint: str = 'remove_follower'
 
     @classmethod
-    def create(cls, user_id: str, **kwargs) -> "RemoveFriendship":
+    def create(cls, user_id: str, **kwargs) -> "Remove":
         i = cls()
         i._create(user_id=user_id, **kwargs)
         return i
 
 
-class ShowFriendship:
+class Show:
     """Retrieves the following information for a friendship:
     {
       "blocking": False,
@@ -93,13 +93,13 @@ class ShowFriendship:
     endpoint: str = 'show'
 
     @classmethod
-    def create(cls, user_id: str) -> "ShowFriendship":
+    def create(cls, user_id: str) -> "Show":
         i = cls()
         i.user_id = user_id
         return i
 
 
-class ShowFriendshipFollowers:
+class ShowFollowers:
     user_id: str = None
     page: int = 0
     max_id: str = None
@@ -107,14 +107,14 @@ class ShowFriendshipFollowers:
     search_surface: str = 'follow_list_page'
 
     @classmethod
-    def create(cls, user_id: str) -> "ShowFriendshipFollowers":
+    def create(cls, user_id: str) -> "ShowFollowers":
         i = cls()
         i.user_id = user_id
         i.rank_token = uuid.uuid4()
         return i
 
 
-class ShowFriendshipFollowing:
+class ShowFollowing:
     user_id: str = None
     page: int = 0
     max_id: str = None
@@ -122,20 +122,20 @@ class ShowFriendshipFollowing:
     search_surface: str = 'follow_list_page'
 
     @classmethod
-    def create(cls, user_id: str) -> "ShowFriendshipFollowing":
+    def create(cls, user_id: str) -> "ShowFollowing":
         i = cls()
         i.user_id = user_id
         i.rank_token = uuid.uuid4()
         return i
 
 
-class PendingFollowRequests:
+class PendingRequests:
     @classmethod
     def create(cls):
         return cls()
 
 
-class ApproveFollowRequest:
+class ApproveRequest:
     surface: str = 'follow_requests'
     radio_type: str = 'wifi-none'
     user_id: str = None

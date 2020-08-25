@@ -2,7 +2,7 @@ from requests import Session, Response
 from typing import Callable, Union
 
 from ..structs import IGProfile, State, DeviceProfile, Method
-from .structs.profile import ProfileSetGender, ProfileSetBiography, ProfileUpdate, ProfileInfo
+from .structs.profile import SetGender, SetBiography, Update, Info
 
 
 class ProfileMixin:
@@ -15,7 +15,7 @@ class ProfileMixin:
     _gen_uuid: Callable
     _generate_user_breadcrumb: Callable
 
-    def _profile_act(self, obj: Union[ProfileUpdate, ProfileSetBiography, ProfileSetGender]) -> Response:
+    def _profile_act(self, obj: Union[Update, SetBiography, SetGender]) -> Response:
         obj._csrftoken = self._session.cookies['csrftoken']
         obj._uid = self.state.user_id
         obj._uuid = self.state.uuid
@@ -35,7 +35,7 @@ class ProfileMixin:
         endpoint = f'accounts/edit_profile/'
         return self._request(endpoint, Method.POST, data=obj.__dict__, signed=True)
 
-    def profile_set_biography(self, obj: ProfileSetBiography) -> Response:
+    def profile_set_biography(self, obj: SetBiography) -> Response:
         """Sets the biography of the currently logged in user"""
         obj._csrftoken = self._session.cookies['csrftoken']
         obj._uuid = self.state.uuid
@@ -43,18 +43,18 @@ class ProfileMixin:
 
         return self._request('accounts/set_biography/', Method.POST, data=obj.__dict__)
 
-    def profile_set_gender(self, obj: ProfileSetGender) -> Response:
+    def profile_set_gender(self, obj: SetGender) -> Response:
         """Sets the gender of the currently logged in user"""
         obj._csrftoken = self._session.cookies['csrftoken']
         obj._uuid = self.state.uuid
 
         return self._request('accounts/set_gender/', Method.POST, data=obj.__dict__, signed=False)
 
-    def profile_update(self, obj: ProfileUpdate):
+    def profile_update(self, obj: Update):
         """Updates the name, username, email, phone number and url for the currently logged in user."""
         self._profile_act(obj)
 
-    def profile_info(self, obj: ProfileInfo) -> Response:
+    def profile_info(self, obj: Info) -> Response:
         if obj.user_id is None:
             obj.user_id = self.state.user_id
         data = self._request(f'users/{obj.user_id}/info/', Method.GET).json()

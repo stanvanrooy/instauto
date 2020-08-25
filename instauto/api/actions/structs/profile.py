@@ -6,7 +6,7 @@ from instauto.api.structs import WhichGender
 logger = logging.getLogger(__name__)
 
 
-class _ProfileBase:
+class _Base:
     """Contains values that are pretty much shared across all API requests."""
     _csrftoken: str = None
     _uid: str = None  # user id
@@ -35,13 +35,13 @@ class _ProfileBase:
 
 
 @dataclass
-class ProfileSetGender(_ProfileBase):
+class SetGender(_Base):
     """Is used for specifying what to set the gender to"""
     custom_gender: str = None
     gender: int = None
 
     @classmethod
-    def create(cls, gender: WhichGender, custom_gender: str = None, **kwargs) -> "ProfileSetGender":
+    def create(cls, gender: WhichGender, custom_gender: str = None, **kwargs) -> "SetGender":
         """
         Parameters
         ----------
@@ -60,7 +60,7 @@ class ProfileSetGender(_ProfileBase):
         return i
 
 
-class ProfileSetBiography(_ProfileBase):
+class SetBiography(_Base):
     raw_text: str = None
 
     @classmethod
@@ -76,7 +76,7 @@ class ProfileSetBiography(_ProfileBase):
         return i
 
 
-class ProfileUpdate(_ProfileBase):
+class Update(_Base):
     """Is used specifying to what to update the url, phone number, username, first name and email"""
     @classmethod
     def create(cls, external_url: str = None, phone_number: str = None, username: str = None, first_name: str = None,
@@ -99,11 +99,11 @@ class ProfileUpdate(_ProfileBase):
         return i
 
 
-class ProfileInfo:
+class Info:
     user_id: int = None
 
     @classmethod
-    def create(cls, user_id: int = None) -> "ProfileInfo":
+    def create(cls, user_id: int = None) -> "Info":
         i = cls()
         i.user_id = user_id
         return i

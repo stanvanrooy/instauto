@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
-class _PostBase:
+class _Base:
     """Contains values that are pretty much shared across all API requests."""
     _csrftoken: str = None
     _uid: str = None  # user id
@@ -48,12 +48,12 @@ class _PostBase:
 
 
 @dataclass
-class PostUnlike(_PostBase):
+class Unlike(_Base):
     inventory_source: str = 'media_or_source'
     action = 'unlike'
 
     @classmethod
-    def create(cls, media_id: str, **kwargs) -> "PostUnlike":
+    def create(cls, media_id: str, **kwargs) -> "Unlike":
         """Instantiates a instance of the class.
         Parameters
         ----------
@@ -63,7 +63,7 @@ class PostUnlike(_PostBase):
             Kwargs can be used to overwrite any of the default values.
         Returns
         -------
-        PostUnlike
+        Unlike
             The newly instantiated class instance.
         Other Parameters
         -------
@@ -76,11 +76,11 @@ class PostUnlike(_PostBase):
 
 
 @dataclass
-class PostLike(_PostBase):
+class Like(_Base):
     action = 'like'
 
     @classmethod
-    def create(cls, media_id: str, **kwargs) -> "PostLike":
+    def create(cls, media_id: str, **kwargs) -> "Like":
         """Instantiates a instance of the class.
         Parameters
         ----------
@@ -90,7 +90,7 @@ class PostLike(_PostBase):
             Kwargs can be used to overwrite any of the default values.
         Returns
         -------
-        PostLike
+        Like
             The newly instantiated class instance.
         Other Parameters
         -------
@@ -103,11 +103,11 @@ class PostLike(_PostBase):
 
 
 @dataclass
-class PostSave(_PostBase):
+class Save(_Base):
     action = 'save'
 
     @classmethod
-    def create(cls, media_id: str, **kwargs) -> "PostSave":
+    def create(cls, media_id: str, **kwargs) -> "Save":
         """Instantiates a instance of the class.
         Parameters
         ----------
@@ -117,7 +117,7 @@ class PostSave(_PostBase):
             Kwargs can be used to overwrite any of the default values.
         Returns
         -------
-        PostSave
+        Save
             The newly instantiated class instance.
         Other Parameters
         -------
@@ -130,14 +130,14 @@ class PostSave(_PostBase):
 
 
 @dataclass
-class PostComment(_PostBase):
+class Comment(_Base):
     idempotence_token: str = field(default_factory=lambda: str(uuid.uuid4()))  # random uuid
     comment_text: str = None
     user_breadcrumb: str = None
     action = 'save'
 
     @classmethod
-    def create(cls, media_id: str, comment_text: str, **kwargs) -> "PostComment":
+    def create(cls, media_id: str, comment_text: str, **kwargs) -> "Comment":
         """Instantiates a instance of the class.
         Parameters
         ----------
@@ -149,7 +149,7 @@ class PostComment(_PostBase):
             Kwargs can be used to overwrite any of the default values.
         Returns
         -------
-        PostComment
+        Comment
             The newly instantiated class instance.
         Other Parameters
         -------
@@ -162,14 +162,14 @@ class PostComment(_PostBase):
 
 
 @dataclass
-class PostUpdateCaption(_PostBase):
+class UpdateCaption(_Base):
     caption_text: str = None
     usertags: str = None
     location: str = None
     action = 'edit_media'
 
     @classmethod
-    def create(cls, media_id: str, caption_text: str, **kwargs) -> "PostUpdateCaption":
+    def create(cls, media_id: str, caption_text: str, **kwargs) -> "UpdateCaption":
         """Instantiates a instance of the class.
         Parameters
         ----------
@@ -181,7 +181,7 @@ class PostUpdateCaption(_PostBase):
             Kwargs can be used to overwrite any of the default values.
         Returns
         -------
-        PostUpdateCaption
+        UpdateCaption
             The newly instantiated class instance.
         Other Parameters
         -------
@@ -194,7 +194,7 @@ class PostUpdateCaption(_PostBase):
 
 
 @dataclass
-class PostPostLocation:
+class Location:
     """Contains all information about the location. This can be used to set the location tag for an Instagram post."""
     name: str = ""
     address: str = ""
@@ -209,7 +209,7 @@ class PostPostLocation:
 
 
 @dataclass
-class PostPostDevice:
+class Device:
     """Contains information about the device that is used to post the image. This defaults to the same info used in
     the DeviceProfile of the ApiClient class."""
     manufacturer: str
@@ -222,7 +222,7 @@ class PostPostDevice:
 
 
 @dataclass
-class PostPostEdits:
+class Edits:
     """Contains information about how the image was edited (zooming and positioning). Defaults to no edits."""
     crop_original_size: List[int]
     crop_center: List[float] = field(default_factory=lambda: [0.0, 0.0])
@@ -233,7 +233,7 @@ class PostPostEdits:
 
 
 @dataclass
-class PostPostExtra:
+class Extra:
     """Contains information about the image uploaded. Defaults to the actual size of the image."""
     source_width: int
     source_height: int
@@ -243,7 +243,7 @@ class PostPostExtra:
 
 
 @dataclass
-class PostPost(_PostBase):
+class Post(_Base):
     """Contains all information about a post, that is necessary to upload it to Instagram."""
     scene_capture_type: str = ''
     timezone_offset: str = field(default_factory=lambda: str(time.localtime().tm_gmtoff))
@@ -255,9 +255,9 @@ class PostPost(_PostBase):
     upload_id: str = field(default_factory=lambda: str(time.time()))
     location: Optional[str] = None
     suggested_venue_position: int = -1
-    device: PostPostDevice = None
-    edits: PostPostEdits = None
-    extra: PostPostExtra = None
+    device: Device = None
+    edits: Edits = None
+    extra: Extra = None
     is_suggested_venue: bool = False
     entity_name: str = None
     entity_length: int = None
@@ -267,8 +267,8 @@ class PostPost(_PostBase):
 
     @classmethod
     def create(cls, path: Union[str, Path], source_type: WhereToPost, caption: str,
-               location: Optional[PostPostLocation] = None, edits: Optional[PostPostEdits] = None,
-               extra: Optional[PostPostExtra] = None, **kwargs) -> "PostPost":
+               location: Optional[Location] = None, edits: Optional[Edits] = None,
+               extra: Optional[Extra] = None, **kwargs) -> "Post":
         """Instantiates a instance of the class.
         Parameters
         ----------
@@ -285,7 +285,7 @@ class PostPost(_PostBase):
         extra
         Returns
         -------
-        PostPost
+        Post
             The newly instantiated class instance.
         """
         source_type = str(source_type)
@@ -294,13 +294,13 @@ class PostPost(_PostBase):
             entity_length = f.tell()
 
         if edits is not None and extra is None:
-            extra = PostPostExtra(edits.crop_original_size[0], edits.crop_original_size[1])
+            extra = Extra(edits.crop_original_size[0], edits.crop_original_size[1])
         elif extra is not None and edits is None:
-            edits = PostPostEdits([extra.source_width, extra.source_height])
+            edits = Edits([extra.source_width, extra.source_height])
         elif extra is None and edits is None:
             size = imagesize.get(path)
-            edits = PostPostEdits(size)
-            extra = PostPostExtra(*size)
+            edits = Edits(size)
+            extra = Extra(*size)
 
         image_type = get_image_type(path)
 
@@ -331,7 +331,7 @@ class PostPost(_PostBase):
 
 
 @dataclass
-class PostRetrieveByUser:
+class RetrieveByUser:
     user_id: str = None
     max_id: str = None
     exclude_comment: str = 'true'
@@ -339,7 +339,7 @@ class PostRetrieveByUser:
     page = 0
 
     @classmethod
-    def create(cls, user_id: str, **kwargs) -> "PostRetrieveByUser":
+    def create(cls, user_id: str, **kwargs) -> "RetrieveByUser":
         """
         Parameters
         ----------

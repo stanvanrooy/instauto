@@ -12,12 +12,12 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    s = se.SearchUsername.create('instagram', 1)
+    s = se.Username.create('instagram', 1)
     resp = client.search_username(s).json()
     user = resp['users'][0]
     user_id = user['pk']
 
-    r = ps.PostRetrieveByUser.create(user_id)
+    r = ps.RetrieveByUser.create(user_id)
 
     obj, result = client.post_retrieve_by_user(r)
     retrieved_items = []

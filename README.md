@@ -31,7 +31,7 @@ from instauto import friendships as fs
 client = ApiClient(user_name="yourusername", password="yourpassword")
 client.login()
 
-f = fs.ShowFriendshipFollowers.create(user_id="2283025667")
+f = fs.ShowFollowers.create(user_id="2283025667")
 obj, result = client.get_followers(f)  # grabs first page
 while result:  # paginates until all followers are extracted
     parsed = result.json()

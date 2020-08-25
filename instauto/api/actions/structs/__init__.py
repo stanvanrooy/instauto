@@ -1,5 +1,5 @@
-from .post import PostLike, PostUnlike, PostSave, PostPost, PostComment, PostUpdateCaption
-from .friendships import ShowFriendshipFollowing, ShowFriendshipFollowers, ShowFriendship, RemoveFriendship, \
-    DestroyFriendship, CreateFriendship
-from .profile import ProfileSetGender, ProfileSetBiography, ProfileUpdate
-from .search import SearchUsername
+from .post import Like, Unlike, Save, Post, Comment, UpdateCaption
+from .friendships import ShowFollowing, ShowFollowers, Show, Remove, \
+    Destroy, Create
+from .profile import SetGender, SetBiography, Update
+from .search import Username

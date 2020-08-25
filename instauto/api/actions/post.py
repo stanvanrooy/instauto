@@ -6,7 +6,7 @@ from typing import Callable, Union
 from dataclasses import asdict
 
 from ..structs import Method, State, DeviceProfile, IGProfile
-from .structs.post import PostPost, PostComment, PostUpdateCaption, PostSave, PostLike, PostUnlike, PostPostDevice, PostRetrieveByUser
+from .structs.post import Post, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser
 
 from .helpers import build_default_rupload_params
 
@@ -24,7 +24,7 @@ class PostMixin:
     breadcrumb_private_key: bytes
     bc_hmac: hmac.HMAC
 
-    def _post_act(self, obj: Union[PostSave, PostPost, PostComment, PostUpdateCaption, PostLike, PostUnlike]):
+    def _post_act(self, obj: Union[Save, Post, Comment, UpdateCaption, Like, Unlike]):
         """Peforms the actual action and calls the Instagram API with the data provided."""
         obj._csrftoken = self._session.cookies['csrftoken']
         obj._uid = self.state.user_id
@@ -35,31 +35,31 @@ class PostMixin:
         endpoint = f'media/{obj.media_id}/{obj.action}/'
         return self._request(endpoint, Method.POST, data=obj.__dict__, signed=True)
 
-    def post_like(self, obj: PostLike) -> Response:
+    def post_like(self, obj: Like) -> Response:
         """Likes a post"""
         return self._post_act(obj)
 
-    def post_unlike(self, obj: PostUnlike) -> Response:
+    def post_unlike(self, obj: Unlike) -> Response:
         """Unlikes a post"""
         return self._post_act(obj)
 
-    def post_save(self, obj: PostSave) -> Response:
+    def post_save(self, obj: Save) -> Response:
         """Saves a post to your Instagram account"""
         return self._post_act(obj)
 
-    def post_comment(self, obj: PostComment) -> Response:
+    def post_comment(self, obj: Comment) -> Response:
         """Comments on a post"""
         return self._post_act(obj)
 
-    def post_update_caption(self, obj: PostUpdateCaption) -> Response:
+    def post_update_caption(self, obj: UpdateCaption) -> Response:
         """Updates the caption of a post"""
         return self._post_act(obj)
 
-    def post_post(self, obj: PostPost, quality: int = None) -> Response:
+    def post_post(self, obj: Post, quality: int = None) -> Response:
         """Uploads a new picture/video to your Instagram account.
         Parameters
         ----------
-        obj : PostPost
+        obj : Post
             Should be instantiated with all the required params
         quality : int
             Quality of the image, defaults to 70.
@@ -78,8 +78,8 @@ class PostMixin:
         obj._uuid = self.state.uuid
         obj.device_id = self.state.device_id
         if obj.device is None:
-            d = PostPostDevice(self.device_profile.manufacturer, self.device_profile.model,
-                               int(self.device_profile.android_sdk_version), self.device_profile.android_release)
+            d = Device(self.device_profile.manufacturer, self.device_profile.model,
+                       int(self.device_profile.android_sdk_version), self.device_profile.android_release)
             obj.device = d
 
         as_dict = asdict(obj)
@@ -112,7 +112,7 @@ class PostMixin:
         }
         return self._request('media/configure/', Method.POST, data=as_dict, headers=headers, signed=True)
 
-    def post_retrieve_by_user(self, obj: PostRetrieveByUser) -> (PostRetrieveByUser, Union[dict, bool]):
+    def post_retrieve_by_user(self, obj: RetrieveByUser) -> (RetrieveByUser, Union[dict, bool]):
         """Retrieves 12 posts of the user at a time. If there was a response / if there were any more posts
         available, the response can be found in original_requests/post.json:4
 

@@ -11,5 +11,5 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    f = fs.DestroyFriendship.create(user_id="6889845893")
+    f = fs.Destroy.create(user_id="6889845893")
     client.unfollow_user(f)

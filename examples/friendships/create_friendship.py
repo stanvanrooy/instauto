@@ -12,4 +12,4 @@ if __name__ == '__main__':
         client.save_to_disk('./.instauto.save')
 
     f = fs.Create.create(user_id="6889845893")
-    client.follow_user(f)
+    client.user_follow(f)

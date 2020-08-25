@@ -32,12 +32,12 @@ client = ApiClient(user_name="yourusername", password="yourpassword")
 client.login()
 
 f = fs.ShowFollowers.create(user_id="2283025667")
-obj, result = client.get_followers(f)  # grabs first page
+obj, result = client.followers_get(f)  # grabs first page
 while result:  # paginates until all followers are extracted
     parsed = result.json()
     print(f"Extracted {len(parsed['users'])} followers")
     print(f"The username of the first extracted follower is {parsed['users'][0]['username']}")
-    obj, result = client.get_followers(obj)
+    obj, result = client.followers_get(obj)
     sleep(random.randint(10, 60))
 ```
 A few other examples of how to use the package, can be found in the examples directory.

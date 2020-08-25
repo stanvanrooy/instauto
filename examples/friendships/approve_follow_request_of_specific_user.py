@@ -17,4 +17,4 @@ if __name__ == '__main__':
     user_id = resp['users'][0]['pk']
 
     a = fs.ApproveRequest.create(user_id)
-    resp = client.approve_follow_request(a)
+    resp = client.follow_request_approve(a)

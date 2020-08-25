@@ -12,5 +12,5 @@ if __name__ == '__main__':
         client.save_to_disk('./.instauto.save')
 
     f = fs.Show.create(user_id="38720650610")
-    resp = client.show_follower(f)
+    resp = client.follower_show(f)
     print("status: ", resp.json())

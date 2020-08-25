@@ -15,10 +15,10 @@ if __name__ == '__main__':
         client.save_to_disk('./.instauto.save')
 
     f = fs.ShowFollowing.create(user_id="2283025667")
-    obj, result = client.get_following(f)  # grabs the first page
+    obj, result = client.following_get(f)  # grabs the first page
     while result:  # paginate until all users are extracted
         parsed = result.json()
         print(f"Extracted {len(parsed['users'])} users following")
         print(f"The username of the first extracted user following is {parsed['users'][0]['username']}")
-        obj, result = client.get_following(obj)
+        obj, result = client.following_get(obj)
         sleep(random.randint(10, 60))

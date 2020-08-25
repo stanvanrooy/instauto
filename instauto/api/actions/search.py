@@ -1,13 +1,13 @@
 from requests import Response
 from typing import Union, Callable
-from .structs.search import SearchUsername
+from .structs.search import Username
 from ..structs import Method
 
 
 class SearchMixin:
     _request: Callable
 
-    def search_username(self, obj: SearchUsername) -> Response:
+    def search_username(self, obj: Username) -> Response:
         """
         Returns
         -------

@@ -11,7 +11,7 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    p = pr.ProfileSetBiography.create(
+    p = pr.SetBiography.create(
         biography="Does it work? Of course it works!"
     )
     client.profile_set_biography(p)

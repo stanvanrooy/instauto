@@ -12,9 +12,9 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    s = se.SearchUsername.create("stan058_", 1)
+    s = se.Username.create("stan058_", 1)
     resp = client.search_username(s).json()
     user_id = resp['users'][0]['pk']
 
-    a = fs.ApproveFollowRequest.create(user_id)
+    a = fs.ApproveRequest.create(user_id)
     resp = client.approve_follow_request(a)

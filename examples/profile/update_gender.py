@@ -19,7 +19,7 @@ if __name__ == '__main__':
     # )
 
     # FOR MALE / FEMALE / PREFER NOT TO SAY
-    p = pr.ProfileSetGender.create(
+    p = pr.SetGender.create(
         gender=st.WhichGender.male,
     )
 

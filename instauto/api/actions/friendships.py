@@ -1,7 +1,7 @@
 from requests import Session, Response
 from typing import Union, Callable, Tuple, List
-from .structs.friendships import CreateFriendship, DestroyFriendship, RemoveFriendship, ShowFriendship, \
-    ShowFriendshipFollowers, ShowFriendshipFollowing, PendingFollowRequests, ApproveFollowRequest
+from .structs.friendships import Create, Destroy, Remove, Show, \
+    ShowFollowers, ShowFollowing, PendingRequests, ApproveRequest
 from ..structs import State, Method
 
 
@@ -10,7 +10,7 @@ class FriendshipsMixin:
     state: State
     _request: Callable
 
-    def _friendships_act(self, obj: Union[CreateFriendship, DestroyFriendship, RemoveFriendship]) -> Response:
+    def _friendships_act(self, obj: Union[Create, Destroy, Remove]) -> Response:
         obj._csrftoken = self._session.cookies['csrftoken']
         obj.device_id = self.state.device_id
         obj._uid = self.state.user_id
@@ -20,29 +20,29 @@ class FriendshipsMixin:
 
         return self._request(f'friendships/{obj.endpoint}/{obj.user_id}/', Method.POST, data=as_d, signed=True)
 
-    def follow_user(self, obj: CreateFriendship) -> Response:
+    def follow_user(self, obj: Create) -> Response:
         """Follow a user"""
         return self._friendships_act(obj)
 
-    def unfollow_user(self, obj: DestroyFriendship) -> Response:
+    def unfollow_user(self, obj: Destroy) -> Response:
         """Unfollow a user"""
         return self._friendships_act(obj)
 
-    def remove_follower(self, obj: RemoveFriendship) -> Response:
+    def remove_follower(self, obj: Remove) -> Response:
         """Remove someone from your followers list, that is currently following you"""
         return self._friendships_act(obj)
 
-    def show_follower(self, obj: ShowFriendship) -> Response:
+    def show_follower(self, obj: Show) -> Response:
         """Retrieve information about a user"""
         # doesn't use _friendship_act, because it is a GET request.
         return self._request(f"friendships/{obj.endpoint}/{obj.user_id}/", Method.GET)
     
-    def get_followers(self, obj: ShowFriendshipFollowers) -> Tuple[ShowFriendshipFollowers, Union[Response, bool]]:
+    def get_followers(self, obj: ShowFollowers) -> Tuple[ShowFollowers, Union[Response, bool]]:
         """Retrieves the followers of an Instagram user. Examples of how to use can be found in
         examples/friendships/get_followers.py.
         Returns
         ---------
-        ShowFriendshipFollowers
+        ShowFollowers
             The object that was passed in as an argument, but with updated max_id and page attributes. DO NOT CHANGE
             THOSE ATTRIBUTES.
         Response || bool
@@ -91,12 +91,12 @@ class FriendshipsMixin:
         obj.page += 1
         return obj, resp
 
-    def get_following(self, obj: ShowFriendshipFollowing) -> Tuple[ShowFriendshipFollowing, Union[Response, bool]]:
+    def get_following(self, obj: ShowFollowing) -> Tuple[ShowFollowing, Union[Response, bool]]:
         """Retrieves the following of an Instagram user. Examples of how to use can be found in
         examples/friendships/get_following.py.
         Returns
         ---------
-        ShowFriendshipFollowers
+        ShowFollowers
             The object that was passed in as an argument, but with updated max_id and page attributes. DO NOT CHANGE
             THOSE ATTRIBUTES.
         Response || bool
@@ -143,7 +143,7 @@ class FriendshipsMixin:
         obj.page += 1
         return obj, resp
 
-    def get_follow_requests(self, obj: PendingFollowRequests) -> List[dict]:
+    def get_follow_requests(self, obj: PendingRequests) -> List[dict]:
         """
         Returns
         -------
@@ -167,7 +167,7 @@ class FriendshipsMixin:
         parsed = resp.json()
         return parsed['users']
 
-    def approve_follow_request(self, obj: ApproveFollowRequest) -> Response:
+    def approve_follow_request(self, obj: ApproveRequest) -> Response:
         obj._csrftoken = self._session.cookies.get('csrftoken', domain='instagram.com')
         obj._uid = self.state.user_id
         obj._uuid = self.state.uuid

@@ -1,7 +1,7 @@
 import time
 
 
-class SearchUsername:
+class Username:
     timezone_offset: int
     q: str
     count: int

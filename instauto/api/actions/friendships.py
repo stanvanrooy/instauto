@@ -10,34 +10,24 @@ class FriendshipsMixin:
     state: State
     _request: Callable
 
-    def _friendships_act(self, obj: Union[Create, Destroy, Remove]) -> Response:
-        obj._csrftoken = self._session.cookies['csrftoken']
-        obj.device_id = self.state.device_id
-        obj._uid = self.state.user_id
-        obj._uuid = self.state.uuid
-        as_d = obj.__dict__
-        as_d['radio_type'] = obj.radio_type  # why does this get removed, even though it has a default value?
-
-        return self._request(f'friendships/{obj.endpoint}/{obj.user_id}/', Method.POST, data=as_d, signed=True)
-
-    def follow_user(self, obj: Create) -> Response:
+    def user_follow(self, obj: Create) -> Response:
         """Follow a user"""
         return self._friendships_act(obj)
 
-    def unfollow_user(self, obj: Destroy) -> Response:
+    def user_unfollow(self, obj: Destroy) -> Response:
         """Unfollow a user"""
         return self._friendships_act(obj)
 
-    def remove_follower(self, obj: Remove) -> Response:
+    def follower_remove(self, obj: Remove) -> Response:
         """Remove someone from your followers list, that is currently following you"""
         return self._friendships_act(obj)
 
-    def show_follower(self, obj: Show) -> Response:
+    def follower_show(self, obj: Show) -> Response:
         """Retrieve information about a user"""
         # doesn't use _friendship_act, because it is a GET request.
         return self._request(f"friendships/{obj.endpoint}/{obj.user_id}/", Method.GET)
     
-    def get_followers(self, obj: ShowFollowers) -> Tuple[ShowFollowers, Union[Response, bool]]:
+    def followers_get(self, obj: ShowFollowers) -> Tuple[ShowFollowers, Union[Response, bool]]:
         """Retrieves the followers of an Instagram user. Examples of how to use can be found in
         examples/friendships/get_followers.py.
         Returns
@@ -91,7 +81,7 @@ class FriendshipsMixin:
         obj.page += 1
         return obj, resp
 
-    def get_following(self, obj: ShowFollowing) -> Tuple[ShowFollowing, Union[Response, bool]]:
+    def following_get(self, obj: ShowFollowing) -> Tuple[ShowFollowing, Union[Response, bool]]:
         """Retrieves the following of an Instagram user. Examples of how to use can be found in
         examples/friendships/get_following.py.
         Returns
@@ -143,7 +133,7 @@ class FriendshipsMixin:
         obj.page += 1
         return obj, resp
 
-    def get_follow_requests(self, obj: PendingRequests) -> List[dict]:
+    def follow_requests_get(self, obj: PendingRequests) -> List[dict]:
         """
         Returns
         -------
@@ -167,8 +157,18 @@ class FriendshipsMixin:
         parsed = resp.json()
         return parsed['users']
 
-    def approve_follow_request(self, obj: ApproveRequest) -> Response:
+    def follow_request_approve(self, obj: ApproveRequest) -> Response:
         obj._csrftoken = self._session.cookies.get('csrftoken', domain='instagram.com')
         obj._uid = self.state.user_id
         obj._uuid = self.state.uuid
         return self._request(f'friendships/approve/{obj.user_id}/', Method.POST, data=obj.__dict__)
+
+    def _friendships_act(self, obj: Union[Create, Destroy, Remove]) -> Response:
+        obj._csrftoken = self._session.cookies['csrftoken']
+        obj.device_id = self.state.device_id
+        obj._uid = self.state.user_id
+        obj._uuid = self.state.uuid
+        as_d = obj.__dict__
+        as_d['radio_type'] = obj.radio_type  # why does this get removed, even though it has a default value?
+
+        return self._request(f'friendships/{obj.endpoint}/{obj.user_id}/', Method.POST, data=as_d, signed=True)

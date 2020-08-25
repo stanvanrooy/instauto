@@ -12,8 +12,8 @@ if __name__ == '__main__':
         client.save_to_disk('./.instauto.save')
 
     p = fs.PendingRequests()
-    users = client.get_follow_requests(p)
+    users = client.follow_requests_get(p)
 
     for user in users:  # approves all requests
         a = fs.ApproveRequest.create(str(user['pk']))
-        resp = client.approve_follow_request(a)
+        resp = client.follow_request_approve(a)

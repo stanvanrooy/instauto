@@ -35,10 +35,9 @@ f = fs.ShowFollowers.create(user_id="2283025667")
 obj, result = client.followers_get(f)  # grabs first page
 while result:  # paginates until all followers are extracted
     parsed = result.json()
-    print(f"Extracted {len(parsed['users'])} followers")
-    print(f"The username of the first extracted follower is {parsed['users'][0]['username']}")
     obj, result = client.followers_get(obj)
     sleep(random.randint(10, 60))
+print(f"Congrats! You have {len(parsed)} followers. You're very popular!)
 ```
 A few other examples of how to use the package, can be found in the examples directory.
 

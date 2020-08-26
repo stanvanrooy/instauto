@@ -1,0 +1,22 @@
+[
+   {
+      "method":"post",
+      "endpoint":"accounts/set_biography",
+      "response":{
+         "user":{
+            "pk":2097017052,
+            "biography":"Stan",
+            "biography_with_entities":{
+               "raw_text":"Stan",
+               "entities":[
+
+               ]
+            },
+            "biography_product_mentions":[
+
+            ]
+         },
+         "status":"ok"
+      }
+   }
+]

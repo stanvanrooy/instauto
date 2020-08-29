@@ -37,7 +37,7 @@ while result:  # paginates until all followers are extracted
     parsed = result.json()
     obj, result = client.followers_get(obj)
     sleep(random.randint(10, 60))
-print(f"Congrats! You have {len(parsed)} followers. You're very popular!)
+print(f"Congrats! You have {len(parsed)} followers. You're very popular!")
 ```
 A few other examples of how to use the package, can be found in the examples directory.
 

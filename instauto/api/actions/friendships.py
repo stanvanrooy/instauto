@@ -1,7 +1,7 @@
 from requests import Session, Response
 from typing import Union, Callable, Tuple, List
 from .structs.friendships import Create, Destroy, Remove, Show, \
-    ShowFollowers, ShowFollowing, PendingRequests, ApproveRequest
+    GetFollowers, GetFollowing, PendingRequests, ApproveRequest
 from ..structs import State, Method
 
 
@@ -27,12 +27,12 @@ class FriendshipsMixin:
         # doesn't use _friendship_act, because it is a GET request.
         return self._request(f"friendships/{obj.endpoint}/{obj.user_id}/", Method.GET)
     
-    def followers_get(self, obj: ShowFollowers) -> Tuple[ShowFollowers, Union[Response, bool]]:
+    def followers_get(self, obj: GetFollowers) -> Tuple[GetFollowers, Union[Response, bool]]:
         """Retrieves the followers of an Instagram user. Examples of how to use can be found in
         examples/friendships/get_followers.py.
         Returns
         ---------
-        ShowFollowers
+        GetFollowers
             The object that was passed in as an argument, but with updated max_id and page attributes. DO NOT CHANGE
             THOSE ATTRIBUTES.
         Response || bool
@@ -81,12 +81,12 @@ class FriendshipsMixin:
         obj.page += 1
         return obj, resp
 
-    def following_get(self, obj: ShowFollowing) -> Tuple[ShowFollowing, Union[Response, bool]]:
+    def following_get(self, obj: GetFollowing) -> Tuple[GetFollowing, Union[Response, bool]]:
         """Retrieves the following of an Instagram user. Examples of how to use can be found in
         examples/friendships/get_following.py.
         Returns
         ---------
-        ShowFollowers
+        GetFollowers
             The object that was passed in as an argument, but with updated max_id and page attributes. DO NOT CHANGE
             THOSE ATTRIBUTES.
         Response || bool

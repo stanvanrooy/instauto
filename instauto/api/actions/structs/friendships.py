@@ -99,7 +99,7 @@ class Show:
         return i
 
 
-class ShowFollowers:
+class GetFollowers:
     user_id: str = None
     page: int = 0
     max_id: str = None
@@ -107,14 +107,14 @@ class ShowFollowers:
     search_surface: str = 'follow_list_page'
 
     @classmethod
-    def create(cls, user_id: str) -> "ShowFollowers":
+    def create(cls, user_id: str) -> "GetFollowers":
         i = cls()
         i.user_id = user_id
         i.rank_token = uuid.uuid4()
         return i
 
 
-class ShowFollowing:
+class GetFollowing:
     user_id: str = None
     page: int = 0
     max_id: str = None
@@ -122,7 +122,7 @@ class ShowFollowing:
     search_surface: str = 'follow_list_page'
 
     @classmethod
-    def create(cls, user_id: str) -> "ShowFollowing":
+    def create(cls, user_id: str) -> "GetFollowing":
         i = cls()
         i.user_id = user_id
         i.rank_token = uuid.uuid4()

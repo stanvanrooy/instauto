@@ -132,3 +132,4 @@ dmypy.json
 *.save
 main.py
 .env
+black_square.jpg

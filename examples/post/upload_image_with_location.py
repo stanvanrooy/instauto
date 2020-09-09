@@ -12,7 +12,10 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    location = ps.Location(lat="68.14259", lng="148.84371")
+    # Any of the below examples will work.
+    # location = ps.Location(lat=38.897699584711, lng=-77.036494857373)
+    # location = ps.Location(name="The white house")
+    location = ps.Location(lat=68.14259, lng=148.84371, name="The white house")
     post = ps.Post.create(
         path='./black_square.jpg',
         source_type=st.WhereToPost.Feed,

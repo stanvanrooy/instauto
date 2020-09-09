@@ -198,8 +198,8 @@ class Location:
     """Contains all information about the location. This can be used to set the location tag for an Instagram post."""
     name: str = ""
     address: str = ""
-    lat: str = ""
-    lng: str = ""
+    lat: float = None
+    lng: float = None
     external_source: str = ""
     facebook_places: str = ""
     facebook_places_id: str = ""
@@ -243,7 +243,7 @@ class Extra:
 
 
 @dataclass
-class Post(_Base):
+class Post:
     """Contains all information about a post, that is necessary to upload it to Instagram."""
     scene_capture_type: str = ''
     timezone_offset: str = field(default_factory=lambda: str(time.localtime().tm_gmtoff))
@@ -253,7 +253,7 @@ class Post(_Base):
     caption: str = None
     x_fb_waterfall_id: str = field(default_factory=lambda: str(uuid.uuid4()))
     upload_id: str = field(default_factory=lambda: str(time.time()))
-    location: Optional[str] = None
+    location: Location = None
     suggested_venue_position: int = -1
     device: Device = None
     edits: Edits = None
@@ -264,6 +264,9 @@ class Post(_Base):
     entity_type: str = None
     image_path: str = None
     multi_sharing: str = "-1"
+    _uid: str = None
+    _uuid: str = None
+    _csrftoken: str = None
 
     @classmethod
     def create(cls, path: Union[str, Path], source_type: WhereToPost, caption: str,
@@ -288,7 +291,7 @@ class Post(_Base):
         Post
             The newly instantiated class instance.
         """
-        source_type = str(source_type)
+        source_type = str(source_type.value)
         with open(path, 'rb') as f:
             f.seek(0, 2)
             entity_length = f.tell()
@@ -304,11 +307,7 @@ class Post(_Base):
 
         image_type = get_image_type(path)
 
-        if location:
-            instance = cls(location=json.dumps(location), source_type=source_type, caption=caption,
-                           edits=edits, extra=extra)
-        else:
-            instance = cls(source_type=source_type, caption=caption, edits=edits, extra=extra)
+        instance = cls(location=location, source_type=source_type, caption=caption, edits=edits, extra=extra)
 
         entity_name = f'{instance.upload_id}_0_{random.randint(1000000000, 9999999999)}'
         instance.entity_length = entity_length

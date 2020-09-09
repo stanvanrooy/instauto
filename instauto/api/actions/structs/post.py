@@ -4,7 +4,6 @@ import time
 import imagesize
 import logging
 import pprint
-import json
 
 from pathlib import Path
 from dataclasses import dataclass, field
@@ -360,3 +359,14 @@ class RetrieveByUser:
 
     def __repr__(self):
         return pprint.pformat(self.__dict__)
+
+
+@dataclass
+class RetrieveByShortId:
+    url: str = ""
+
+    @classmethod
+    def create(cls, short_id: str) -> "RetrieveByShortId":
+        i = cls()
+        i.url = f"https://instagram.com/p/{short_id}"
+        return i

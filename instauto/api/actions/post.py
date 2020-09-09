@@ -7,6 +7,7 @@ from dataclasses import asdict
 
 from ..structs import Method, State, DeviceProfile, IGProfile
 from .structs.post import Post, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, Location
+from .structs import post as ps
 from ..exceptions import BadResponse
 
 from .helpers import build_default_rupload_params
@@ -166,3 +167,7 @@ class PostMixin:
         obj.max_id = resp_as_json.get('next_max_id')
         obj.page += 1
         return obj, resp_as_json['items']
+
+    def post_retrieve_by_short_id(self, obj: ps.RetrieveByShortId) -> Response:
+        resp = self._request("oembed/", Method.GET, query=obj.__dict__)
+        return resp

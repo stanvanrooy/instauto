@@ -26,3 +26,8 @@ class InvalidUserId(Exception):
 class CorruptedSaveData(Exception):
     """Raised when the save data can't be read"""
     pass
+
+
+class BadResponse(Exception):
+    """Raised when Instagram returns a non-ok status code."""
+    pass

@@ -6,7 +6,8 @@ from typing import Callable, Union
 from dataclasses import asdict
 
 from ..structs import Method, State, DeviceProfile, IGProfile
-from .structs.post import Post, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser
+from .structs.post import Post, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, Location
+from ..exceptions import BadResponse
 
 from .helpers import build_default_rupload_params
 
@@ -55,6 +56,29 @@ class PostMixin:
         """Updates the caption of a post"""
         return self._post_act(obj)
 
+    def _request_fb_places_id(self, obj: Location) -> str:
+        if obj.lat is None or obj.lng is None:
+            if obj.name is None:
+                raise ValueError("Atleast a lat/lng combination or name needs to be specified.")
+            resp = self._request("location_search", Method.GET, query={
+                "search_query": obj.name,
+                "rankToken": self._gen_uuid()
+            })
+        else:
+            query = {
+                "latitude": obj.lat,
+                "longitude": obj.lng,
+            }
+            if obj.name:
+                query['search_query'] = obj.name
+            resp = self._request("location_search", Method.GET, query=query)
+
+        as_json = resp.json()
+        if as_json['status'] != 'ok':
+            raise BadResponse
+
+        return str(as_json['venues'][0]['external_id'])
+
     def post_post(self, obj: Post, quality: int = None) -> Response:
         """Uploads a new picture/video to your Instagram account.
         Parameters
@@ -101,6 +125,12 @@ class PostMixin:
         }
 
         path = as_dict.pop('image_path')
+        if obj.location is not None:
+            if not obj.location.facebook_places_id:
+                obj.location.facebook_places_id = self._request_fb_places_id(obj.location)
+            as_dict['location'] = json.dumps(obj.location.__dict__)
+        else:
+            as_dict.pop('location')
 
         # upload the image to Instagram
         with open(path, 'rb') as f:

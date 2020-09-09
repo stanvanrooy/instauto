@@ -133,7 +133,7 @@ class Comment(_Base):
     idempotence_token: str = field(default_factory=lambda: str(uuid.uuid4()))  # random uuid
     comment_text: str = None
     user_breadcrumb: str = None
-    action = 'save'
+    action = 'comment'
 
     @classmethod
     def create(cls, media_id: str, comment_text: str, **kwargs) -> "Comment":

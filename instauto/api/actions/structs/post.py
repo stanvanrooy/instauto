@@ -161,6 +161,17 @@ class Comment(_Base):
 
 
 @dataclass
+class RetrieveByMediaId:
+    media_id: str = ""
+    action: str = "info"
+
+    @classmethod
+    def create(cls, media_id: str):
+        i = cls()
+        i.media_id = media_id
+        return i
+
+@dataclass
 class UpdateCaption(_Base):
     caption_text: str = None
     usertags: str = None

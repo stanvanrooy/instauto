@@ -57,6 +57,10 @@ class PostMixin:
         """Updates the caption of a post"""
         return self._post_act(obj)
 
+    def post_retrieve_by_media_id(self, obj: ps.RetrieveByMediaId) -> Response:
+        """Retrieve information about a post"""
+        return self._request(f"media/{obj.media_id}/{obj.action}", Method.GET)
+
     def _request_fb_places_id(self, obj: Location) -> str:
         if obj.lat is None or obj.lng is None:
             if obj.name is None:

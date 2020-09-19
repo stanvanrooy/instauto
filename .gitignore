@@ -133,3 +133,4 @@ dmypy.json
 main.py
 .env
 black_square.jpg
+setup.sh

@@ -1,5 +1,5 @@
 from requests import Session, Response
-from typing import Callable, Union
+from typing import Callable, Union, Dict
 
 from ..structs import IGProfile, State, DeviceProfile, Method
 from .structs.profile import SetGender, SetBiography, Update, Info
@@ -54,7 +54,7 @@ class ProfileMixin:
         """Updates the name, username, email, phone number and url for the currently logged in user."""
         self._profile_act(obj)
 
-    def profile_info(self, obj: Info) -> Response:
+    def profile_info(self, obj: Info) -> Union[Dict, int]:
         if obj.user_id is None:
             obj.user_id = self.state.user_id
         data = self._request(f'users/{obj.user_id}/info/', Method.GET).json()

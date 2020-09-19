@@ -29,7 +29,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        echo ""
+        pytest
       env:
         INSTAUTO_TESTS_USERNAME: test_usernme
         INSTAUTO_TESTS_PASSWORD: test_password

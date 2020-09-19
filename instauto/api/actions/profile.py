@@ -59,5 +59,5 @@ class ProfileMixin:
             obj.user_id = self.state.user_id
         data = self._request(f'users/{obj.user_id}/info/', Method.GET).json()
         if data['status'] == 'ok':
-            return data['users']
+            return data['user']
         return data['status']

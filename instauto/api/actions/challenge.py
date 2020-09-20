@@ -46,6 +46,8 @@ class ChallengeMixin:
                     "bloks_versioning_id": self.state.bloks_version_id
                 }
             )
+            with open('./response1.pickle', 'wb+') as f:
+                pickle.dump(resp, f)
             resp_data = resp.json()
             if resp_data['status'] == "ok":
                 return True

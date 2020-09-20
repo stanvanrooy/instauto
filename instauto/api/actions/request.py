@@ -204,7 +204,7 @@ class RequestMixIn:
         for func in self._request_finished_callbacks:
             func(resp.headers)
 
-        print(
+        logger.debug(
             f'{"*" * 20} START REQUEST {"*" * 20}\n'
             f'METHOD: {resp.request.method}\n'
             f'URL: {url}\n'

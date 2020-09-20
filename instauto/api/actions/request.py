@@ -5,10 +5,11 @@ import urllib.parse
 import logging
 
 from typing import Dict, Callable
+from instauto.api.actions.stubs import _request
 
 from instauto.api.structs import DeviceProfile, IGProfile, State, Method
 from instauto.api.constants import API_BASE_URL
-from instauto.api.exceptions import WrongMethodException, IncorrectLoginDetails, InvalidUserId
+from instauto.api.exceptions import WrongMethodException, IncorrectLoginDetails, InvalidUserId, BadResponse
 
 logger = logging.getLogger(__name__)
 logging.captureWarnings(True)
@@ -199,11 +200,6 @@ class RequestMixIn:
             logger.exception(f"Exception while sending request to {url} with data: \n {data}")
             raise e
 
-        self._check_response_for_errors(resp)
-
-        for func in self._request_finished_callbacks:
-            func(resp.headers)
-
         logger.debug(
             f'{"*" * 20} START REQUEST {"*" * 20}\n'
             f'METHOD: {resp.request.method}\n'
@@ -213,9 +209,15 @@ class RequestMixIn:
             f'RESPONSE: {resp.content}\n'
             f'{"*" * 20} END REQUEST {"*" * 20}'
         )
+
+        self._check_response_for_errors(resp)
+
+        for func in self._request_finished_callbacks:
+            func(resp.headers)
+
         return resp
 
-    def _check_response_for_errors(self, resp):
+    def _check_response_for_errors(self, resp: requests.Response) -> None:
         try:
             parsed = resp.json()
         except json.JSONDecodeError:
@@ -224,7 +226,22 @@ class RequestMixIn:
                     raise InvalidUserId(f"url: {resp.url} is not recognized by Instagram")
 
                 logger.exception(f"response received: \n{resp.text}\nurl: {resp.url}\nstatus code: {resp.status_code}")
-                raise Exception("Received a non-200 response from Instagram")
+                raise BadResponse("Received a non-200 response from Instagram")
             return
-        if not resp.ok and parsed.get('description') == 'invalid password':
+        if resp.ok:
+            return
+
+        if parsed.get('description') == 'invalid password':
             raise IncorrectLoginDetails("Instagram does not recognize the provided login details")
+        if parsed.get('message') in ("checkpoint_required", "challenge_required"):
+            if not hasattr(self, '_handle_challenge'):
+                raise BadResponse("Challenge required. ChallengeMixin is not mixed in.")
+            eh = self._handle_challenge(resp)
+            if eh:
+                return
+        if parsed.get('message') == 'feedback_required':
+            # TODO: implement a handler for this error
+            raise BadResponse("Something unexpected happened. Please check the IG app.")
+        if parsed.get('message') == 'rate_limit_error':
+            raise TimeoutError("Calm down. Please try again in a few minutes.")
+        raise BadResponse("Received a non-200 response from Instagram")

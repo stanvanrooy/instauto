@@ -1,5 +1,6 @@
 from requests import Session, Response
 from typing import Union, Callable, Tuple, List
+from instauto.api.actions.stubs import _request
 from .structs.friendships import Create, Destroy, Remove, Show, \
     GetFollowers, GetFollowing, PendingRequests, ApproveRequest
 from ..structs import State, Method
@@ -8,7 +9,7 @@ from ..structs import State, Method
 class FriendshipsMixin:
     _session: Session
     state: State
-    _request: Callable
+    _request: _request
 
     def user_follow(self, obj: Create) -> Response:
         """Follow a user"""

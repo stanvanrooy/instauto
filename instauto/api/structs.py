@@ -13,8 +13,16 @@ from .constants import (DEFAULT_SIGNATURE_KEY, DEFAULT_HTTP_ENGINE, DEFAULT_IG_C
                         DEFAULT_AUTHORIZATION, DEFAULT_CONNECTION_TYPE, DEFAULT_APP_LOCALE, DEFAULT_DEVICE_LOCALE,
                         DEFAULT_ADS_OPT_OUT, DEFAULT_BLOKS_VERSION_ID, DEFAULT_BLOKS_IS_LAYOUT_RTL)
 
+
 #: Struct that is used to specify which HTTP method to use
-Method = enum.Enum("Method", "GET POST")
+class Method(enum.Enum):
+    GET = 1
+    POST = 2
+
+
+class ChallengeChoice(enum.Enum):
+    phone = 0
+    email = 1
 
 
 class WhichGender(enum.Enum):

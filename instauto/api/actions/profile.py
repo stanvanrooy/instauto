@@ -1,5 +1,6 @@
 from requests import Session, Response
 from typing import Callable, Union, Dict
+from instauto.api.actions.stubs import _request
 
 from ..structs import IGProfile, State, DeviceProfile, Method
 from .structs.profile import SetGender, SetBiography, Update, Info
@@ -11,7 +12,7 @@ class ProfileMixin:
     ig_profile: IGProfile
     state: State
     device_profile: DeviceProfile
-    _request: Callable
+    _request: _request
     _gen_uuid: Callable
     _generate_user_breadcrumb: Callable
 

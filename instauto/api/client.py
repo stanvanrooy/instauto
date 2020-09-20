@@ -13,13 +13,16 @@ from .structs import IGProfile, DeviceProfile, State
 from .constants import (DEFAULT_IG_PROFILE, DEFAULT_DEVICE_PROFILE, DEFAULT_STATE)
 from .exceptions import StateExpired, NoAuthDetailsProvided, CorruptedSaveData
 
-from .actions import AuthenticationMixIn, PostMixin, RequestMixIn, ProfileMixin, FriendshipsMixin, SearchMixin
+from . import actions
 
 logger = logging.getLogger(__name__)
 logging.captureWarnings(True)
 
 
-class ApiClient(PostMixin, AuthenticationMixIn, RequestMixIn, ProfileMixin, FriendshipsMixin, SearchMixin):
+class ApiClient(
+    actions.PostMixin, actions.AuthenticationMixIn, actions.RequestMixIn, actions.ProfileMixin,
+    actions.FriendshipsMixin, actions.SearchMixin, actions.ChallengeMixin
+):
     """Class used to access all features, in an ideal situation this is the only class that needs to be imported (
     along with the structs)"""
     breadcrumb_private_key = "iN4$aGr0m".encode()

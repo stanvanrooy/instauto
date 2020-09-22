@@ -33,7 +33,7 @@ class Surface(enum.Enum):
 
 #: Struct that is used to specify where a post should be posted
 class WhereToPost(enum.Enum):
-    story = 3
+    Story = 3
     Feed = 4
 
 

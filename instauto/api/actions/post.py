@@ -129,8 +129,6 @@ class PostMixin:
             if not obj.location.facebook_places_id:
                 obj.location.facebook_places_id = self._request_fb_places_id(obj.location)
             as_dict['location'] = json.dumps(obj.location.__dict__)
-        else:
-            as_dict.pop('location')
 
         # upload the image to Instagram
         with open(path, 'rb') as f:

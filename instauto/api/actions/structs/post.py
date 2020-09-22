@@ -4,7 +4,6 @@ import time
 import imagesize
 import logging
 import pprint
-import json
 
 from pathlib import Path
 from dataclasses import dataclass, field

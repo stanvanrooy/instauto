@@ -31,3 +31,8 @@ class CorruptedSaveData(Exception):
 class BadResponse(Exception):
     """Raised when Instagram returns a non-ok status code."""
     pass
+
+
+class MissingValue(Exception):
+    """Raised when an action struct is initiated with a missing value"""
+    pass

@@ -1,10 +1,14 @@
+from . import common as cmmn
+
 import logging
 import uuid
+from typing import Optional
+from instauto.api.structs import Surface
 
 logger = logging.getLogger(__name__)
 
 
-class _Base:
+class _Base(cmmn.Base):
     _csrftoken: str = None
     radio_type: str = 'wifi-none'
     device_id: str = None
@@ -12,67 +16,45 @@ class _Base:
     _uuid: str = None
     user_id: str = None
 
-    def _create(self, **kwargs):
-        """Creates an instance of the class, this method should be overwritten in the individual classes with
-        arguments that are required, so it is clear which arguments are needed for which action.
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._enable_datapoint_from_client('_csrftoken')
+        self._enable_datapoint_from_client('device_id')
+        self._enable_datapoint_from_client('_uid')
+        self._enable_datapoint_from_client('_uuid')
 
-        If the class has an attribute, the default value can be overwritten by providing an argument named after the
-        attribute. This is probably not used often, since the default values should work for basically all cases,
-        but it is nice to have the option.
-        """
-        for k, v in kwargs.items():
-            if hasattr(self, k):
-                setattr(self, k, v)
-            else:
-                logger.warning("{} was sent as a keyword argument, but isn't supported.")
+        self._custom_data['uuid'] = self.State.required
+        self._custom_data['user_id'] = self.State.required
+        self._custom_data['endpoint'] = self.State.required
+        self._custom_data['surface'] = self.State.optional
 
 
 class Create(_Base):
-    """Follow an account"""
-    endpoint: str = 'create'
-
-    @classmethod
-    def create(cls, user_id: str, **kwargs) -> "Create":
-        i = cls()
-        i._create(user_id=user_id, **kwargs)
-        return i
+    def __init__(self, user_id: str, **kwargs):
+        """Use this to create a friendship, i.e. follow a user."""
+        super().__init__(**kwargs)
+        self._data['endpoint'] = 'create'
+        self._data['user_id'] = user_id
 
 
 class Destroy(_Base):
-    """Unfollow an account"""
-    surface: str = "following_sheet"
-    endpoint = 'destroy'
-
-    @classmethod
-    def create(cls, user_id: str, surface: str = None, **kwargs) -> "Destroy":
-        """
-        Parameters
-        ----------
-        user_id : str
-            id of the user to unfollow
-        surface : str
-            where in the app the user is unfollowed from, can be:
-                1. following_sheet = the profile of the user
-                2. self_unified_follow_lists = your following list
-        kwargs
-        """
-        i = cls()
-        i._create(user_id=user_id, surface=surface if surface is not None else "following_sheet", **kwargs)
-        return i
+    def __init__(self, user_id: str, surface: Optional[Surface] = None, **kwargs):
+        """Use this to 'destroy' a friendship, i.e. unfollow."""
+        super().__init__(**kwargs)
+        self._data['endpoint'] = 'destroy'
+        self._data['user_id'] = user_id
+        self._data['surface'] = surface
+        self._defaults['surface'] = surface.profile
 
 
 class Remove(_Base):
-    """Force an account to unfollow you."""
-    endpoint: str = 'remove_follower'
-
-    @classmethod
-    def create(cls, user_id: str, **kwargs) -> "Remove":
-        i = cls()
-        i._create(user_id=user_id, **kwargs)
-        return i
+    def __init__(self, user_id: str, **kwargs):
+        super().__init__(**kwargs)
+        self._data['endpoint'] = 'remove_follower'
+        self._data['user_id'] = user_id
 
 
-class Show:
+class Show(cmmn.Base):
     """Retrieves the following information for a friendship:
     {
       "blocking": False,
@@ -89,67 +71,50 @@ class Show:
       "status": "ok"
     }
     """
-    user_id: str
-    endpoint: str = 'show'
-
-    @classmethod
-    def create(cls, user_id: str) -> "Show":
-        i = cls()
-        i.user_id = user_id
-        return i
+    def __init__(self, user_id: str, **kwargs):
+        super().__init__(**kwargs)
+        self._custom_data['user_id'] = self.State.required
+        self._custom_data['endpoint'] = self.State.required
+        self._data['user_id'] = user_id
+        self._data['endpoint'] = cmmn.Base.State.required
 
 
-class GetFollowers:
-    user_id: str = None
-    page: int = 0
-    max_id: str = None
-    rank_token: str = None
-    search_surface: str = 'follow_list_page'
+class GetBase(cmmn.Base):
+    def __init__(self, user_id: str, surface: Optional[Surface] = None, **kwargs):
+        super().__init__(**kwargs)
+        self._custom_data['user_id'] = self.State.required
+        self._custom_data['rank_token'] = self.State.required
+        self._custom_data['search_surface'] = self.State.required
 
-    @classmethod
-    def create(cls, user_id: str) -> "GetFollowers":
-        i = cls()
-        i.user_id = user_id
-        i.rank_token = uuid.uuid4()
-        return i
+        self._data['user_id'] = user_id
+        self._data['search_surface'] = surface
+
+        self._defaults['search_surface'] = Surface.follow_list
+        self._defaults['rank_token'] = uuid.uuid4()
 
 
-class GetFollowing:
-    user_id: str = None
-    page: int = 0
-    max_id: str = None
-    rank_token: str = None
-    search_surface: str = 'follow_list_page'
-
-    @classmethod
-    def create(cls, user_id: str) -> "GetFollowing":
-        i = cls()
-        i.user_id = user_id
-        i.rank_token = uuid.uuid4()
-        return i
+# The requests for getting followers and your following, look exactly the same
+# but we want to keep them in seperate structs for clarity.
+GetFollowers = GetFollowing = GetBase
 
 
 class PendingRequests:
-    @classmethod
-    def create(cls):
-        return cls()
+    def __init__(self):
+        pass
 
 
-class ApproveRequest:
-    surface: str = 'follow_requests'
-    radio_type: str = 'wifi-none'
-    user_id: str = None
-    _csrftoken: str = None
-    _uid: str = None
-    _uuid: str = None
+class ApproveRequest(cmmn.Base):
+    def __init__(self, user_id: str, **kwargs):
+        super().__init__(**kwargs)
+        self._enable_datapoint_from_client('_csrftoken')
+        self._enable_datapoint_from_client('_uid')
+        self._enable_datapoint_from_client('_uuid')
 
-    @classmethod
-    def create(cls, user_id, **kwargs):
-        i = cls()
-        for k, v in kwargs.items():
-            if hasattr(i, k):
-                setattr(i, k, v)
-            else:
-                logger.warning("{} was sent as a keyword argument, but isn't supported.")
-        i.user_id = user_id
-        return i
+        self._custom_data['radio_type'] = self.State.required
+        self._custom_data['surface'] = self.State.required
+        self._custom_data['user_id'] = self.State.required
+
+        self._data['user_id'] = user_id
+
+        self._defaults['surface'] = Surface.follow_requests
+        self._defaults['radio_type'] = 'wifi-none'

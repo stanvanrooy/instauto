@@ -91,37 +91,37 @@ class RequestMixIn:
             Mapping of header names to header values
         """
         www_claim = headers.get('ig-set-www-claim')
-        if www_claim: self.state.www_claim = www_claim
+        if www_claim is not None: self.state.www_claim = www_claim
 
         authorization = headers.get('ig-set-authorization')
-        if authorization: self.state.authorization = authorization
+        if authorization is not None: self.state.authorization = authorization
 
         user_id = headers.get('ig-set-ig-u-ds-user-id')
-        if user_id: self.state.user_id = user_id
+        if user_id is not None: self.state.user_id = user_id
 
         direct_region_hint = headers.get('ig-set-ig-u-direct_region_hint')
-        if direct_region_hint: self.state.direct_region_hint = direct_region_hint
+        if direct_region_hint is not None: self.state.direct_region_hint = direct_region_hint
 
         shbid = headers.get('ig-set-ig-u-shbid')
-        if shbid: self.state.shbid = shbid
+        if shbid is not None: self.state.shbid = shbid
 
         shbts = headers.get('ig-set-ig-u-shbts')
-        if shbts: self.state.shbts = shbts
+        if shbts is not None: self.state.shbts = shbts
 
         target = headers.get('ig-set-ig-u-target')
-        if target: self.state.target = target
+        if target is not None: self.state.target = target
 
         rur = headers.get('ig-set-ig-u-rur')
-        if rur: self.state.rur = rur
+        if rur is not None: self.state.rur = rur
 
         mid = headers.get('ig-set-x-mid')
-        if mid: self.state.mid = mid
+        if mid is not None: self.state.mid = mid
 
         public_api_key_id = headers.get('ig-set-password-encryption-key-id')
-        if public_api_key_id: self.state.public_api_key_id = public_api_key_id
+        if public_api_key_id is not None: self.state.public_api_key_id = public_api_key_id
 
         public_api_key = headers.get('ig-set-password-encryption-pub-key')
-        if public_api_key: self.state.public_api_key = public_api_key; self._encrypt_password()
+        if public_api_key is not None: self.state.public_api_key = public_api_key; self._encrypt_password()
 
     def _request(self, endpoint: str, method: Method, query: dict = None, data: dict = None, headers: Dict[str, str]
     = None, default_headers: bool = None, signed: bool = None) -> requests.Response:

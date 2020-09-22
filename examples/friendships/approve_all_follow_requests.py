@@ -15,5 +15,5 @@ if __name__ == '__main__':
     users = client.follow_requests_get(p)
 
     for user in users:  # approves all requests
-        a = fs.ApproveRequest.create(str(user['pk']))
+        a = fs.ApproveRequest(str(user['pk']))
         resp = client.follow_request_approve(a)

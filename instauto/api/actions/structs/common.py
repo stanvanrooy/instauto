@@ -1,6 +1,5 @@
 import enum
 from typing import Callable, Optional, Dict, Tuple, Union
-from instauto.api import client as clnt
 from instauto.api.exceptions import MissingValue
 
 
@@ -10,7 +9,7 @@ class Base:
         optional = 1
         default = 2
 
-    _datapoint_from_client: Dict[str, Tuple[bool, Callable[[clnt.ApiClient], str]]] = {
+    _datapoint_from_client: Dict[str, Tuple[bool, Callable[["instauto.api.client.ApiClient"], str]]] = {
         "_csrftoken": (False, lambda client: client._session.cookies['csrftoken']),
         "device_id": (False, lambda client: client.state.device_id),
         "_uuid": (False, lambda client: client.state.uuid),
@@ -26,10 +25,10 @@ class Base:
     def _enable_datapoint_from_client(self, key: str) -> None:
         self._datapoint_from_client[key][0] = True
 
-    def _add_datapoint_from_client(self, key: str, f: Optional[Callable[[clnt.ApiClient], str]], enabled: bool = False):
+    def _add_datapoint_from_client(self, key: str, f: Optional[Callable[["instauto.api.client.ApiClient"], str]], enabled: bool = False):
         self._datapoint_from_client[key] = (enabled, f)
 
-    def fill(self, client: clnt.ApiClient) -> Dict[str, Union[str, int, float, bool]]:
+    def fill(self, client: "instauto.api.client.ApiClient") -> Dict[str, Union[str, int, float, bool]]:
         data = {}
         for key, (enabled, func) in filter(lambda k, v: v[0], self._datapoint_from_client.items()):
             if enabled:

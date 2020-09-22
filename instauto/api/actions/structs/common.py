@@ -9,7 +9,7 @@ class Base:
         optional = 1
         default = 2
 
-    _datapoint_from_client: Dict[str, Tuple[bool, Callable[["instauto.api.client.ApiClient"], str]]] = {
+    _datapoint_from_client: Dict[str, Tuple[bool, Callable[[...], str]]] = {
         "_csrftoken": (False, lambda client: client._session.cookies['csrftoken']),
         "device_id": (False, lambda client: client.state.device_id),
         "_uuid": (False, lambda client: client.state.uuid),
@@ -25,10 +25,10 @@ class Base:
     def _enable_datapoint_from_client(self, key: str) -> None:
         self._datapoint_from_client[key][0] = True
 
-    def _add_datapoint_from_client(self, key: str, f: Optional[Callable[["instauto.api.client.ApiClient"], str]], enabled: bool = False):
+    def _add_datapoint_from_client(self, key: str, f: Optional[Callable[[...], str]], enabled: bool = False):
         self._datapoint_from_client[key] = (enabled, f)
 
-    def fill(self, client: "instauto.api.client.ApiClient") -> Dict[str, Union[str, int, float, bool]]:
+    def fill(self, client) -> Dict[str, Union[str, int, float, bool]]:
         data = {}
         for key, (enabled, func) in filter(lambda k, v: v[0], self._datapoint_from_client.items()):
             if enabled:

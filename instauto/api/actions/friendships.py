@@ -25,9 +25,10 @@ class FriendshipsMixin:
     def follower_show(self, obj: Show) -> Response:
         """Retrieve information about a user"""
         # doesn't use _friendship_act, because it is a GET request.
-        return self._request(f"friendships/{obj.endpoint}/{obj.user_id}/", Method.GET)
-    
-    def followers_get(self, obj: GetFollowers) -> Tuple[GetFollowers, Union[Response, bool]]:
+        data = obj.fill(self)
+        return self._request(f"friendships/{data['endpoint']}/{data['user_id']}/", Method.GET)
+
+    def followers_get(self, obj: Union[GetFollowing, dict]) -> Tuple[dict, Union[Response, bool]]:
         """Retrieves the followers of an Instagram user. Examples of how to use can be found in
         examples/friendships/get_followers.py.
         Returns
@@ -64,24 +65,28 @@ class FriendshipsMixin:
             }
             ```
         """
-        if obj.max_id is None and obj.page > 0:
+        if isinstance(obj, GetFollowers):
+            data = obj.fill(self)
+        else:
+            data = obj
+        if obj['max_id'] is None and data['page'] > 0:
             return obj, False
         query_params = {
-            'search_surface': obj.search_surface,
+            'search_surface': data['search_surface'],
             'order': 'default',
             'enable_groups': "true",
             "query": "",
-            "rank_token": obj.rank_token
+            "rank_token": data['rank_token'],
         }
-        if obj.page > 0:  # make sure we don't include max_id on the first request
-            query_params['max_id'] = obj.max_id
-        resp = self._request(f'friendships/{obj.user_id}/followers/', Method.GET, query=query_params)
+        if data['page'] > 0:  # make sure we don't include max_id on the first request
+            query_params['max_id'] = data['max_id']
+        resp = self._request(f'friendships/{data["user_id"]}/followers/', Method.GET, query=query_params)
         as_json = resp.json()
-        obj.max_id = as_json['next_max_id']
-        obj.page += 1
-        return obj, resp
+        data['max_id'] = as_json['next_max_id']
+        data['page'] += 1
+        return data, resp
 
-    def following_get(self, obj: GetFollowing) -> Tuple[GetFollowing, Union[Response, bool]]:
+    def following_get(self, obj: Union[GetFollowing, dict]) -> Tuple[dict, Union[Response, bool]]:
         """Retrieves the following of an Instagram user. Examples of how to use can be found in
         examples/friendships/get_following.py.
         Returns
@@ -117,21 +122,25 @@ class FriendshipsMixin:
               }
             ```
         """
-        if obj.max_id is None and obj.page > 0:  # max_id get's set to None when there are no more results.
-            return obj, False
+        if isinstance(obj, GetFollowing):
+            data = obj.fill(self)
+        else:
+            data = obj
+        if data['max_id'] is None and data['page'] > 0:  # max_id get's set to None when there are no more results.
+            return data, False
         query_params = {
-            'search_surface': obj.search_surface,
+            'search_surface': data['search_surface'],
             'query': '',
             'enable_groups': 'true',
-            'rank_token': obj.rank_token,
+            'rank_token': data['rank_token'],
         }
-        if obj.page > 0:  # make sure we don't include max_id on the first request
-            query_params['max_id'] = obj.max_id
-        resp = self._request(f'friendships/{obj.user_id}/following/', Method.GET, query=query_params)
+        if data['page'] > 0:  # make sure we don't include max_id on the first request
+            query_params['max_id'] = data['max_id']
+        resp = self._request(f'friendships/{data["user_id"]}/following/', Method.GET, query=query_params)
         as_json = resp.json()
-        obj.max_id = as_json['next_max_id']
-        obj.page += 1
-        return obj, resp
+        data['max_id'] = as_json['next_max_id']
+        data['page'] += 1
+        return data, resp
 
     def follow_requests_get(self, obj: PendingRequests) -> List[dict]:
         """
@@ -158,17 +167,9 @@ class FriendshipsMixin:
         return parsed['users']
 
     def follow_request_approve(self, obj: ApproveRequest) -> Response:
-        obj._csrftoken = self._session.cookies.get('csrftoken', domain='instagram.com')
-        obj._uid = self.state.user_id
-        obj._uuid = self.state.uuid
-        return self._request(f'friendships/approve/{obj.user_id}/', Method.POST, data=obj.__dict__)
+        data = obj.fill(self)
+        return self._request(f'friendships/approve/{data["user_id"]}/', Method.POST, data=data)
 
     def _friendships_act(self, obj: Union[Create, Destroy, Remove]) -> Response:
-        obj._csrftoken = self._session.cookies['csrftoken']
-        obj.device_id = self.state.device_id
-        obj._uid = self.state.user_id
-        obj._uuid = self.state.uuid
-        as_d = obj.__dict__
-        as_d['radio_type'] = obj.radio_type  # why does this get removed, even though it has a default value?
-
-        return self._request(f'friendships/{obj.endpoint}/{obj.user_id}/', Method.POST, data=as_d, signed=True)
+        data = obj.fill(self)
+        return self._request(f'friendships/{data["endpoint"]}/{data["user_id"]}/', Method.POST, data=data, signed=True)

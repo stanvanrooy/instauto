@@ -85,12 +85,16 @@ class GetBase(cmmn.Base):
         self._custom_data['user_id'] = self.State.required
         self._custom_data['rank_token'] = self.State.required
         self._custom_data['search_surface'] = self.State.required
+        self._custom_data['max_id'] = self.State.required
+        self._custom_data['page'] = self.State.required
 
         self._data['user_id'] = user_id
         self._data['search_surface'] = surface
 
         self._defaults['search_surface'] = Surface.follow_list
         self._defaults['rank_token'] = uuid.uuid4()
+        self._defaults['max_id'] = None
+        self._defaults['page'] = 0
 
 
 # The requests for getting followers and your following, look exactly the same

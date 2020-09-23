@@ -30,19 +30,21 @@ class Base:
 
     def fill(self, client) -> Dict[str, Union[str, int, float, bool]]:
         data = {}
-        for key, (enabled, func) in filter(lambda k, v: v[0], self._datapoint_from_client.items()):
+        for key, (enabled, func) in filter(lambda kv: kv[1], self._datapoint_from_client.items()):
             if enabled:
                 self._data[key] = func(client)
 
-        for key, value in self._custom_data:
+        for key, value in self._custom_data.items():
             if key in self._data and self._data[key] is not None:
                 data[key] = self._data[key]
             elif key in self._defaults:
                 data[key] = self._defaults[key]
-            elif value == self.State.required:
-                raise MissingValue("{key} is required but is not provided and has no default value.")
+            elif value == self.State.required and key not in self._kwargs:
+                raise MissingValue(f"{key} is required but is not provided and has no default value.")
 
         for key, value in self._kwargs.items():
+            if key not in self._custom_data:
+                raise MissingValue(f"{key} was passed in as a kwarg, but isn't present in `_custom_data`.")
             data[key] = value
 
         return data

@@ -26,7 +26,7 @@ class ApiClient(PostMixin, AuthenticationMixIn, RequestMixIn, ProfileMixin, Frie
     bc_hmac = hmac.HMAC(breadcrumb_private_key, digestmod='SHA256')
 
     def __init__(self, ig_profile: IGProfile = None, device_profile: DeviceProfile = None, state: State = None,
-                 user_name: str = None, password: str = None, session_cookies: dict = None):
+                 user_name: str = None, password: str = None, session_cookies: dict = None, testing=False):
         """Initializes all attributes. Can be instantiated with no params.
 
         Needs to be provided with either:
@@ -73,7 +73,7 @@ class ApiClient(PostMixin, AuthenticationMixIn, RequestMixIn, ProfileMixin, Frie
         else:
             self.state.refresh(self._gen_uuid)
 
-        if (user_name is None or password is None) and (state is None or session_cookies is None):
+        if (user_name is None or password is None) and (state is None or session_cookies is None) and not testing:
             raise NoAuthDetailsProvided("username, password and state are all not provided.")
 
         self._user_name = user_name
@@ -86,6 +86,8 @@ class ApiClient(PostMixin, AuthenticationMixIn, RequestMixIn, ProfileMixin, Frie
                         name=k, value=v
                     )
                 )
+        if testing:
+            self._session.cookies['csrftoken'] = "test"
 
         self._unencrypted_password = password
         self._encrypted_password = None

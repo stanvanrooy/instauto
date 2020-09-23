@@ -13,7 +13,7 @@ if __name__ == '__main__':
         client.save_to_disk('./.instauto.save')
 
     post = ps.Post.create(
-        path='./black_square.jpg',
+        path='./test_story.jpg',
         source_type=st.WhereToPost.Feed,
         caption='This is an example. Follow me!'
     )

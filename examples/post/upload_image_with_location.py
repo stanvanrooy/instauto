@@ -17,7 +17,7 @@ if __name__ == '__main__':
     # location = ps.Location(name="The white house")
     location = ps.Location(lat=68.14259, lng=148.84371, name="The white house")
     post = ps.Post.create(
-        path='./black_square.jpg',
+        path='./test_story.jpg',
         source_type=st.WhereToPost.Feed,
         caption='This is an example. Follow me!',
         location=location

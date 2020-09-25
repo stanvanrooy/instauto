@@ -69,7 +69,7 @@ class FriendshipsMixin:
             data = obj.fill(self)
         else:
             data = obj
-        if obj['max_id'] is None and data['page'] > 0:
+        if data['max_id'] is None and data['page'] > 0:
             return obj, False
         query_params = {
             'search_surface': data['search_surface'],

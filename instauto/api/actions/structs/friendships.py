@@ -44,7 +44,6 @@ class Destroy(_Base):
         self._data['endpoint'] = 'destroy'
         self._data['user_id'] = user_id
         self._data['surface'] = surface
-        self._defaults['surface'] = surface.profile
 
 
 class Remove(_Base):
@@ -120,5 +119,4 @@ class ApproveRequest(cmmn.Base):
 
         self._data['user_id'] = user_id
 
-        self._defaults['surface'] = Surface.follow_requests
         self._defaults['radio_type'] = 'wifi-none'

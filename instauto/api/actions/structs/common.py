@@ -12,8 +12,8 @@ class Base:
     _datapoint_from_client: Dict[str, Tuple[bool, Callable[[], str]]] = {
         "_csrftoken": (False, lambda client: client._session.cookies['csrftoken']),
         "device_id": (False, lambda client: client.state.device_id),
-        "_uuid": (False, lambda client: client.state.uuid),
-        "_uid": (False, lambda client: client.state.user_id)
+        "uuid": (False, lambda client: client.state.uuid),
+        "uid": (False, lambda client: client.state.user_id)
     }
 
     def __init__(self, **kwargs):
@@ -23,7 +23,7 @@ class Base:
         self._kwargs = kwargs
 
     def _enable_datapoint_from_client(self, key: str) -> None:
-        self._datapoint_from_client[key][0] = True
+        self._datapoint_from_client[key] = (True, self._datapoint_from_client[key][1])
 
     def _add_datapoint_from_client(self, key: str, f: Optional[Callable[[], str]], enabled: bool = False):
         self._datapoint_from_client[key] = (enabled, f)

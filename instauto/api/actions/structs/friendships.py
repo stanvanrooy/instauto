@@ -20,8 +20,8 @@ class _Base(cmmn.Base):
         super().__init__(**kwargs)
         self._enable_datapoint_from_client('_csrftoken')
         self._enable_datapoint_from_client('device_id')
-        self._enable_datapoint_from_client('_uid')
-        self._enable_datapoint_from_client('_uuid')
+        self._enable_datapoint_from_client('uid')
+        self._enable_datapoint_from_client('uuid')
 
         self._custom_data['uuid'] = self.State.required
         self._custom_data['user_id'] = self.State.required

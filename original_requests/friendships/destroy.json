@@ -1,0 +1,25 @@
+{
+  "request": {
+    "surface": "following_sheet",
+    "_csrftoken": "JWNQYfQRyhE5cHXW4Pqp7nw2z7jc3SoE",
+    "radio_type": "wifi-none",
+    "_uid":"4478472759",
+    "_uuid": "ff82e1d2-b663-41e9-87e7-630af2f43268"
+  },
+  "response": {
+    "friendship_status": {
+        "blocking": false,
+        "followed_by": false,
+        "following": false,
+        "incoming_request": false,
+        "is_bestie": false,
+        "is_private": false,
+        "is_restricted": false,
+        "muting": false,
+        "outgoing_request": false
+      },
+      "status": "ok"
+  },
+  "method": "post",
+  "endpoint": "friendships/destroy/{user_id}"
+}

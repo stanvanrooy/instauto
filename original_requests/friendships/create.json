@@ -1,0 +1,25 @@
+{
+  "request": {
+    "_csrftoken": "",
+    "radio_type": "-none",
+    "_uid": "",
+    "device_id": "",
+    "_uuid": ""
+  },
+  "response": {
+    "friendship_status": {
+      "blocking": false,
+      "followed_by": false,
+      "following": true,
+      "incoming_request": false,
+      "is_bestie": false,
+      "is_private": false,
+      "is_restricted": false,
+      "muting": false,
+      "outgoing_request": false
+    },
+    "status": "ok"
+  },
+  "method": "post",
+  "endpoint": "friendships/create/{user_id}"
+}

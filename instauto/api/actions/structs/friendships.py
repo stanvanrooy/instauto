@@ -2,123 +2,101 @@ from . import common as cmmn
 
 import logging
 import uuid
-from typing import Optional
 from instauto.api.structs import Surface
+
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
 
 class _Base(cmmn.Base):
-    _csrftoken: str = None
-    radio_type: str = 'wifi-none'
-    device_id: str = None
-    _uid: str = None
-    _uuid: str = None
-    user_id: str = None
+    user_id: str = ''
+    surface: Optional[str] = ''
+    _csrftoken: str = ''
+    _uid: str = ''
+    _uuid: str = ''
+    radio_type: str = ''
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self._enable_datapoint_from_client('_csrftoken')
-        self._enable_datapoint_from_client('device_id')
-        self._enable_datapoint_from_client('_uid')
-        self._enable_datapoint_from_client('_uuid')
+    def __init__(self, user_id: str, surface: Surface = None,  *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.user_id = user_id
+        self.surface = surface
 
-        self._custom_data['uuid'] = self.State.required
-        self._custom_data['user_id'] = self.State.required
-        self._custom_data['endpoint'] = self.State.required
-        self._custom_data['surface'] = self.State.optional
+        self._exempt.append('user_id')
+        self._exempt.append('endpoint')
 
 
 class Create(_Base):
-    def __init__(self, user_id: str, **kwargs):
+    REQUEST = 'friendships/create.json'
+    endpoint: str = 'create'
+    device_id: str = ''
+
+    def __init__(self, user_id: str, radio_type: str = '-none', *args, **kwargs):
         """Use this to create a friendship, i.e. follow a user."""
-        super().__init__(**kwargs)
-        self._data['endpoint'] = 'create'
-        self._data['user_id'] = user_id
+        super().__init__(user_id, None, radio_type=radio_type, *args, **kwargs)
 
 
 class Destroy(_Base):
-    def __init__(self, user_id: str, surface: Optional[Surface] = None, **kwargs):
+    REQUEST = 'friendships/destroy.json'
+    endpoint: str = 'destroy'
+
+    def __init__(self, user_id: str, surface: Surface = Surface.profile, radio_type='wifi-none', *args, **kwargs):
         """Use this to 'destroy' a friendship, i.e. unfollow."""
-        super().__init__(**kwargs)
-        self._data['endpoint'] = 'destroy'
-        self._data['user_id'] = user_id
-        self._data['surface'] = surface
-        self._defaults['surface'] = surface.profile
+        super().__init__(user_id, surface, radio_type=radio_type, *args, **kwargs)
 
 
 class Remove(_Base):
-    def __init__(self, user_id: str, **kwargs):
-        super().__init__(**kwargs)
-        self._data['endpoint'] = 'remove_follower'
-        self._data['user_id'] = user_id
+    REQUEST = 'friendships/remove.json'
+    endpoint: str = 'remove_followers'
+
+    def __init__(self, user_id: str, radio_type='wifi-none', *args, **kwargs):
+        super().__init__(user_id, radio_type=radio_type, *args, **kwargs)
 
 
 class Show(cmmn.Base):
-    """Retrieves the following information for a friendship:
-    {
-      "blocking": False,
-      "followed_by": False,
-      "following": False,
-      "incoming_request": False,
-      "is_bestie": False,
-      "is_blocking_reel": False,
-      "is_muting_reel": False,
-      "is_private": False,
-      "is_restricted": False,
-      "muting": False,
-      "outgoing_request": False,
-      "status": "ok"
-    }
-    """
-    def __init__(self, user_id: str, **kwargs):
-        super().__init__(**kwargs)
-        self._custom_data['user_id'] = self.State.required
-        self._custom_data['endpoint'] = self.State.required
-        self._data['user_id'] = user_id
-        self._data['endpoint'] = cmmn.Base.State.required
+    REQUEST: str = 'friendships/show.json'
+    endpoint: str = 'show'
+
+    def __init__(self, user_id: str, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user_id = user_id
 
 
-class GetBase(cmmn.Base):
-    def __init__(self, user_id: str, surface: Optional[Surface] = None, **kwargs):
-        super().__init__(**kwargs)
-        self._custom_data['user_id'] = self.State.required
-        self._custom_data['rank_token'] = self.State.required
-        self._custom_data['search_surface'] = self.State.required
-        self._custom_data['max_id'] = self.State.required
-        self._custom_data['page'] = self.State.required
-
-        self._data['user_id'] = user_id
-        self._data['search_surface'] = surface
-
-        self._defaults['search_surface'] = Surface.follow_list
-        self._defaults['rank_token'] = uuid.uuid4()
-        self._defaults['max_id'] = None
-        self._defaults['page'] = 0
+class PendingRequests(cmmn.Base):
+    REQUEST: str = 'friendships/pending_requests.json'
 
 
-# The requests for getting followers and your following, look exactly the same
-# but we want to keep them in seperate structs for clarity.
-GetFollowers = GetFollowing = GetBase
+class ApproveRequest(_Base):
+    REQUEST: str = 'friendships/approve_request.json'
+    radio_type: str = 'wifi-none'
+
+    def __init__(self, user_id: str, surface: Surface = Surface.follow_requests, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user_id = user_id
+        self.surface = surface
 
 
-class PendingRequests:
-    def __init__(self):
-        pass
+class _GetBase(cmmn.Base):
+    user_id: str
+    page: int
+    max_id: str
+    rank_token: str
+    search_surface: str
+    order: str
+
+    def __init__(self, user_id: str, order='default', surface: Surface = Surface.follow_list, enable_groups=False, query="", *args, **kwargs):
+        self.rank_token = str(uuid.uuid4())
+        super().__init__(*args, **kwargs)
+        self.order = order
+        self.query = query
+        self.enable_groups = enable_groups
+        self.user_id = user_id
+        self.search_surface = surface
 
 
-class ApproveRequest(cmmn.Base):
-    def __init__(self, user_id: str, **kwargs):
-        super().__init__(**kwargs)
-        self._enable_datapoint_from_client('_csrftoken')
-        self._enable_datapoint_from_client('_uid')
-        self._enable_datapoint_from_client('_uuid')
+class GetFollowers(_GetBase):
+    REQUEST = 'friendships/get_followers.json'
 
-        self._custom_data['radio_type'] = self.State.required
-        self._custom_data['surface'] = self.State.required
-        self._custom_data['user_id'] = self.State.required
 
-        self._data['user_id'] = user_id
-
-        self._defaults['surface'] = Surface.follow_requests
-        self._defaults['radio_type'] = 'wifi-none'
+class GetFollowing(_GetBase):
+    REQUEST = 'friendships/get_following.json'

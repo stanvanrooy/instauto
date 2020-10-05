@@ -3,7 +3,7 @@ import json
 import logging
 import pickle
 
-from instauto.api.structs import DeviceProfile, IGProfile, State, Method
+from instauto.api.structs import DeviceProfile, IGProfile, State, Method, LoggedInAccountData
 from instauto.api.exceptions import BadResponse
 from instauto.api.actions.stubs import _request
 
@@ -25,32 +25,36 @@ class ChallengeMixin:
         if resp_data['message'] not in ('challenge_required', 'checkpoint_required'):
             raise BadResponse("Challenge required, but no URL provided.")
 
-        resp = self._request(endpoint=resp_data['api_path'],
+        api_path = resp_data['challenge']['api_path'][1::]
+        resp = self._request(endpoint=api_path,
                              method=Method.GET,
                              query={
                                  "guid": self.state.uuid,
                                  "device_id": self.state.device_id
                              })
-        with open('./response.pickle', 'wb+') as f:
-            pickle.dump(resp, f)
-
-        resp_data = resp.json()
-        bloks_action = resp_data['bloks_actions']
-        # Handle unknown device challenge
-        if bloks_action == 'com.instagram.challenge.navigator.take_challenge':
+        bloks_action = resp_data['bloks_action']
+        # handle simple challenge
+        if bloks_action == 'com.instagram.challenge.navigation.take_challenge':
             resp = self._request(
-                endpoint=f'bloks/{bloks_action}/', method=Method.POST, data = {
+                endpoint=api_path, method=Method.POST, data={
                     "choice": 0,  # 0 = this was me, 1 = this wasn't me,
                     "_csrftoken": self._session.cookies['csrftoken'],
                     "_uuid": self.state.uuid,
-                    "bloks_versioning_id": self.state.bloks_version_id
+                    "bloks_versioning_id": self.state.bloks_version_id,
+                    "post": 1
                 }
             )
-            with open('./response1.pickle', 'wb+') as f:
-                pickle.dump(resp, f)
+        elif True:
+            security_code = input("Type the security code here: ")
+            resp = self._request(
+                endpoint=api_path, method=Method.POST, data={
+                    "_csrftoken": self._session.cookies['csrftoken'],
+                    "_uuid": self.state.uuid,
+                    "bloks_versioning_id": self.state.bloks_version_id,
+                    "post": 1,
+                    "security_code": security_code
+                }
+            )
             resp_data = resp.json()
-            if resp_data['status'] == "ok":
-                return True
-
+            self.state.logged_in_account_data = LoggedInAccountData(resp_data['logged_in_user'])
         return False
-

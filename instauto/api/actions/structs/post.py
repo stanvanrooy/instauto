@@ -15,20 +15,22 @@ from instauto.api.structs import WhereToPost
 logger = logging.getLogger(__name__)
 
 
-@dataclass
 class _Base:
     """Contains values that are pretty much shared across all API requests."""
-    _csrftoken: str = None
-    _uid: str = None  # user id
-    _uuid: str = None
-    delivery_class: str = 'organic'
-    radio_type: str = 'wifi-none'
+    _csrftoken: str = ''
+    _uid: str = ''
+    _uuid: str = ''
+    # delivery_class: str = 'organic'
+    delivery_class: str = ''
+    radio_type: str = ''
     is_carousel_bumped_post: str = 'False'
     container_module: str = None
     media_id: str = None
     feed_position: str = None
 
-    def _create(self, **kwargs):
+    def __init__(self):
+
+    def _create(self, kwargs):
         """Creates an instance of the class, this method should be overwritten in the individual classes with
         arguments that are required, so it is clear which arguments are needed for which action.
 

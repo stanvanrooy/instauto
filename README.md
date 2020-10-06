@@ -3,6 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/instauto.svg)](https://badge.fury.io/py/instauto)
 [![PyPI license](https://img.shields.io/pypi/l/instauto)](https://pypi.python.org/project/instauto/)
 [![PyPI download month](https://img.shields.io/pypi/dw/instauto)](https://pypi.org/project/instauto/)
+![coverage](https://github.com/stanvanrooy/instauto/blob/master/coverage.svg)
 
 
 Instauto is a Python package for automating various parts of Instagram, making use of the private Instagram API.
@@ -25,7 +26,7 @@ import os
 
 from time import sleep
 
-from instauto import ApiClient
+from instauto.api.client import ApiClient
 from instauto import friendships as fs
 
 client = ApiClient(user_name="yourusername", password="yourpassword")

@@ -1,0 +1,30 @@
+{
+  "endpoint": "friendships/pending/",
+  "request": {
+  },
+  "response": {
+    "big_list": false,
+    "global_blacklist_sample": null,
+    "next_max_id": null,
+    "page_size": 200,
+    "sections": null,
+    "status": "ok",
+    "suggested_users": {
+      "suggestions": []
+    },
+    "users": [
+      {
+        "account_badges": [],
+        "full_name": "",
+        "has_anonymous_profile_picture": false,
+        "is_private": true,
+        "is_verified": false,
+        "latest_reel_media": 0,
+        "pk": 2097017052,
+        "profile_pic_id": "",
+        "profile_pic_url": "",
+        "username": ""
+      }
+    ]
+  }
+}

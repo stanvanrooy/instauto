@@ -1,7 +1,7 @@
 import os
 
-from instauto import ApiClient
-from instauto import friendships as fs
+from instauto.api.client import ApiClient
+from instauto.api.actions.structs import friendships as fs
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -15,5 +15,5 @@ if __name__ == '__main__':
     users = client.follow_requests_get(p)
 
     for user in users:  # approves all requests
-        a = fs.ApproveRequest.create(str(user['pk']))
+        a = fs.ApproveRequest(str(user['pk']))
         resp = client.follow_request_approve(a)

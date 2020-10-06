@@ -13,23 +13,26 @@ from .structs import IGProfile, DeviceProfile, State
 from .constants import (DEFAULT_IG_PROFILE, DEFAULT_DEVICE_PROFILE, DEFAULT_STATE)
 from .exceptions import StateExpired, NoAuthDetailsProvided, CorruptedSaveData
 
-from . import actions
+from .actions.profile import ProfileMixin
+from .actions.authentication import AuthenticationMixIn
+from .actions.post import PostMixin
+from .actions.request import RequestMixIn
+from .actions.friendships import FriendshipsMixin
+from .actions.search import SearchMixin
+from .actions.challenge import ChallengeMixin
 
 logger = logging.getLogger(__name__)
 logging.captureWarnings(True)
 
 
-class ApiClient(
-    actions.PostMixin, actions.AuthenticationMixIn, actions.RequestMixIn, actions.ProfileMixin,
-    actions.FriendshipsMixin, actions.SearchMixin, actions.ChallengeMixin
-):
+class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, FriendshipsMixin, SearchMixin, ChallengeMixin):
     """Class used to access all features, in an ideal situation this is the only class that needs to be imported (
     along with the structs)"""
     breadcrumb_private_key = "iN4$aGr0m".encode()
     bc_hmac = hmac.HMAC(breadcrumb_private_key, digestmod='SHA256')
 
     def __init__(self, ig_profile: IGProfile = None, device_profile: DeviceProfile = None, state: State = None,
-                 user_name: str = None, password: str = None, session_cookies: dict = None):
+                 user_name: str = None, password: str = None, session_cookies: dict = None, testing=False):
         """Initializes all attributes. Can be instantiated with no params.
 
         Needs to be provided with either:
@@ -76,7 +79,7 @@ class ApiClient(
         else:
             self.state.refresh(self._gen_uuid)
 
-        if (user_name is None or password is None) and (state is None or session_cookies is None):
+        if (user_name is None or password is None) and (state is None or session_cookies is None) and not testing:
             raise NoAuthDetailsProvided("username, password and state are all not provided.")
 
         self._user_name = user_name
@@ -89,6 +92,8 @@ class ApiClient(
                         name=k, value=v
                     )
                 )
+        if testing:
+            self._session.cookies['csrftoken'] = "test"
 
         self._unencrypted_password = password
         self._encrypted_password = None

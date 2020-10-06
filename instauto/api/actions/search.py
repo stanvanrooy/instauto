@@ -1,6 +1,5 @@
 from requests import Response
 from instauto.api.actions.stubs import _request
-from typing import Union, Callable
 from .structs.search import Username
 from ..structs import Method
 

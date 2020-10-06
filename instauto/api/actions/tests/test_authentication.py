@@ -1,19 +1,49 @@
 import os
-import sys
+import uuid
+import json
 import unittest
 import unittest.mock
 
-sys.path.insert(0, os.path.abspath('../'))
-sys.path.insert(0, os.path.abspath('../instauto'))
+from requests import Response
 
 from instauto.api.client import ApiClient
 from instauto.api.exceptions import NoAuthDetailsProvided
-from instauto.api.structs import Method
+from instauto.api.structs import IGProfile, DeviceProfile, State, Method
+from instauto.api.constants import DEFAULT_IG_PROFILE, DEFAULT_DEVICE_PROFILE, DEFAULT_STATE
 
-from common import DEFAULT_STATE_I, DEFAULT_DEVICE_PROFILE_I, DEFAULT_IG_PROFILE_I, MockResponse, MockSession
+
+class MockSession:
+    cookies = {
+        'csrftoken': "test_csrftoken"
+    }
 
 
-class TestApiClient(unittest.TestCase):
+class MockResponse(Response):
+    def __init__(self):
+        super().__init__()
+        self._content = json.dumps(
+            {
+                "test_response_key": "test_response_value",
+                "logged_in_user": {
+                    "username": "test_username"
+                }
+            }
+        ).encode()
+
+
+DEFAULT_STATE_I = State(**DEFAULT_STATE)
+DEFAULT_STATE_I.fill(uuid.uuid4)
+DEFAULT_IG_PROFILE_I = IGProfile(**DEFAULT_IG_PROFILE)
+DEFAULT_DEVICE_PROFILE_I = DeviceProfile(**DEFAULT_DEVICE_PROFILE)
+
+
+class TestActionAuthentication(unittest.TestCase):
+    def test_1(self):
+        """Test `_create_jazoest` produces the correct value"""
+        client = ApiClient(testing=True)
+        client.state.phone_id = "24db86d8-9946-4892-8556-63411c5cb5e8"
+        self.assertEqual(client._create_jazoest(), '22211')
+
     def test_wo_auth_details(self):
         self.assertRaises(NoAuthDetailsProvided, ApiClient)
         self.assertRaises(NoAuthDetailsProvided, ApiClient, ig_profile=DEFAULT_IG_PROFILE_I)
@@ -28,7 +58,7 @@ class TestApiClient(unittest.TestCase):
         ApiClient(user_name="test_username", password="test_password")
         ApiClient(state=DEFAULT_STATE_I, session_cookies={'test': 1})
 
-    @unittest.skip("The logging in endpoint shouldn't be called frequently")
+    @unittest.skip("The log in endpoint shouldn't be called frequently")
     def test_login(self):
         client = ApiClient(user_name=os.environ['INSTAUTO_TESTS_USER_NAME'], password=os.environ['INSTAUTO_TESTS_PASSWORD'])
         client.login()

@@ -1,0 +1,38 @@
+{
+  "method": "get",
+  "endpoint": "friendships/{user_id}/following/",
+  "request": {
+    "user_id": "12131223",
+    "search_surface": "follow_list_page",
+    "max_id": {
+      "_": "100",
+      "on_all_requests": false
+    },
+    "order": "default",
+    "enable_groups": true,
+    "query": "",
+    "rank_token": "fab694df-cda6-4d26-b0f5-0e688290a2a3"
+  },
+  "response": {
+    "big_list": true,
+    "global_blacklist_sample": null,
+    "next_max_id": "200",
+    "page_size": 200,
+    "sections": null,
+    "status": "ok",
+    "users": [
+      {
+        "account_badges": [],
+        "full_name": "",
+        "has_anonymous_profile_picture": false,
+        "is_private": false,
+        "is_verified": false,
+        "latest_reel_media": 0,
+        "pk": 1796107640,
+        "profile_pic_id": "*******",
+        "profile_pic_url": "******",
+        "username": "********"
+      }
+    ]
+  }
+}

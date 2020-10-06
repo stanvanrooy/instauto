@@ -1,7 +1,7 @@
 import os
 
-from instauto.api.actions import profile as pr
-from instauto.api.client import ApiClient
+from instauto import ApiClient
+from instauto import post as ps
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -11,8 +11,8 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    p = pr.Update.create(
-        external_url="https://google.com",
-        first_name="Hello! It's me!"
+    caption = ps.UpdateCaption.create(
+        media_id="1734612737423614055_6400760974",
+        caption_text="This is an example for update caption post."
     )
-    client.profile_update(p)
+    client.post_update_caption(caption)

@@ -32,9 +32,16 @@ class WhichGender(enum.Enum):
     other = 4
 
 
+class Surface(enum.Enum):
+    profile = 'following_sheet'
+    following_list = 'self_unified_follow_lists'
+    follow_list = 'follow_list_page'
+    follow_requests = 'follow_requests'
+
+
 #: Struct that is used to specify where a post should be posted
 class WhereToPost(enum.Enum):
-    story = 3
+    Story = 3
     Feed = 4
 
 

@@ -18,12 +18,12 @@ class _Base(cmmn.Base):
     radio_type: str = ''
 
     def __init__(self, user_id: str, surface: Surface = None,  *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
         self.user_id = user_id
         self.surface = surface
 
         self._exempt.append('user_id')
         self._exempt.append('endpoint')
+        super().__init__(*args, **kwargs)
 
 
 class Create(_Base):
@@ -58,8 +58,8 @@ class Show(cmmn.Base):
     endpoint: str = 'show'
 
     def __init__(self, user_id: str, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.user_id = user_id
+        super().__init__(*args, **kwargs)
 
 
 class PendingRequests(cmmn.Base):
@@ -71,9 +71,9 @@ class ApproveRequest(_Base):
     radio_type: str = 'wifi-none'
 
     def __init__(self, user_id: str, surface: Surface = Surface.follow_requests, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.user_id = user_id
-        self.surface = surface
+        self.surface = str(surface.value)
+        super().__init__(*args, **kwargs)
 
 
 class _GetBase(cmmn.Base):
@@ -86,12 +86,12 @@ class _GetBase(cmmn.Base):
 
     def __init__(self, user_id: str, order='default', surface: Surface = Surface.follow_list, enable_groups=False, query="", *args, **kwargs):
         self.rank_token = str(uuid.uuid4())
-        super().__init__(*args, **kwargs)
         self.order = order
         self.query = query
         self.enable_groups = enable_groups
         self.user_id = user_id
-        self.search_surface = surface
+        self.search_surface = str(surface.value)
+        super().__init__(*args, **kwargs)
 
 
 class GetFollowers(_GetBase):

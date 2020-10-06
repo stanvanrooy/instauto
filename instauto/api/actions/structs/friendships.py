@@ -4,6 +4,8 @@ import logging
 import uuid
 from instauto.api.structs import Surface
 
+from typing import Optional
+
 logger = logging.getLogger(__name__)
 
 

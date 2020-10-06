@@ -21,7 +21,7 @@ class SetGender(cmmn.Base):
         super().__init__(*args, **kwargs)
 
 
-class SetBiography(_Base):
+class SetBiography(cmmn.Base):
     _csrftoken: str = None
     _uid: str = None
     _uuid: str = None
@@ -31,7 +31,7 @@ class SetBiography(_Base):
         super().__init__(*args, **kwargs)
 
 
-class Update(_Base):
+class Update(cmmn.Base):
     _csrftoken: str = None
     _uid: str = None  # user id
     _uuid: str = None

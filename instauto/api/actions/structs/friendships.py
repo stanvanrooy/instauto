@@ -4,26 +4,21 @@ import logging
 import uuid
 from instauto.api.structs import Surface
 
-from typing import Optional
-
 logger = logging.getLogger(__name__)
 
 
 class _Base(cmmn.Base):
-    user_id: str = ''
-    surface: Optional[str] = ''
     _csrftoken: str = ''
     _uid: str = ''
     _uuid: str = ''
-    radio_type: str = ''
 
     def __init__(self, user_id: str, surface: Surface = None,  *args, **kwargs) -> None:
         self.user_id = user_id
         self.surface = surface
 
+        super().__init__(*args, **kwargs)
         self._exempt.append('user_id')
         self._exempt.append('endpoint')
-        super().__init__(*args, **kwargs)
 
 
 class Create(_Base):

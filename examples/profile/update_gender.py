@@ -1,8 +1,8 @@
 import os
 
-from instauto import ApiClient
-from instauto import profile as pr
-from instauto import structs as st
+from instauto.api.client import ApiClient
+from instauto.api.actions import profile as pr
+from instauto.api import structs as st
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):

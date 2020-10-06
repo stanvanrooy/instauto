@@ -26,7 +26,7 @@ import os
 
 from time import sleep
 
-from instauto import ApiClient
+from instauto.api.client import ApiClient
 from instauto import friendships as fs
 
 client = ApiClient(user_name="yourusername", password="yourpassword")

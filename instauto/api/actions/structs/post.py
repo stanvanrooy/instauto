@@ -75,24 +75,22 @@ class Extra:
 
 class _Base(cmmn.Base):
     """Contains values that are pretty much shared across all API requests."""
-    _csrftoken: str = ''
-    _uid: str = ''
-    _uuid: str = ''
-    delivery_class: str = ''
     radio_type: str = ''
     is_carousel_bumped_post: str = 'False'
     container_module: str = None
     media_id: str = None
     feed_position: str = None
 
-    def __init__(self, media_id: str, container_module: str, feed_position: str,
-                 delivery_class: str = 'organic', is_carousel_bumped_post: str = 'false', *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, media_id: str, feed_position: str, container_module: str = None,
+                 delivery_class: str = 'organic', is_carousel_bumped_post: str = 'False', *args, **kwargs):
         self.media_id = media_id
         self.container_module = container_module
         self.feed_position = feed_position
         self.delivery_class = delivery_class
         self.is_carousel_bumped_post = is_carousel_bumped_post
+        self.radio_type = 'wifi-none'
+        super().__init__(*args, **kwargs)
+        self._exempt.append('media_id')
 
 
 class Unlike(_Base):
@@ -137,9 +135,6 @@ class UpdateCaption(_Base):
 class Post(cmmn.Base):
     """Contains all information about a post, that is necessary to upload it to Instagram."""
     device_id: str = None
-    _uid: str = None
-    _uuid: str = None
-    _csrftoken: str = None
 
     def __init__(self, path: Union[str, Path], source_type: WhereToPost, caption: str,
                  location: Optional[Location] = None, edits: Optional[Edits] = None,

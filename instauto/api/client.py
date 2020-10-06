@@ -14,9 +14,9 @@ from .constants import (DEFAULT_IG_PROFILE, DEFAULT_DEVICE_PROFILE, DEFAULT_STAT
 from .exceptions import StateExpired, NoAuthDetailsProvided, CorruptedSaveData
 
 from .actions.profile import ProfileMixin
-from .actions.authentication import AuthenticationMixIn
+from .actions.authentication import AuthenticationMixin
 from .actions.post import PostMixin
-from .actions.request import RequestMixIn
+from .actions.request import RequestMixin
 from .actions.friendships import FriendshipsMixin
 from .actions.search import SearchMixin
 from .actions.challenge import ChallengeMixin

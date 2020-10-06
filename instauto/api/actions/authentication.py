@@ -13,7 +13,7 @@ from Cryptodome import Random
 from ..structs import Method, State, IGProfile, LoggedInAccountData
 
 
-class AuthenticationMixIn:
+class AuthenticationMixin:
     """This class handles everything authentication related."""
     _session: Session
     state: State

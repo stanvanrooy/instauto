@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 logging.captureWarnings(True)
 
 
-class RequestMixIn:
+class RequestMixin:
     ig_profile: IGProfile
     device_profile: DeviceProfile
     state: State

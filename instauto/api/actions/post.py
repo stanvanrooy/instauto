@@ -3,7 +3,6 @@ import hmac
 
 from requests import Session, Response
 from typing import Callable, Union
-from instauto.api.actions.stubs import _request
 from dataclasses import asdict
 
 from ..structs import Method, State, DeviceProfile, IGProfile
@@ -19,7 +18,7 @@ class PostMixin:
     ig_profile: IGProfile
     state: State
     device_profile: DeviceProfile
-    _request: _request
+    _request: Callable
     _gen_uuid: Callable
     _generate_user_breadcrumb: Callable
 

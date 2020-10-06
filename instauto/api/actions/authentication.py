@@ -4,7 +4,6 @@ import base64
 import struct
 
 from typing import Dict, Callable
-from instauto.api.actions.stubs import _request
 
 from Cryptodome.Cipher import AES, PKCS1_v1_5
 from Cryptodome.PublicKey import RSA
@@ -17,7 +16,7 @@ class AuthenticationMixIn:
     """This class handles everything authentication related."""
     _session: Session
     state: State
-    _request: _request
+    _request: Callable
     _update_token: Callable
     _user_name: str
     _user_agent: str

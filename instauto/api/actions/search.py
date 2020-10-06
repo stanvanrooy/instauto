@@ -1,5 +1,5 @@
 from requests import Response
-from typing import Union, Callable
+from typing import Callable
 from .structs.search import Username
 from ..structs import Method
 

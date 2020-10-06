@@ -1,4 +1,5 @@
 from typing import Callable, Dict
+import pprint
 
 
 class Base:
@@ -21,3 +22,6 @@ class Base:
 
     def to_dict(self) -> Dict[str, str]:
         return {k: v for (k, v) in self.__dict__.items() if k not in self._exempt and k != '_exempt' and v is not None}
+
+    def __repr__(self):
+        return pprint.pformat(self.__dict__)

@@ -13,7 +13,12 @@ from .structs import IGProfile, DeviceProfile, State
 from .constants import (DEFAULT_IG_PROFILE, DEFAULT_DEVICE_PROFILE, DEFAULT_STATE)
 from .exceptions import StateExpired, NoAuthDetailsProvided, CorruptedSaveData
 
-from .actions import AuthenticationMixIn, PostMixin, RequestMixIn, ProfileMixin, FriendshipsMixin, SearchMixin
+from .actions.profile import ProfileMixin
+from .actions.authentication import AuthenticationMixIn
+from .actions.post import PostMixin
+from .actions.request import RequestMixIn
+from .actions.friendships import FriendshipsMixin
+from .actions.search import SearchMixin
 
 logger = logging.getLogger(__name__)
 logging.captureWarnings(True)

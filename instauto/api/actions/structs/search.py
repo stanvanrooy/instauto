@@ -1,15 +1,14 @@
+from . import common as cmmn
 import time
 
 
-class Username:
+class Username(cmmn.Base):
     timezone_offset: int
     q: str
     count: int
 
-    @classmethod
-    def create(cls, username: str, count: int):
-        i = cls()
-        i.timezone_offset = str(time.localtime().tm_gmtoff)
-        i.q = username
-        i.count = count
-        return i
+    def __init__(self, q: str, count: int, *args, **kwargs):
+        self.q = q
+        self.count = count
+        self.timezone_offset = str(time.localtime().tm_gtoff)
+        super().__init__(*args, **kwargs)

@@ -1,8 +1,8 @@
 import random
 import os
 
-from instauto import ApiClient
-from instauto import friendships as fs
+from instauto.api.client import ApiClient
+from instauto.api.actions import friendships as fs
 
 from time import sleep
 

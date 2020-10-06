@@ -1,11 +1,11 @@
 from requests import Response
-from typing import Callable
+from instauto.api.actions.stubs import _request
 from .structs.search import Username
 from ..structs import Method
 
 
 class SearchMixin:
-    _request: Callable
+    _request: _request
 
     def search_username(self, obj: Username) -> Response:
         """

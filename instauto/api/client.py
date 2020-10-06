@@ -19,12 +19,13 @@ from .actions.post import PostMixin
 from .actions.request import RequestMixIn
 from .actions.friendships import FriendshipsMixin
 from .actions.search import SearchMixin
+from .actions.challenge import ChallengeMixin
 
 logger = logging.getLogger(__name__)
 logging.captureWarnings(True)
 
 
-class ApiClient(PostMixin, AuthenticationMixIn, RequestMixIn, ProfileMixin, FriendshipsMixin, SearchMixin):
+class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, FriendshipsMixin, SearchMixin, ChallengeMixin):
     """Class used to access all features, in an ideal situation this is the only class that needs to be imported (
     along with the structs)"""
     breadcrumb_private_key = "iN4$aGr0m".encode()

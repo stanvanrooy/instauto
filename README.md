@@ -8,7 +8,7 @@
 
 Instauto is a Python package for automating various parts of Instagram, making use of the private Instagram API.
 
-Instauto is currently fairly limited, because it is under development. Progress can be tracked [here](https://github.com/stanvanrooy/instauto/projects/1).
+Instauto is currently fairly limited, because it is under development. Progress can be tracked [here](https://github.com/stanvanrooy/instauto/projects/2).
 Instauto in it's current state, should not be used for production systems.
 
 For feature requests, ideas, comments, etc., please open an issue. 

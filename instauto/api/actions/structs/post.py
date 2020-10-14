@@ -12,6 +12,7 @@ from typing import Optional, List, Union
 
 from ..helpers import get_image_type
 from instauto.api.structs import WhereToPost
+from instauto.api.constants import DEFAULT_DEVICE_PROFILE
 
 logger = logging.getLogger(__name__)
 
@@ -138,7 +139,7 @@ class Post(cmmn.Base):
 
     def __init__(self, path: Union[str, Path], source_type: WhereToPost, caption: str,
                  location: Optional[Location] = None, edits: Optional[Edits] = None,
-                 extra: Optional[Extra] = None, *args, **kwargs):
+                 extra: Optional[Extra] = None, device: Optional[Device] = None, *args, **kwargs):
         # SET DEFAULTS
         self.upload_id = str(time.time())
         self.timezone_offset = str(time.localtime().tm_gmtoff)
@@ -157,6 +158,13 @@ class Post(cmmn.Base):
             self.size = imagesize.get(path)
             self.edits = Edits(self.size)
             self.extra = Extra(*self.size)
+
+        self.device = device or Device(
+            DEFAULT_DEVICE_PROFILE['manufacturer'],
+            DEFAULT_DEVICE_PROFILE['model'],
+            DEFAULT_DEVICE_PROFILE['android_sdk_version'],
+            DEFAULT_DEVICE_PROFILE['android_release']
+        )
 
         # SET IMAGE SPECIFIC VALUES
         self.source_type = str(source_type.value)

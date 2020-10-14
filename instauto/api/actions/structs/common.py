@@ -1,12 +1,14 @@
 from typing import Callable, Dict
 import pprint
+import inspect
+from dataclasses import asdict
 
 
 class Base:
     def __init__(self, *args, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
-        self._exempt = ["REQUEST"]
+        self._exempt = ["REQUEST", "_exempt"]
 
     def fill(self, client) -> None:
         _datapoint_from_client: Dict[str, Callable[["instauto.api.client.ApiClient"], str]] = {
@@ -21,7 +23,18 @@ class Base:
                 setattr(self, k, func(client))
 
     def to_dict(self) -> Dict[str, str]:
-        return {k: v for (k, v) in self.__dict__.items() if k not in self._exempt and k != '_exempt' and v is not None}
+        d = {}
+
+        for k, v in self.__dict__.items():
+            if k in self._exempt or v is None:
+                continue
+            if '__dataclass_fields__' in dir(v):
+                d[k] = asdict(v)
+            elif inspect.isclass(v) and issubclass(v, Base):
+                d[k] = v.to_dict()
+            else:
+                d[k] = v
+        return d
 
     def __repr__(self):
         return pprint.pformat(self.__dict__)

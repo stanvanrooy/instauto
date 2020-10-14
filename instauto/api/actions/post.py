@@ -4,7 +4,6 @@ import hmac
 from requests import Session, Response
 from typing import Callable, Union
 from instauto.api.actions.stubs import _request
-from dataclasses import asdict
 
 from ..structs import Method, State, DeviceProfile, IGProfile
 from .structs.post import Post, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, Location
@@ -101,9 +100,6 @@ class PostMixin:
             obj.device = d
 
         as_dict = obj.to_dict()
-        # Instagram will refuse the request and respond with a 400 bad request if an empty location is send along
-        if as_dict['location'] is None: as_dict.pop('location')
-
         rupload_params = build_default_rupload_params(obj, quality)
 
         # headers used when uploading the object to Instagram

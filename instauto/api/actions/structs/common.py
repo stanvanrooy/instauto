@@ -8,7 +8,7 @@ class Base:
     def __init__(self, *args, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
-        self._exempt = ["REQUEST"]
+        self._exempt = ["REQUEST", "_exempt"]
 
     def fill(self, client) -> None:
         _datapoint_from_client: Dict[str, Callable[["instauto.api.client.ApiClient"], str]] = {
@@ -26,7 +26,7 @@ class Base:
         d = {}
 
         for k, v in self.__dict__.items():
-            if k == '_exempt' or v is None:
+            if k in self._exempt or v is None:
                 continue
             if '__dataclass_fields__' in dir(v):
                 d[k] = asdict(v)

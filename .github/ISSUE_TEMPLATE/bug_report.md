@@ -20,8 +20,13 @@ Steps to reproduce the behavior:
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Debug output**
+Add the following snippet of code to your script and post the output here. Make sure to remove any passwords, etc.
+```python
+import logging
+logging.basicConfig()
+logging.getLogger('').setLevel(logging.DEBUG)
+```
 
 **Additional context**
 Add any other context about the problem here.

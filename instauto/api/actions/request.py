@@ -4,8 +4,7 @@ import json
 import urllib.parse
 import logging
 
-from typing import Dict, Callable
-from instauto.api.actions.stubs import _request
+from typing import Dict, Callable, Union
 
 from instauto.api.structs import DeviceProfile, IGProfile, State, Method
 from instauto.api.constants import API_BASE_URL
@@ -124,7 +123,7 @@ class RequestMixin:
         public_api_key = headers.get('ig-set-password-encryption-pub-key')
         if public_api_key is not None: self.state.public_api_key = public_api_key; self._encrypt_password()
 
-    def _request(self, endpoint: str, method: Method, query: dict = None, data: dict = None, headers: Dict[str, str]
+    def _request(self, endpoint: str, method: Method, query: dict = None, data: Union[dict, bytes] = None, headers: Dict[str, str]
     = None, default_headers: bool = None, signed: bool = None) -> requests.Response:
         """Creates and sends a request to the specified endpoint.
 
@@ -249,7 +248,7 @@ class RequestMixin:
         if resp.ok:
             return
 
-        if parsed.get('description') == 'invalid password':
+        if parsed.get('error_type') == 'bad_password':
             raise IncorrectLoginDetails("Instagram does not recognize the provided login details")
         if parsed.get('message') in ("checkpoint_required", "challenge_required"):
             if not hasattr(self, '_handle_challenge'):

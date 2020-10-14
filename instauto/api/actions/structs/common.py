@@ -1,5 +1,7 @@
 from typing import Callable, Dict
 import pprint
+import inspect
+from dataclasses import asdict
 
 
 class Base:
@@ -21,7 +23,18 @@ class Base:
                 setattr(self, k, func(client))
 
     def to_dict(self) -> Dict[str, str]:
-        return {k: v for (k, v) in self.__dict__.items() if k not in self._exempt and k != '_exempt' and v is not None}
+        d = {}
+
+        for k, v in self.__dict__.items():
+            if k == '_exempt' or v is None:
+                continue
+            if '__dataclass_fields__' in dir(v):
+                d[k] = asdict(v)
+            elif inspect.isclass(v) and issubclass(v, Base):
+                d[k] = v.to_dict()
+            else:
+                d[k] = v
+        return d
 
     def __repr__(self):
         return pprint.pformat(self.__dict__)

@@ -7,7 +7,7 @@ def get_image_type(p: Union[str, Path]) -> str:
     """Returns the type of image, i.e. jpeg or png."""
     if isinstance(p, Path):
         return p.suffix
-    return p.split('.')[1]
+    return p.split('.')[-1]
 
 
 def build_default_rupload_params(obj, quality: int) -> dict:

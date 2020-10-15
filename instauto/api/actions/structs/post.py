@@ -82,7 +82,7 @@ class _Base(cmmn.Base):
     media_id: str = None
     feed_position: str = None
 
-    def __init__(self, media_id: str, feed_position: str, container_module: str = None,
+    def __init__(self, media_id: str, feed_position: str = None, container_module: str = None,
                  delivery_class: str = 'organic', is_carousel_bumped_post: str = 'False', *args, **kwargs):
         self.media_id = media_id
         self.container_module = container_module

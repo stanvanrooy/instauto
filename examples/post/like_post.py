@@ -11,7 +11,7 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    like = ps.Like.create(
+    like = ps.Like(
         media_id="1734612737423614055_6400760974"
     )
     client.post_like(like)

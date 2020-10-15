@@ -145,7 +145,8 @@ class PostMixin:
         if obj.page > 0 and obj.max_id is None:
             return obj, False
 
-        as_dict.pop('max_id')
+        if obj.max_id is not None:
+            as_dict.pop('max_id')
         as_dict.pop('user_id')
 
         resp = self._request(f'feed/user/{obj.user_id}/', Method.GET, query=as_dict)

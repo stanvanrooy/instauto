@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from typing import Optional, List, Union
 
 from ..helpers import get_image_type
-from instauto.api.structs import WhereToPost
+from instauto.api.structs import PostLocation
 from instauto.api.constants import DEFAULT_DEVICE_PROFILE
 
 logger = logging.getLogger(__name__)
@@ -133,31 +133,41 @@ class UpdateCaption(_Base):
         super().__init__(media_id=media_id, container_module=container_module, *args, **kwargs)
 
 
-class Post(cmmn.Base):
-    """Contains all information about a post, that is necessary to upload it to Instagram."""
-    device_id: str = None
-
-    def __init__(self, path: Union[str, Path], source_type: WhereToPost, caption: str,
-                 location: Optional[Location] = None, edits: Optional[Edits] = None,
-                 extra: Optional[Extra] = None, device: Optional[Device] = None, *args, **kwargs):
-        # SET DEFAULTS
-        self.upload_id = str(time.time())
+class _PostBase(cmmn.Base):
+    def __init__(self, path: Union[str, Path], source_type: PostLocation, edits: Optional[Edits],
+                 extra: Optional[Extra], device: Optional[Device], *args, **kwargs):
+        self.upload_id = str(time.time()).split('.')[0]
         self.timezone_offset = str(time.localtime().tm_gmtoff)
         self.scene_capture_type = ''
         self.media_folder = 'Pictures'
         self.x_fb_waterfall_id = str(uuid.uuid4())
-        self.suggested_venue_position = -1
-        self.multi_sharing = '-1'
+        self.entity_name = f'{self.upload_id}_0_{random.randint(1000000000, 9999999999)}'
 
-        # SET DATACLASSES
+        self.source_type = source_type.value
+
+        image_type = get_image_type(path)
+        # See issue #65
+        if image_type not in ['jpg', 'jpeg']:
+            raise ValueError("Instagram only accepts jpg/jpeg images")
+
+        self.entity_type = f'image/{image_type}'
+        self.image_path = path
+
+        with open(path, 'rb') as f:
+            f.seek(0, 2)
+            self.entity_length = f.tell()
+
         if edits is not None and extra is None:
             self.extra = Extra(edits.crop_original_size[0], edits.crop_original_size[1])
         elif extra is not None and edits is None:
             self.edits = Edits([extra.source_width, extra.source_height])
         elif extra is None and edits is None:
-            self.size = imagesize.get(path)
-            self.edits = Edits(self.size)
-            self.extra = Extra(*self.size)
+            if hasattr(self, 'size'):
+                size = self.size
+            else:
+                size = imagesize.get(self.image_path)
+            self.edits = Edits(size)
+            self.extra = Extra(*size)
 
         self.device = device or Device(
             DEFAULT_DEVICE_PROFILE['manufacturer'],
@@ -165,25 +175,43 @@ class Post(cmmn.Base):
             DEFAULT_DEVICE_PROFILE['android_sdk_version'],
             DEFAULT_DEVICE_PROFILE['android_release']
         )
+        super().__init__(*args, **kwargs)
 
-        # SET IMAGE SPECIFIC VALUES
-        self.source_type = str(source_type.value)
-        with open(path, 'rb') as f:
-            f.seek(0, 2)
-            self.entity_length = f.tell()
 
-        self.entity_name = f'{self.upload_id}_0_{random.randint(1000000000, 9999999999)}'
-        image_type = get_image_type(path)
+class PostFeed(_PostBase):
+    """Contains all information about a post, that is necessary to upload it to Instagram."""
+    device_id: str = None
 
-        # See issue #65
-        if image_type not in ['jpg', 'jpeg']:
-            raise ValueError("Instagram only accepts jpg/jpeg images")
-
-        self.entity_type = f'image/{image_type}'
-        self.image_path = path
+    def __init__(self, path: Union[str, Path], caption: str,
+                 location: Optional[Location] = None, edits: Optional[Edits] = None,
+                 extra: Optional[Extra] = None, device: Optional[Device] = None, *args, **kwargs):
+        self.suggested_venue_position = -1
+        self.multi_sharing = '-1'
         self.caption = caption
         self.location = location
-        super().__init__(*args, **kwargs)
+        self.size = imagesize.get(path)
+        super().__init__(path, PostLocation.Feed, edits, extra, device, *args, **kwargs)
+
+
+class PostStory(_PostBase):
+    _csrftoken: str = None
+    _uid: str = None
+    _uuid: str = None
+    device_id: str = None
+
+    def __init__(self, path: Union[str, Path], edits: Optional[Edits] = None,
+                 extra: Optional[Extra] = None, device: Optional[Device] = None, *args, **kwargs):
+        self.camera_session_id = str(uuid.uuid4())
+        self.creation_surface = 'camera'
+        current_time = time.time()
+        self.imported_taken_at = str(current_time - random.randint(10000, 200000)).split('.')[0]
+        self.client_timestamp = str(current_time - 3).split('.')[0]
+        self.client_shared_at = str(current_time + 1).split('.')[0]
+        self.capture_type = 'normal'
+        self.configure_mode = '1'
+        self.supported_capabilities_new = "[{\"name\":\"SUPPORTED_SDK_VERSIONS\",\"value\":\"66.0,67.0,68.0,69.0,70.0,71.0,72.0,73.0,74.0,75.0,76.0,77.0,78.0,79.0,80.0,81.0,82.0,83.0,84.0,85.0,86.0,87.0,88.0,89.0,90.0,91.0,92.0\"},{\"name\":\"FACE_TRACKER_VERSION\",\"value\":\"14\"},{\"name\":\"segmentation\",\"value\":\"segmentation_enabled\"},{\"name\":\"COMPRESSION\",\"value\":\"ETC2_COMPRESSION\"},{\"name\":\"world_tracker\",\"value\":\"world_tracker_enabled\"},{\"name\":\"gyroscope\",\"value\":\"gyroscope_enabled\"}]"
+        super().__init__(path, PostLocation.Story, edits, extra, device, *args, **kwargs)
+        self._datapoint_from_client['device_id'] = lambda client: client.state.android_id
 
 
 class RetrieveByUser(cmmn.Base):

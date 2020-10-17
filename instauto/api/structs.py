@@ -40,9 +40,9 @@ class Surface(enum.Enum):
 
 
 #: Struct that is used to specify where a post should be posted
-class WhereToPost(enum.Enum):
-    Story = 3
-    Feed = 4
+class PostLocation(enum.Enum):
+    Story = 4
+    Feed = 3
 
 
 class IGProfile:

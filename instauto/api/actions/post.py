@@ -31,7 +31,7 @@ class PostMixin:
             delattr(obj, 'feed_position')
 
         endpoint = f'media/{obj.media_id}/{obj.action}/'
-        return self._request(endpoint, Method.POST, data=obj.__dict__, signed=True)
+        return self._request(endpoint, Method.POST, data=obj.fill(self).to_dict(), signed=True)
 
     def post_like(self, obj: Like) -> Response:
         """Likes a post"""

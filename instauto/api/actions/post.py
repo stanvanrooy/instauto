@@ -6,7 +6,8 @@ from typing import Callable, Union
 from instauto.api.actions.stubs import _request
 
 from ..structs import Method, State, DeviceProfile, IGProfile, PostLocation
-from .structs.post import PostFeed, PostStory, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, Location
+from .structs.post import PostFeed, PostStory, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, \
+    Location, RetrieveCommenters
 from ..exceptions import BadResponse
 
 from .helpers import build_default_rupload_params
@@ -156,3 +157,10 @@ class PostMixin:
         obj.max_id = resp_as_json.get('next_max_id')
         obj.page += 1
         return obj, resp_as_json['items']
+
+    def post_get_commenters(self, media_id: str) -> [any]:
+        endpoint = 'media/{media_id}/comments'.format(**{'media_id': media_id})
+        resp = self._request(endpoint=endpoint, method=Method.GET)
+        users_as_json = resp.json().get('users')
+
+        return users_as_json

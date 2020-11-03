@@ -1,5 +1,4 @@
 import os
-
 from instauto.api.client import ApiClient
 import instauto.api.actions.post as ps
 

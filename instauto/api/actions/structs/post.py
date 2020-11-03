@@ -16,7 +16,6 @@ from instauto.api.constants import DEFAULT_DEVICE_PROFILE
 
 logger = logging.getLogger(__name__)
 
-
 #####################################
 # DATACLASSES
 #####################################
@@ -217,8 +216,7 @@ class PostStory(_PostBase):
 
 
 class RetrieveByUser(cmmn.Base):
-    def __init__(self, user_id: str, exclude_comment: str = 'true', only_fetch_first_carousel_media: str = 'false',
-                 *args, **kwargs):
+    def __init__(self, user_id: str, exclude_comment: str = 'true', only_fetch_first_carousel_media: str = 'false', *args, **kwargs):
         self.user_id = user_id
         self.max_id: Optional[str] = None
         self.exclude_comment = exclude_comment

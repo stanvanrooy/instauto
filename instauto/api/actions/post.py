@@ -156,3 +156,11 @@ class PostMixin:
         obj.max_id = resp_as_json.get('next_max_id')
         obj.page += 1
         return obj, resp_as_json['items']
+
+    def post_get_likers(self, media_id: str) -> [any]:
+        """Retrieve all likers of specific media_id"""
+        endpoint = 'media/{media_id}/likers'.format(**{'media_id': media_id})
+        resp = self._request(endpoint=endpoint, method=Method.GET)
+        users_as_json = resp.json().get('users')
+
+        return users_as_json

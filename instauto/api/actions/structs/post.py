@@ -222,3 +222,9 @@ class RetrieveByUser(cmmn.Base):
         self.only_fetch_first_carousel_media = only_fetch_first_carousel_media
         self.page = 0
         super().__init__(*args, **kwargs)
+
+class RetrieveLikers(_Base):
+    REQUEST = "post/get_likers.json"
+
+    def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)

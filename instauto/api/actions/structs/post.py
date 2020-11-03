@@ -127,8 +127,7 @@ class Comment(_Base):
 class UpdateCaption(_Base):
     action = 'edit_media'
 
-    def __init__(self, media_id: str, caption_text: Optional[str] = None, location: Optional[Location] = None,
-                 container_module: str = "something", *args, **kwargs):
+    def __init__(self, media_id: str, caption_text: Optional[str] = None, location: Optional[Location] = None, container_module: str = "something", *args, **kwargs):
         self.caption_text = caption_text
         self.location = location
         super().__init__(media_id=media_id, container_module=container_module, *args, **kwargs)

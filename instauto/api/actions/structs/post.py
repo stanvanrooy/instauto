@@ -226,9 +226,8 @@ class RetrieveByUser(cmmn.Base):
         self.page = 0
         super().__init__(*args, **kwargs)
 
-
+        
 class RetrieveCommenters(_Base):
     REQUEST = "post/get_commenters.json"
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

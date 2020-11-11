@@ -164,3 +164,10 @@ class PostMixin:
         users_as_json = resp.json().get('users')
 
         return users_as_json
+
+    def post_get_commenters(self, media_id: str) -> [any]:
+        endpoint = 'media/{media_id}/comments'.format(**{'media_id': media_id})
+        resp = self._request(endpoint=endpoint, method=Method.GET)
+        users_as_json = resp.json().get('users')
+
+        return users_as_json

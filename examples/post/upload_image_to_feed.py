@@ -1,6 +1,7 @@
 import os
 
 from instauto.api.client import ApiClient
+from instauto.api import structs as st
 from instauto.api.actions import post as ps
 
 if __name__ == '__main__':
@@ -11,7 +12,9 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    like = ps.Like(
-        media_id="1734612737423614055_6400760974"
+    post = ps.PostFeed(
+        path='./test_feed.jpg',
+        caption='This is an example. Follow me!'
     )
-    client.post_like(like)
+    resp = client.post_post(post, 80)
+    print("Success: ", resp.ok)

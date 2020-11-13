@@ -91,8 +91,9 @@ class AuthenticationMixin:
 
     def _encrypt_password(self) -> None:
         """Encrypts the raw password into a form that Instagram accepts."""
-        if not self.state.public_api_key: return  # the api key will be retrieved from the first request, so it will not
-                                                  # be present during the initial request
+        # the api key will be retrieved from the first request, so it will not
+        # be present during the initial request
+        if not self.state.public_api_key: return
         key = Random.get_random_bytes(32)
         iv = Random.get_random_bytes(12)
         time = int(datetime.datetime.now().timestamp())

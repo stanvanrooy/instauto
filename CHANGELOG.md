@@ -1,6 +1,16 @@
+
 # Changelog
 
 All notable changes to this project will be documented in this file. 
+
+### 0.0.17 (2020-10-14)
+
+
+### Bug Fixes
+
+* add device details to upload image request ([#78](https://github.com/stanvanrooy/instauto/issues/78)) ([19d65cb](https://github.com/stanvanrooy/instauto/commit/19d65cb2a6be36af18d13da13b0c326ea48f4b79)), closes [#75](https://github.com/stanvanrooy/instauto/issues/75)
+* add example to post image with location data ([f06cc6b](https://github.com/stanvanrooy/instauto/commit/f06cc6bd0c6ea69663afea8497352f55235ccdff))
+* remove python3.8 feature ([#77](https://github.com/stanvanrooy/instauto/issues/77)) ([3a85741](https://github.com/stanvanrooy/instauto/commit/3a85741f7432e9d1c32784ffd9b969e2c081f801)), closes [#74](https://github.com/stanvanrooy/instauto/issues/74)
 
 ### 0.0.16 (2020-10-07)
 

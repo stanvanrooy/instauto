@@ -7,7 +7,7 @@ from instauto.api.actions.stubs import _request
 from dataclasses import asdict
 
 from ..structs import Method, State, DeviceProfile, IGProfile
-from .structs.post import Post, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, Location
+from .structs.post import Post, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, Location, RetrieveByTag
 from ..exceptions import BadResponse
 
 from .helpers import build_default_rupload_params
@@ -158,3 +158,20 @@ class PostMixin:
         obj.max_id = resp_as_json.get('next_max_id')
         obj.page += 1
         return obj, resp_as_json['items']
+
+    def post_retrieve_by_tag(self, obj: RetrieveByTag) -> (RetrieveByTag, Union[dict, bool]):
+        as_dict = obj.to_dict()
+
+        if obj.page > 0 and obj.max_id is None:
+            return obj, False
+
+        as_dict.pop('tag_name')
+
+        resp = self._request(f'feed/tag/{obj.tag_name}/', Method.GET, query=as_dict)
+        resp_as_json = resp.json()
+
+        obj.max_id = resp_as_json.get('next_max_id')
+        obj.page += 1
+        return obj, resp_as_json['items']
+
+

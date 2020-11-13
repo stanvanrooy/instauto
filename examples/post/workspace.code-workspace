@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../.local/lib/python3.8/site-packages/instauto"
+		}
+	],
+	"settings": {}
+}

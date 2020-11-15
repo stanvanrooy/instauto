@@ -227,9 +227,17 @@ class RetrieveByUser(cmmn.Base):
         super().__init__(*args, **kwargs)
 
 
+class RetrieveByTag(cmmn.Base):
+    def __init__(self, tag_name: str, exclude_comment: str = 'true', only_fetch_first_carousel_media: str = 'false', *args, **kwargs):
+        self.max_id: Optional[str] = None
+        self.exclude_comment = exclude_comment
+        self.only_fetch_first_carousel_media = only_fetch_first_carousel_media
+        self.page = 0
+        self.tag_name = tag_name
+
+
 class RetrieveLikers(_Base):
     REQUEST = "post/get_likers.json"
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

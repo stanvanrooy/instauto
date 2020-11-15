@@ -5,8 +5,10 @@ from requests import Session, Response
 from typing import Callable, Union
 from instauto.api.actions.stubs import _request
 
+
 from ..structs import Method, State, DeviceProfile, IGProfile, PostLocation
-from .structs.post import PostFeed, PostStory, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, Location
+from .structs.post import PostFeed, PostStory, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, Location, RetrieveByTag
+
 from ..exceptions import BadResponse
 
 from .helpers import build_default_rupload_params
@@ -157,6 +159,23 @@ class PostMixin:
         obj.page += 1
         return obj, resp_as_json['items']
 
+
+    def post_retrieve_by_tag(self, obj: RetrieveByTag) -> (RetrieveByTag, Union[dict, bool]):
+        as_dict = obj.to_dict()
+
+        if obj.page > 0 and obj.max_id is None:
+            return obj, False
+
+        as_dict.pop('tag_name')
+
+        resp = self._request(f'feed/tag/{obj.tag_name}/', Method.GET, query=as_dict)
+        resp_as_json = resp.json()
+
+        obj.max_id = resp_as_json.get('next_max_id')
+        obj.page += 1
+        return obj, resp_as_json['items']
+
+
     def post_get_likers(self, media_id: str) -> [any]:
         """Retrieve all likers of specific media_id"""
         endpoint = 'media/{media_id}/likers'.format(**{'media_id': media_id})
@@ -165,6 +184,7 @@ class PostMixin:
 
         return users_as_json
 
+      
     def post_get_commenters(self, media_id: str) -> [any]:
         endpoint = 'media/{media_id}/comments'.format(**{'media_id': media_id})
         resp = self._request(endpoint=endpoint, method=Method.GET)

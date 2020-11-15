@@ -1,6 +1,6 @@
 from requests import Response
 from instauto.api.actions.stubs import _request
-from .structs.search import Username
+from .structs.search import Username,Tag
 from ..structs import Method
 
 
@@ -48,3 +48,6 @@ class SearchMixin:
           }
         """
         return self._request('users/search/', Method.GET, query=obj.__dict__)
+
+    def search_tag(self, obj: Tag) -> Response:
+        return self._request('tags/search/', Method.GET, query=obj.__dict__)

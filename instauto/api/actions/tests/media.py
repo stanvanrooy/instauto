@@ -12,3 +12,9 @@ class TestMedia(unittest.TestCase):
         s = ps.RetrieveLikers()
         s.fill(client)
         helper(s, self)
+
+    def test_media_commenters(self):
+        client = ApiClient(testing=True)
+        s = ps.RetrieveCommenters("test")
+        s.fill(client)
+        helper(s, self)

@@ -43,7 +43,7 @@ class ChallengeMixin:
                 "post": 1
             }
         )
-        security_code = input("Type the security code here: ")
+        security_code = input("Verification needed. Type verification code here: ")
         _ = self._request(
             endpoint=api_path, method=Method.POST, data={
                 "_csrftoken": self._session.cookies['csrftoken'],

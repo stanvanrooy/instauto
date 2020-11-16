@@ -1,3 +1,4 @@
+import enum
 from typing import Callable, Dict
 import pprint
 import inspect
@@ -33,6 +34,8 @@ class Base:
                 d[k] = asdict(v)
             elif inspect.isclass(v) and issubclass(v, Base):
                 d[k] = v.to_dict()
+            elif hasattr(v, 'value'):  # we assume this is an Enum value.
+                d[k] = v.value
             else:
                 d[k] = v
         return d

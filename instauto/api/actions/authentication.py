@@ -62,7 +62,13 @@ class AuthenticationMixin:
         }
         # does the actual login
         resp = self._request('accounts/login/', Method.POST, data=data2, signed=True)
-        self.state.logged_in_account_data = LoggedInAccountData(**resp.json()['logged_in_user'])
+        try:
+            self.state.logged_in_account_data = LoggedInAccountData(**resp.json()['logged_in_user'])
+        except KeyError as e:
+            # The response can be empty if challenge was needed. In that case, the
+            # logged_in_account_data attribute will be set from within in the challenge handler.
+            if self.state.logged_in_account_data is None:
+                raise e
 
     def _build_initial_headers(self) -> Dict[str, str]:
         """Builds a dictionary that contains all header values required for the first request sent, before login,

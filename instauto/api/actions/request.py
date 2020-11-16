@@ -240,7 +240,7 @@ class RequestMixin:
         except json.JSONDecodeError:
             if not resp.ok:
                 if resp.status_code == 404 and '/friendships/' in resp.url:
-                    raise InvalidUserId(f"url: {resp.url} is not recognized by Instagram")
+                    raise InvalidUserId(f"account id: {resp.url.split('/')[-2]} is not recognized by Instagram or you do not have a relation with this account.")
 
                 logger.exception(f"response received: \n{resp.text}\nurl: {resp.url}\nstatus code: {resp.status_code}")
                 raise BadResponse("Received a non-200 response from Instagram")

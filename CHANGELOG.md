@@ -1,7 +1,27 @@
-
 # Changelog
 
 All notable changes to this project will be documented in this file. 
+
+### 0.0.18 (2020-11-16)
+
+
+### Features
+
+* add helper methods for (almost?) all actions. ([4fb9e36](https://github.com/stanvanrooy/instauto/commit/4fb9e3613dd26b0e287ca9486b837904425f1012)), closes [#23](https://github.com/stanvanrooy/instauto/issues/23) [#26](https://github.com/stanvanrooy/instauto/issues/26)
+* get commenters of post ([c39a220](https://github.com/stanvanrooy/instauto/commit/c39a2203016e3cd7c590d24c1fe3ac088fe9e878))
+* get likers of media ([5b91801](https://github.com/stanvanrooy/instauto/commit/5b91801032374198b1c69d8eaf3be89162a79492)), closes [#93](https://github.com/stanvanrooy/instauto/issues/93)
+* retrieve posts by tag(s) ([5f089eb](https://github.com/stanvanrooy/instauto/commit/5f089eb1d48e1e27fc5a9f967d2b65c85faeb13d))
+* upload images to story ([#86](https://github.com/stanvanrooy/instauto/issues/86)) ([c964f7d](https://github.com/stanvanrooy/instauto/commit/c964f7db61bdff1d6e3c4eab0270162d98770016)), closes [#50](https://github.com/stanvanrooy/instauto/issues/50)
+
+
+### Bug Fixes
+
+* `post_retrieve_by_user` ([32661d3](https://github.com/stanvanrooy/instauto/commit/32661d323ea983b7c39ef9b1667a977b851bbcb5))
+* `Surface` is not JSON serializable ([d3f5d28](https://github.com/stanvanrooy/instauto/commit/d3f5d28aaade2a1db72d5be7c39c93a256f68814)), closes [#97](https://github.com/stanvanrooy/instauto/issues/97)
+* add example to post image with location data ([f06cc6b](https://github.com/stanvanrooy/instauto/commit/f06cc6bd0c6ea69663afea8497352f55235ccdff))
+* KeyError if challenge was requested during login ([#100](https://github.com/stanvanrooy/instauto/issues/100)) ([c3b01d1](https://github.com/stanvanrooy/instauto/commit/c3b01d17bcedb93c0f4cb2f9711083b34b8e13fa)), closes [#90](https://github.com/stanvanrooy/instauto/issues/90)
+* make `feed_position` optional ([4be29b3](https://github.com/stanvanrooy/instauto/commit/4be29b3b3cbea462a71e5f9ec50d0f0f199581d0)), closes [#79](https://github.com/stanvanrooy/instauto/issues/79)
+* typo ([fc647e3](https://github.com/stanvanrooy/instauto/commit/fc647e3bfc750d9806b1b384e1ab5ef5b5911c41))
 
 ### 0.0.17 (2020-10-14)
 

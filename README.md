@@ -1,6 +1,6 @@
 # Instauto
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 ![tests](https://github.com/stanvanrooy/instauto/workflows/tests/badge.svg)
 [![GitHub stars](https://img.shields.io/github/stars/stanvanrooy/instauto)](https://github.com/stanvanrooy/instauto/stargazers)
@@ -58,6 +58,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/marosgonda"><img src="https://avatars1.githubusercontent.com/u/16307489?v=4" width="100px;" alt=""/><br /><sub><b>Maroš Gonda</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=marosgonda" title="Tests">⚠️</a> <a href="https://github.com/stanvanrooy/instauto/commits?author=marosgonda" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/gocnik95"><img src="https://avatars2.githubusercontent.com/u/68646331?v=4" width="100px;" alt=""/><br /><sub><b>Norbert Gocník</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=gocnik95" title="Code">💻</a></td>
   </tr>
 </table>
 

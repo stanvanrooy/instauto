@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "marosgonda",
+      "name": "Maroš Gonda",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/16307489?v=4",
+      "profile": "https://github.com/marosgonda",
+      "contributions": [
+        "test",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "instauto",
+  "projectOwner": "stanvanrooy",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

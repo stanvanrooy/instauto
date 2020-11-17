@@ -2,7 +2,7 @@ import setuptools
 from distutils.core import setup
 
 setup(
-  name='instauto',
+  name='instauto2',
   packages=setuptools.find_packages(),
   version='0.0.18',
   license='MIT',

@@ -58,6 +58,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/marosgonda"><img src="https://avatars1.githubusercontent.com/u/16307489?v=4" width="100px;" alt=""/><br /><sub><b>Maroš Gonda</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=marosgonda" title="Tests">⚠️</a> <a href="https://github.com/stanvanrooy/instauto/commits?author=marosgonda" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Samu1808"><img src="https://avatars3.githubusercontent.com/u/64809910?v=4" width="100px;" alt=""/><br /><sub><b>Samu1808</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=Samu1808" title="Code">💻</a></td>
     <td align="center"><a href="https://www.kevinjonathan.com"><img src="https://avatars3.githubusercontent.com/u/12078441?v=4" width="100px;" alt=""/><br /><sub><b>Kevin Jonathan</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=kevinjon27" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/marvic2409"><img src="https://avatars3.githubusercontent.com/u/25594875?v=4" width="100px;" alt=""/><br /><sub><b>Martin Nikolov</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=marvic2409" title="Code">💻</a></td>
   </tr>

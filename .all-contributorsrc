@@ -16,6 +16,14 @@
       ]
     },
     {
+      "login": "Samu1808",
+      "name": "Samu1808",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/64809910?v=4",
+      "profile": "https://github.com/Samu1808",
+       "contributions": [
+        "code"
+      ]
+    }, {
       "login": "kevinjon27",
       "name": "Kevin Jonathan",
       "avatar_url": "https://avatars3.githubusercontent.com/u/12078441?v=4",
@@ -27,7 +35,7 @@
       "name": "Martin Nikolov",
       "avatar_url": "https://avatars3.githubusercontent.com/u/25594875?v=4",
       "profile": "https://github.com/marvic2409",
-      "contributions": [
+        "contributions": [
         "code"
       ]
     }

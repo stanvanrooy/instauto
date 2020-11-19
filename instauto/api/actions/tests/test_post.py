@@ -1,7 +1,7 @@
 import unittest
 
 from instauto.api.client import ApiClient
-import instauto.api.actions.post as ps
+import instauto.api.actions.structs.post as ps
 from .common import helper
 
 

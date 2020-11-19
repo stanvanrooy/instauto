@@ -117,7 +117,7 @@ class Save(_Base):
 
 
 class Comment(_Base):
-    action = 'save'
+    action = 'comment'
 
     def __init__(self, media_id: str, comment_text: str, container_module: str = "something", *args, **kwargs):
         self.comment_text = comment_text

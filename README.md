@@ -21,7 +21,7 @@ The package is still under development, but an alpha version has been published 
 **Note:** due to a lost password, I temporarily lost access to my own PyPi account. Until that is resolved (see [pypi-support](https://github.com/pypa/pypi-support/issues/744)), `instauto` will be published to `instauto2` :).
 
 ## Usage
-Here is a simple example that extracts all followers from an Instagram account: 
+Here is a simple example that likes a post.
 
 ```python
 from instauto.api.client import ApiClient
@@ -36,7 +36,7 @@ if __name__ == '__main__':
     )
     client.post_like(like)
 ```
-Other examples of how to use the package, can be found in the examples directory.
+Other examples of how to use the package, can be found in the [examples directory](https://github.com/stanvanrooy/instauto/tree/master/examples).
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

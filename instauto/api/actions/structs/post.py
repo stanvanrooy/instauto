@@ -234,16 +234,21 @@ class RetrieveByTag(cmmn.Base):
         self.only_fetch_first_carousel_media = only_fetch_first_carousel_media
         self.page = 0
         self.tag_name = tag_name
-
-
-class RetrieveLikers(_Base):
-    REQUEST = "post/get_likers.json"
-    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
 
-class RetrieveCommenters(_Base):
+class GetLikers(_Base):
+    REQUEST = "post/get_likers.json"
+
+    def __init__(self, media_id: str, *args, **kwargs):
+        self.media_id = media_id
+        super().__init__(*args, **kwargs)
+
+
+class GetCommenters(_Base):
     REQUEST = "post/get_commenters.json"
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, media_id: str, *args, **kwargs):
+        self.media_id = media_id
         super().__init__(*args, **kwargs)
+

@@ -1,5 +1,5 @@
 {
-    "method": "pget",
+    "method": "get",
     "endpoint": "https://i.instagram.com/api/v1/feed/user/{user_id}/",
     "query_params": {
       "exclude_comment": "true",

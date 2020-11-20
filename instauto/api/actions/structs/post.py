@@ -237,16 +237,16 @@ class RetrieveByTag(cmmn.Base):
         super().__init__(*args, **kwargs)
 
 
-class GetLikers(_Base):
-    REQUEST = "post/get_likers.json"
+class RetrieveLikers(cmmn.Base):
+    REQUEST = "post/retrieve_likers.json"
 
     def __init__(self, media_id: str, *args, **kwargs):
         self.media_id = media_id
         super().__init__(*args, **kwargs)
 
 
-class GetCommenters(_Base):
-    REQUEST = "post/get_commenters.json"
+class RetrieveCommenters(cmmn.Base):
+    REQUEST = "post/retrieve_commenters.json"
 
     def __init__(self, media_id: str, *args, **kwargs):
         self.media_id = media_id

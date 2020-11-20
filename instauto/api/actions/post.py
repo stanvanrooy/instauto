@@ -8,7 +8,7 @@ from instauto.api.actions.stubs import _request
 
 from ..structs import Method, State, DeviceProfile, IGProfile, PostLocation
 from .structs.post import PostFeed, PostStory, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, \
-    Location, RetrieveByTag, GetLikers, GetCommenters
+    Location, RetrieveByTag, RetrieveLikers, RetrieveCommenters
 
 from ..exceptions import BadResponse
 
@@ -175,14 +175,14 @@ class PostMixin:
         obj.page += 1
         return obj, resp_as_json['items']
 
-    def post_get_likers(self, obj: GetLikers) -> [any]:
+    def post_get_likers(self, obj: RetrieveLikers) -> [any]:
         """Retrieve all likers of specific media_id"""
         endpoint = 'media/{media_id}/likers'.format(media_id=obj.media_id)
         resp = self._request(endpoint=endpoint, method=Method.GET)
         users_as_json = resp.json().get('users')
         return users_as_json
       
-    def post_get_commenters(self, obj: GetCommenters) -> [any]:
+    def post_get_commenters(self, obj: RetrieveCommenters) -> [any]:
         endpoint = 'media/{media_id}/comments'.format(media_id=obj.media_id)
         resp = self._request(endpoint=endpoint, method=Method.GET)
         users_as_json = resp.json().get('users')

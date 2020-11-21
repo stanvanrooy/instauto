@@ -3,7 +3,8 @@
     "_csrftoken": "JWNQYfQRyhE5cHXW4Pqp7nw2z7jc3SoE",
     "radio_type": "wifi-none",
     "_uid": "4478472759",
-    "_uuid": "ff82e1d2-b663-41e9-87e7-630af2f43268"
+    "_uuid": "ff82e1d2-b663-41e9-87e7-630af2f43268",
+    "user_id": ""
   },
   "response": {
     "friendship_status": {

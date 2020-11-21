@@ -3,7 +3,7 @@ from typing import List
 from instauto.api.client import ApiClient
 from instauto.api.actions import post as ps
 
-from .common import _is_resp_ok
+from .common import is_resp_ok
 from .search import get_user_id_from_username
 
 import logging
@@ -17,7 +17,7 @@ def upload_image_to_feed(client: ApiClient, image_path: str, caption: str = None
         location=location,
     )
     resp = client.post_post(post, 80).ok
-    return _is_resp_ok(resp)
+    return is_resp_ok(resp)
 
 
 def upload_image_to_story(client: ApiClient, image_path: str) -> bool:
@@ -25,7 +25,7 @@ def upload_image_to_story(client: ApiClient, image_path: str) -> bool:
         path=image_path
     )
     resp = client.post_post(post)
-    return _is_resp_ok(resp)
+    return is_resp_ok(resp)
 
 
 def update_caption(client: ApiClient, media_id: str, new_caption: str) -> bool:
@@ -34,7 +34,7 @@ def update_caption(client: ApiClient, media_id: str, new_caption: str) -> bool:
         caption_text=new_caption
     )
     resp = client.post_update_caption(caption)
-    return _is_resp_ok(resp)
+    return is_resp_ok(resp)
 
 
 def unlike_post(client: ApiClient, media_id: str) -> bool:
@@ -42,7 +42,7 @@ def unlike_post(client: ApiClient, media_id: str) -> bool:
         media_id=media_id
     )
     resp = client.post_unlike(like)
-    return _is_resp_ok(resp)
+    return is_resp_ok(resp)
 
 
 def save_post(client: ApiClient, media_id: str) -> bool:
@@ -50,7 +50,7 @@ def save_post(client: ApiClient, media_id: str) -> bool:
         media_id=media_id
     )
     resp = client.post_save(save)
-    return _is_resp_ok(resp)
+    return is_resp_ok(resp)
 
 
 def retrieve_posts_from_user(client: ApiClient, limit: int, username: str = None, user_id: str = None) -> List[dict]:
@@ -59,8 +59,8 @@ def retrieve_posts_from_user(client: ApiClient, limit: int, username: str = None
 
     if username is not None and user_id is None:
         user_id = get_user_id_from_username(client, username)
-    else:
-        logger.warning("user_id is always being used.")
+    elif username is not None and user is not None:
+        logger.warning("Both `username` and `user_id` are provided. `user_id` will be used.")
 
     obj = ps.RetrieveByUser(
         user_id=user_id
@@ -100,7 +100,7 @@ def like_post(client: ApiClient, media_id: str) -> bool:
         media_id=media_id
     )
     resp = client.post_like(like)
-    return _is_resp_ok(resp)
+    return is_resp_ok(resp)
 
 
 def comment_post(client: ApiClient, media_id: str, comment: str) -> bool:
@@ -109,4 +109,4 @@ def comment_post(client: ApiClient, media_id: str, comment: str) -> bool:
         comment_text=comment
     )
     resp = client.post_comment(comment)
-    return _is_resp_ok(resp)
+    return is_resp_ok(resp)

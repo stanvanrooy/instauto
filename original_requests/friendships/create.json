@@ -4,7 +4,8 @@
     "radio_type": "-none",
     "_uid": "",
     "device_id": "",
-    "_uuid": ""
+    "_uuid": "",
+    "user_id": ""
   },
   "response": {
     "friendship_status": {

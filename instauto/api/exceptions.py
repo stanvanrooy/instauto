@@ -36,3 +36,8 @@ class BadResponse(Exception):
 class MissingValue(Exception):
     """Raised when an action struct is initiated with a missing value"""
     pass
+
+
+class AuthorizationError(Exception):
+    """Raised when you try to get an object you're not authorized to get"""
+    pass

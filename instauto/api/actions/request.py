@@ -8,7 +8,7 @@ from typing import Dict, Callable, Union
 
 from instauto.api.structs import DeviceProfile, IGProfile, State, Method
 from instauto.api.constants import API_BASE_URL
-from instauto.api.exceptions import WrongMethodException, IncorrectLoginDetails, InvalidUserId, BadResponse
+from instauto.api.exceptions import WrongMethodException, IncorrectLoginDetails, InvalidUserId, BadResponse, AuthorizationError
 
 logger = logging.getLogger(__name__)
 logging.captureWarnings(True)
@@ -235,18 +235,17 @@ class RequestMixin:
         return resp
 
     def _check_response_for_errors(self, resp: requests.Response) -> None:
+        if resp.ok:
+            return
+
         try:
             parsed = resp.json()
         except json.JSONDecodeError:
-            if not resp.ok:
-                if resp.status_code == 404 and '/friendships/' in resp.url:
-                    raise InvalidUserId(f"account id: {resp.url.split('/')[-2]} is not recognized by Instagram or you do not have a relation with this account.")
+            if resp.status_code == 404 and '/friendships/' in resp.url:
+                raise InvalidUserId(f"account id: {resp.url.split('/')[-2]} is not recognized by Instagram or you do not have a relation with this account.")
 
-                logger.exception(f"response received: \n{resp.text}\nurl: {resp.url}\nstatus code: {resp.status_code}")
-                raise BadResponse("Received a non-200 response from Instagram")
-            return
-        if resp.ok:
-            return
+            logger.exception(f"response received: \n{resp.text}\nurl: {resp.url}\nstatus code: {resp.status_code}")
+            raise BadResponse("Received a non-200 response from Instagram")
 
         if parsed.get('error_type') == 'bad_password':
             raise IncorrectLoginDetails("Instagram does not recognize the provided login details")
@@ -261,4 +260,6 @@ class RequestMixin:
             raise BadResponse("Something unexpected happened. Please check the IG app.")
         if parsed.get('message') == 'rate_limit_error':
             raise TimeoutError("Calm down. Please try again in a few minutes.")
+        if parsed.get('message') == 'Not authorized to view user':
+            raise AuthorizationError("This is a private user, which you do not follow.")
         raise BadResponse("Received a non-200 response from Instagram")

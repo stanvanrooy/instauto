@@ -15,8 +15,9 @@ def search_username(client: ApiClient, username, count: int) -> List[dict]:
 
 def get_user_by_username(client: ApiClient, username: str) -> dict:
     users = search_username(client, username, 1)
-    if users[0]['username'] == username:
-        return users[0]
+    correct_user = [x for x in users if x['username'] == username]
+    if correct_user:
+        return correct_user[0]
 
 
 def get_user_id_from_username(client: ApiClient, username: str):

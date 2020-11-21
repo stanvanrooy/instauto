@@ -1,6 +1,19 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. 
+All notable changes to this project will be documented in this file.
+
+### 1.0.0 (2020-11-21)
+
+
+### Features
+
+* add already made functionality for automating behaviour on Instagram ([2be2146](https://github.com/stanvanrooy/instauto/commit/2be2146e8996351212b99d27dc5740ae505849bb))
+* add various other helper functions ([1a98274](https://github.com/stanvanrooy/instauto/commit/1a9827441f569c556923f751f886dc92a241e54b))
+
+### Bug Fixes
+
+* add obj to for retrieving commenters and likers ([8ed8d9b](https://github.com/stanvanrooy/instauto/commit/8ed8d9b0b67723cde71103675aa832c96741b979))
+* always send `user_id` as string to instagram ([6cb731a](https://github.com/stanvanrooy/instauto/commit/6cb731a854581b72fe60a11bbeaf01c191d6d6b1))
 
 ### 0.0.18 (2020-11-16)
 

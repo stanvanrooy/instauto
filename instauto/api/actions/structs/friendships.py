@@ -15,11 +15,12 @@ class _Base(cmmn.Base):
     _uuid: str = ''
 
     def __init__(self, user_id: str, surface: Surface = None,  *args, **kwargs) -> None:
-        self.user_id = user_id
+        # user_id is returned as int by instagram. That makes it error prone,
+        # since sending the user_id as int will not work.
+        self.user_id = str(user_id)
         self.surface = surface
 
         super().__init__(*args, **kwargs)
-        self._exempt.append('user_id')
         self._exempt.append('endpoint')
 
 

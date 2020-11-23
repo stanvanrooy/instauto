@@ -8,7 +8,7 @@ from instauto.helpers.post import retrieve_posts_from_user, like_post, comment_p
 from instauto.helpers.friendships import get_followers, follow_user
 from instauto.api.exceptions import AuthorizationError
 
-from helpers import fill_comment, get_random_num
+from ._helpers import fill_comment, get_random_num
 
 logger = logging.getLogger("Instauto")
 logger.setLevel(logging.INFO)
@@ -49,9 +49,10 @@ def _do_comments(client: ApiClient, limit: int, comments: List[str], user: dict,
         comment_post(client, post['id'], comment)
 
 
-def interact_with_followers_of_account(client: ApiClient, target: str, delay: List[float, float], duration: float,
-                                       likes_per_follower: List[int, int], comments_per_follower: List[int, int],
-                                       follow_chance: int, comments: List[str] = None):
+def interact_with_followers_of_account(client: ApiClient, target: str, delay: typing.Tuple[float, float],
+                                       duration: float, likes_per_follower: typing.Tuple[int, int],
+                                       comments_per_follower: typing.Tuple[int, int], follow_chance: int,
+                                       comments: List[str] = None):
 
     if comments_per_follower[1] > 0 and comments is None:
         raise ValueError("No comments provided.")
@@ -61,7 +62,7 @@ def interact_with_followers_of_account(client: ApiClient, target: str, delay: Li
         raise ValueError("Follow chance needs to be a value between 0 and 100")
 
     target_user_id = get_user_id_from_username(client, target)
-    followers = get_followers(client, target_user_id, int(duration // delay))
+    followers = get_followers(client, target_user_id, int(duration // delay[1]))
     logger.info(f"Retrieved a total of {len(followers)} followers from {target}")
 
     for follower in followers:

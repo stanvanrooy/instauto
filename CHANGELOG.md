@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.0.1 (2020-11-23)
+
+### Bug Fixes
+
+* typos in ready made functions ([a033204](https://github.com/stanvanrooy/instauto/commit/a033204ad781243630e7b487aa308d5ef9761ea9))
 ### 1.0.0 (2020-11-21)
 
 

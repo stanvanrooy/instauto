@@ -2,8 +2,8 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 ![tests](https://github.com/stanvanrooy/instauto/workflows/tests/badge.svg)
 [![GitHub stars](https://img.shields.io/github/stars/stanvanrooy/instauto)](https://github.com/stanvanrooy/instauto/stargazers)
-[![PyPI license](https://img.shields.io/pypi/l/instauto2)](https://pypi.python.org/project/instauto2/)
-[![PyPI download month](https://img.shields.io/pypi/dw/instauto2)](https://pypi.org/project/instauto2/)
+[![PyPI license](https://img.shields.io/pypi/l/instauto)](https://pypi.python.org/project/instauto/)
+[![PyPI download month](https://img.shields.io/pypi/dw/instauto)](https://pypi.org/project/instauto/)
 ![coverage](https://github.com/stanvanrooy/instauto/blob/master/coverage.svg)
 
 
@@ -13,9 +13,7 @@ For feature requests, ideas, comments, etc., please open an issue.
 
 ## Installation
 The package can be installed with the following pip command:
-```pip install instauto2```
-
-**Note:** due to a lost password, I temporarily lost access to my own PyPi account. Until that is resolved (see [pypi-support](https://github.com/pypa/pypi-support/issues/744)), `instauto` will be published to `instauto2` :).
+```pip install instauto```
 
 ## Usage
 Here is a simple example that likes a post.

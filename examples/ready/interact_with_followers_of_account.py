@@ -24,10 +24,10 @@ if __name__ == '__main__':
     interact_with_followers_of_account(
         client=client,
         target="instagram",
-        delay=[20.0, 120.0],
+        delay=(20.0, 120.0),
         duration=60.0 * 60.0,
-        likes_per_follower=[1, 5],
-        comments_per_follower=[0, 1],
+        likes_per_follower=(1, 5),
+        comments_per_follower=(0, 1),
         follow_chance=10,
         comments=["Looks good, {full_name}!"],
     )

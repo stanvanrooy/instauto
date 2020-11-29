@@ -50,6 +50,14 @@ class Update(cmmn.Base):
 
 
 class Info(cmmn.Base):
-    def __init__(self, user_id: int, *args, **kwargs):
+    def __init__(self, user_id: int = None, username: str = None, *args, **kwargs):
         self.user_id = user_id
+        self.username = username
         super().__init__(*args, **kwargs)
+
+    @property
+    def endpoint(self):
+        if self.user_id:
+            return f'users/{self.user_id}/info/'
+        elif self.username:
+            return f'users/{self.username}/usernameinfo/'

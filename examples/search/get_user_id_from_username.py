@@ -1,7 +1,7 @@
 import os
 
-from instauto import ApiClient
-from instauto import search as se
+from instauto.api.client import ApiClient
+from instauto.api.actions import search as se
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):

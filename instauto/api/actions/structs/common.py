@@ -1,50 +1,44 @@
 import enum
-from typing import Callable, Optional, Dict, Tuple, Union
-from instauto.api.exceptions import MissingValue
+from typing import Callable, Dict
+import pprint
+import inspect
+from dataclasses import asdict
 
 
 class Base:
-    class State(enum.Enum):
-        required = 0
-        optional = 1
-        default = 2
+    def __init__(self, *args, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+        self._exempt = ["REQUEST", "_datapoint_from_client", "_exempt"]
+        self._datapoint_from_client: Dict[str, Callable[["instauto.api.client.ApiClient"], str]] = {
+            "_csrftoken": lambda c: c._session.cookies['csrftoken'],
+            "device_id": lambda c: c.state.device_id,
+            "_uuid": lambda c: c.state.uuid,
+            "_uid": lambda c: c.state.user_id
+        }
 
-    _datapoint_from_client: Dict[str, Tuple[bool, Callable[[], str]]] = {
-        "_csrftoken": (False, lambda client: client._session.cookies['csrftoken']),
-        "device_id": (False, lambda client: client.state.device_id),
-        "_uuid": (False, lambda client: client.state.uuid),
-        "_uid": (False, lambda client: client.state.user_id)
-    }
+    def fill(self, client) -> "Base":
+        attrs = dir(self)
+        for k, func in self._datapoint_from_client.items():
+            if k in attrs:
+                setattr(self, k, func(client))
+        return self
 
-    def __init__(self, **kwargs):
-        self._custom_data = {}
-        self._defaults = {}
-        self._data = {}
-        self._kwargs = kwargs
+    def to_dict(self) -> Dict[str, str]:
+        d = {}
 
-    def _enable_datapoint_from_client(self, key: str) -> None:
-        self._datapoint_from_client[key][0] = True
+        for k, v in self.__dict__.items():
+            if k in self._exempt or v is None:
+                continue
+            if '__dataclass_fields__' in dir(v):
+                d[k] = asdict(v)
+            elif inspect.isclass(v) and issubclass(v, Base):
+                d[k] = v.to_dict()
+            elif hasattr(v, 'value'):  # we assume this is an Enum value.
+                d[k] = v.value
+            else:
+                d[k] = v
+        return d
 
-    def _add_datapoint_from_client(self, key: str, f: Optional[Callable[[], str]], enabled: bool = False):
-        self._datapoint_from_client[key] = (enabled, f)
-
-    def fill(self, client) -> Dict[str, Union[str, int, float, bool]]:
-        data = {}
-        for key, (enabled, func) in filter(lambda kv: kv[1], self._datapoint_from_client.items()):
-            if enabled:
-                self._data[key] = func(client)
-
-        for key, value in self._custom_data.items():
-            if key in self._data and self._data[key] is not None:
-                data[key] = self._data[key]
-            elif key in self._defaults:
-                data[key] = self._defaults[key]
-            elif value == self.State.required and key not in self._kwargs:
-                raise MissingValue(f"{key} is required but is not provided and has no default value.")
-
-        for key, value in self._kwargs.items():
-            if key not in self._custom_data:
-                raise MissingValue(f"{key} was passed in as a kwarg, but isn't present in `_custom_data`.")
-            data[key] = value
-
-        return data
+    def __repr__(self):
+        return pprint.pformat(self.__dict__)

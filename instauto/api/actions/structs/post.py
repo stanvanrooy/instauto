@@ -1,3 +1,4 @@
+from . import common as cmmn
 import uuid
 import random
 import time
@@ -10,186 +11,15 @@ from dataclasses import dataclass, field
 from typing import Optional, List, Union
 
 from ..helpers import get_image_type
-from instauto.api.structs import WhereToPost
+from instauto.api.structs import PostLocation
+from instauto.api.constants import DEFAULT_DEVICE_PROFILE
 
 logger = logging.getLogger(__name__)
 
 
-@dataclass
-class _Base:
-    """Contains values that are pretty much shared across all API requests."""
-    _csrftoken: str = None
-    _uid: str = None  # user id
-    _uuid: str = None
-    delivery_class: str = 'organic'
-    radio_type: str = 'wifi-none'
-    is_carousel_bumped_post: str = 'False'
-    container_module: str = None
-    media_id: str = None
-    feed_position: str = None
-
-    def _create(self, **kwargs):
-        """Creates an instance of the class, this method should be overwritten in the individual classes with
-        arguments that are required, so it is clear which arguments are needed for which action.
-
-        If the class has an attribute, the default value can be overwritten by providing an argument named after the
-        attribute. This is probably not used often, since the default values should work for basically all cases,
-        but it is nice to have the option.
-        """
-        for k, v in kwargs.items():
-            if hasattr(self,  k):
-                setattr(self, k, v)
-            else:
-                logger.warning("{} was sent as a keyword argument, but isn't supported.")
-
-    def __repr__(self):
-        return pprint.pformat(self.__dict__)
-
-
-@dataclass
-class Unlike(_Base):
-    inventory_source: str = 'media_or_source'
-    action = 'unlike'
-
-    @classmethod
-    def create(cls, media_id: str, **kwargs) -> "Unlike":
-        """Instantiates a instance of the class.
-        Parameters
-        ----------
-        media_id : str
-            The media_id of the post to unlike
-        kwargs
-            Kwargs can be used to overwrite any of the default values.
-        Returns
-        -------
-        Unlike
-            The newly instantiated class instance.
-        Other Parameters
-        -------
-        feed_position : str
-            Specifies which post from the feed it is, starts at 0.
-        """
-        i = cls()
-        i._create(media_id=media_id, **kwargs)
-        return i
-
-
-@dataclass
-class Like(_Base):
-    action = 'like'
-
-    @classmethod
-    def create(cls, media_id: str, **kwargs) -> "Like":
-        """Instantiates a instance of the class.
-        Parameters
-        ----------
-        media_id : str
-            The media_id of the post to like
-        kwargs
-            Kwargs can be used to overwrite any of the default values.
-        Returns
-        -------
-        Like
-            The newly instantiated class instance.
-        Other Parameters
-        -------
-        feed_position : str
-            Specifies which post from the feed it is, starts at 0.
-        """
-        i = cls()
-        i._create(media_id=media_id, **kwargs)
-        return i
-
-
-@dataclass
-class Save(_Base):
-    action = 'save'
-
-    @classmethod
-    def create(cls, media_id: str, **kwargs) -> "Save":
-        """Instantiates a instance of the class.
-        Parameters
-        ----------
-        media_id : str
-            The media_id of the post to save
-        kwargs
-            Kwargs can be used to overwrite any of the default values.
-        Returns
-        -------
-        Save
-            The newly instantiated class instance.
-        Other Parameters
-        -------
-        feed_position : str
-            Specifies which post from the feed it is, starts at 0.
-        """
-        i = cls()
-        i._create(media_id=media_id, **kwargs)
-        return i
-
-
-@dataclass
-class Comment(_Base):
-    idempotence_token: str = field(default_factory=lambda: str(uuid.uuid4()))  # random uuid
-    comment_text: str = None
-    user_breadcrumb: str = None
-    action = 'save'
-
-    @classmethod
-    def create(cls, media_id: str, comment_text: str, **kwargs) -> "Comment":
-        """Instantiates a instance of the class.
-        Parameters
-        ----------
-        media_id : str
-            The media_id of the post to comment on
-        comment_text : str
-            The text of the comment to post, is probably limited to a certain length, haven't tested. TODO
-        kwargs
-            Kwargs can be used to overwrite any of the default values.
-        Returns
-        -------
-        Comment
-            The newly instantiated class instance.
-        Other Parameters
-        -------
-        feed_position : str
-            Specifies which post from the feed it is, starts at 0.
-        """
-        i = cls()
-        i._create(media_id=media_id, comment_text=comment_text, **kwargs)
-        return i
-
-
-@dataclass
-class UpdateCaption(_Base):
-    caption_text: str = None
-    usertags: str = None
-    location: str = None
-    action = 'edit_media'
-
-    @classmethod
-    def create(cls, media_id: str, caption_text: str, **kwargs) -> "UpdateCaption":
-        """Instantiates a instance of the class.
-        Parameters
-        ----------
-        media_id : str
-            The media_id of the post to unlike
-        caption_text : str
-            The text to which the caption should be set. Probably limited, haven't tested yet. TODO
-        kwargs
-            Kwargs can be used to overwrite any of the default values.
-        Returns
-        -------
-        UpdateCaption
-            The newly instantiated class instance.
-        Other Parameters
-        -------
-        feed_position : str
-            Specifies which post from the feed it is, starts at 0.
-        """
-        i = cls()
-        i._create(media_id=media_id, caption_text=caption_text, **kwargs)
-        return i
+#####################################
+# DATACLASSES
+#####################################
 
 
 @dataclass
@@ -241,121 +71,184 @@ class Extra:
         return pprint.pformat(self.__dict__)
 
 
-@dataclass
-class Post:
-    """Contains all information about a post, that is necessary to upload it to Instagram."""
-    scene_capture_type: str = ''
-    timezone_offset: str = field(default_factory=lambda: str(time.localtime().tm_gmtoff))
-    media_folder: str = 'Pictures'
-    source_type: str = None  #: 4 will post to your feed, 3 to your story
-    device_id: str = None
-    caption: str = None
-    x_fb_waterfall_id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    upload_id: str = field(default_factory=lambda: str(time.time()))
-    location: Location = None
-    suggested_venue_position: int = -1
-    device: Device = None
-    edits: Edits = None
-    extra: Extra = None
-    is_suggested_venue: bool = False
-    entity_name: str = None
-    entity_length: int = None
-    entity_type: str = None
-    image_path: str = None
-    multi_sharing: str = "-1"
-    _uid: str = None
-    _uuid: str = None
-    _csrftoken: str = None
+#####################################
+# STRUCTS
+#####################################
 
-    @classmethod
-    def create(cls, path: Union[str, Path], source_type: WhereToPost, caption: str,
-               location: Optional[Location] = None, edits: Optional[Edits] = None,
-               extra: Optional[Extra] = None, **kwargs) -> "Post":
-        """Instantiates a instance of the class.
-        Parameters
-        ----------
-        path : str; Path
-            The location to the image that needs to be uploaded
-        source_type: WhereToPost
-            Specifies if the image will be posted to your feed, or the story. Story hasn't been tested. TODO
-        caption : str
-            The caption that goes along with the post
-        kwargs
-            Kwargs can be used to overwrite any of the default values.
-        location
-        edits
-        extra
-        Returns
-        -------
-        Post
-            The newly instantiated class instance.
-        """
-        source_type = str(source_type.value)
-        with open(path, 'rb') as f:
-            f.seek(0, 2)
-            entity_length = f.tell()
+class _Base(cmmn.Base):
+    """Contains values that are pretty much shared across all API requests."""
+    radio_type: str = ''
+    is_carousel_bumped_post: str = 'False'
+    container_module: str = None
+    media_id: str = None
+    feed_position: str = None
 
-        if edits is not None and extra is None:
-            extra = Extra(edits.crop_original_size[0], edits.crop_original_size[1])
-        elif extra is not None and edits is None:
-            edits = Edits([extra.source_width, extra.source_height])
-        elif extra is None and edits is None:
-            size = imagesize.get(path)
-            edits = Edits(size)
-            extra = Extra(*size)
+    def __init__(self, media_id: str, feed_position: str = None, container_module: str = None,
+                 delivery_class: str = 'organic', is_carousel_bumped_post: str = 'False', *args, **kwargs):
+        self.media_id = media_id
+        self.container_module = container_module
+        self.feed_position = feed_position
+        self.delivery_class = delivery_class
+        self.is_carousel_bumped_post = is_carousel_bumped_post
+        self.radio_type = 'wifi-none'
+        super().__init__(*args, **kwargs)
+        self._exempt.append('media_id')
+
+
+class Unlike(_Base):
+    action = 'unlike'
+
+    def __init__(self, media_id: str, container_module: str = "something", *args, **kwargs):
+        super().__init__(media_id=media_id, container_module=container_module, *args, **kwargs)
+
+
+class Like(_Base):
+    action = 'like'
+
+    def __init__(self, media_id: str, container_module: str = "something", *args, **kwargs):
+        super().__init__(media_id=media_id, container_module=container_module, *args, **kwargs)
+
+
+class Save(_Base):
+    action = 'save'
+
+    def __init__(self, media_id: str, container_module: str = "something", *args, **kwargs):
+        super().__init__(media_id=media_id, container_module=container_module, *args, **kwargs)
+
+
+class Comment(_Base):
+    action = 'comment'
+
+    def __init__(self, media_id: str, comment_text: str, container_module: str = "something", *args, **kwargs):
+        self.comment_text = comment_text
+        self.idempotence_token: str = str(uuid.uuid4())
+        super().__init__(media_id=media_id, container_module=container_module, *args, **kwargs)
+
+
+class UpdateCaption(_Base):
+    action = 'edit_media'
+
+    def __init__(self, media_id: str, caption_text: Optional[str] = None, location: Optional[Location] = None,
+                 container_module: str = "something", *args, **kwargs):
+        self.caption_text = caption_text
+        self.location = location
+        super().__init__(media_id=media_id, container_module=container_module, *args, **kwargs)
+
+
+class _PostBase(cmmn.Base):
+    def __init__(self, path: Union[str, Path], source_type: PostLocation, edits: Optional[Edits],
+                 extra: Optional[Extra], device: Optional[Device], *args, **kwargs):
+        self.upload_id = str(time.time()).split('.')[0]
+        self.timezone_offset = str(time.localtime().tm_gmtoff)
+        self.scene_capture_type = ''
+        self.media_folder = 'Pictures'
+        self.x_fb_waterfall_id = str(uuid.uuid4())
+        self.entity_name = f'{self.upload_id}_0_{random.randint(1000000000, 9999999999)}'
+
+        self.source_type = source_type.value
 
         image_type = get_image_type(path)
+        # See issue #65
+        if image_type not in ['jpg', 'jpeg']:
+            raise ValueError("Instagram only accepts jpg/jpeg images")
 
-        instance = cls(location=location, source_type=source_type, caption=caption, edits=edits, extra=extra)
+        self.entity_type = f'image/{image_type}'
+        self.image_path = path
 
-        entity_name = f'{instance.upload_id}_0_{random.randint(1000000000, 9999999999)}'
-        instance.entity_length = entity_length
-        instance.entity_name = entity_name
-        instance.entity_type = f'image/{image_type}'
+        with open(path, 'rb') as f:
+            f.seek(0, 2)
+            self.entity_length = f.tell()
 
-        instance.image_path = path
+        if edits is not None and extra is None:
+            self.extra = Extra(edits.crop_original_size[0], edits.crop_original_size[1])
+        elif extra is not None and edits is None:
+            self.edits = Edits([extra.source_width, extra.source_height])
+        elif extra is None and edits is None:
+            if hasattr(self, 'size'):
+                size = self.size
+            else:
+                size = imagesize.get(self.image_path)
+            self.edits = Edits(size)
+            self.extra = Extra(*size)
 
-        # do not use the functionality from _BasePost, so we can warn users about using values that will be
-        # overwritten later on.
-        overwritten_kwargs = ['device_id', 'device', '_csrftoken', '_uid', '__uuid']
-        for k, v in kwargs.items():
-            if not hasattr(instance, k):
-                raise NameError(f"PostPost object does not have an attribute named {k}")
-            if k in overwritten_kwargs:
-                logger.warning(f"{k} was provided as a keyword argument. This argument will be overwritten.")
-            setattr(instance, k, v)
-
-        return instance
+        self.device = device or Device(
+            DEFAULT_DEVICE_PROFILE['manufacturer'],
+            DEFAULT_DEVICE_PROFILE['model'],
+            DEFAULT_DEVICE_PROFILE['android_sdk_version'],
+            DEFAULT_DEVICE_PROFILE['android_release']
+        )
+        super().__init__(*args, **kwargs)
 
 
-@dataclass
-class RetrieveByUser:
-    user_id: str = None
-    max_id: str = None
-    exclude_comment: str = 'true'
-    only_fetch_first_carousel_media: str = 'false'
-    page = 0
+class PostFeed(_PostBase):
+    """Contains all information about a post, that is necessary to upload it to Instagram."""
+    device_id: str = None
 
-    @classmethod
-    def create(cls, user_id: str, **kwargs) -> "RetrieveByUser":
-        """
-        Parameters
-        ----------
-        user_id : str
-        Other Parameters
-        ----------
-        exclude_comment : str
-            'true' will only retrieve the posts, 'false' will retrieve the posts + top comments
-        only_fetch_first_carousel_media : str
-            'true' will retrieve only the first post, if it's a carousel post (multiple images / videos),
-            'false' will return all media.
-        """
-        i = cls()
-        i.user_id = user_id
-        for k, v in kwargs.items():
-            if hasattr(i, k):
-                setattr(i, k, v)
-        return i
+    def __init__(self, path: Union[str, Path], caption: str,
+                 location: Optional[Location] = None, edits: Optional[Edits] = None,
+                 extra: Optional[Extra] = None, device: Optional[Device] = None, *args, **kwargs):
+        self.suggested_venue_position = -1
+        self.multi_sharing = '-1'
+        self.caption = caption
+        self.location = location
+        self.size = imagesize.get(path)
+        super().__init__(path, PostLocation.Feed, edits, extra, device, *args, **kwargs)
 
-    def __repr__(self):
-        return pprint.pformat(self.__dict__)
+
+class PostStory(_PostBase):
+    _csrftoken: str = None
+    _uid: str = None
+    _uuid: str = None
+    device_id: str = None
+
+    def __init__(self, path: Union[str, Path], edits: Optional[Edits] = None,
+                 extra: Optional[Extra] = None, device: Optional[Device] = None, *args, **kwargs):
+        self.camera_session_id = str(uuid.uuid4())
+        self.creation_surface = 'camera'
+        current_time = time.time()
+        self.imported_taken_at = str(current_time - random.randint(10000, 200000)).split('.')[0]
+        self.client_timestamp = str(current_time - 3).split('.')[0]
+        self.client_shared_at = str(current_time + 1).split('.')[0]
+        self.capture_type = 'normal'
+        self.configure_mode = '1'
+        self.supported_capabilities_new = "[{\"name\":\"SUPPORTED_SDK_VERSIONS\",\"value\":\"66.0,67.0,68.0,69.0,70.0,71.0,72.0,73.0,74.0,75.0,76.0,77.0,78.0,79.0,80.0,81.0,82.0,83.0,84.0,85.0,86.0,87.0,88.0,89.0,90.0,91.0,92.0\"},{\"name\":\"FACE_TRACKER_VERSION\",\"value\":\"14\"},{\"name\":\"segmentation\",\"value\":\"segmentation_enabled\"},{\"name\":\"COMPRESSION\",\"value\":\"ETC2_COMPRESSION\"},{\"name\":\"world_tracker\",\"value\":\"world_tracker_enabled\"},{\"name\":\"gyroscope\",\"value\":\"gyroscope_enabled\"}]"
+        super().__init__(path, PostLocation.Story, edits, extra, device, *args, **kwargs)
+        self._datapoint_from_client['device_id'] = lambda client: client.state.android_id
+
+
+class RetrieveByUser(cmmn.Base):
+    def __init__(self, user_id: str, exclude_comment: str = 'true', only_fetch_first_carousel_media: str = 'false',
+                 *args, **kwargs):
+        self.user_id = user_id
+        self.max_id: Optional[str] = None
+        self.exclude_comment = exclude_comment
+        self.only_fetch_first_carousel_media = only_fetch_first_carousel_media
+        self.page = 0
+        super().__init__(*args, **kwargs)
+
+
+class RetrieveByTag(cmmn.Base):
+    def __init__(self, tag_name: str, exclude_comment: str = 'true', only_fetch_first_carousel_media: str = 'false', *args, **kwargs):
+        self.max_id: Optional[str] = None
+        self.exclude_comment = exclude_comment
+        self.only_fetch_first_carousel_media = only_fetch_first_carousel_media
+        self.page = 0
+        self.tag_name = tag_name
+        super().__init__(*args, **kwargs)
+
+
+class RetrieveLikers(cmmn.Base):
+    REQUEST = "post/retrieve_likers.json"
+
+    def __init__(self, media_id: str, *args, **kwargs):
+        self.media_id = media_id
+        super().__init__(*args, **kwargs)
+
+
+class RetrieveCommenters(cmmn.Base):
+    REQUEST = "post/retrieve_commenters.json"
+
+    def __init__(self, media_id: str, *args, **kwargs):
+        self.media_id = media_id
+        super().__init__(*args, **kwargs)
+

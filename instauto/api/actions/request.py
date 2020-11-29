@@ -4,17 +4,17 @@ import json
 import urllib.parse
 import logging
 
-from typing import Dict, Callable
+from typing import Dict, Callable, Union
 
 from instauto.api.structs import DeviceProfile, IGProfile, State, Method
 from instauto.api.constants import API_BASE_URL
-from instauto.api.exceptions import WrongMethodException, IncorrectLoginDetails, InvalidUserId
+from instauto.api.exceptions import WrongMethodException, IncorrectLoginDetails, InvalidUserId, BadResponse, AuthorizationError
 
 logger = logging.getLogger(__name__)
 logging.captureWarnings(True)
 
 
-class RequestMixIn:
+class RequestMixin:
     ig_profile: IGProfile
     device_profile: DeviceProfile
     state: State
@@ -123,7 +123,7 @@ class RequestMixIn:
         public_api_key = headers.get('ig-set-password-encryption-pub-key')
         if public_api_key is not None: self.state.public_api_key = public_api_key; self._encrypt_password()
 
-    def _request(self, endpoint: str, method: Method, query: dict = None, data: dict = None, headers: Dict[str, str]
+    def _request(self, endpoint: str, method: Method, query: dict = None, data: Union[dict, bytes] = None, headers: Dict[str, str]
     = None, default_headers: bool = None, signed: bool = None) -> requests.Response:
         """Creates and sends a request to the specified endpoint.
 
@@ -217,11 +217,6 @@ class RequestMixIn:
             logger.exception(f"Exception while sending request to {url} with data: \n {data}")
             raise e
 
-        self._check_response_for_errors(resp)
-
-        for func in self._request_finished_callbacks:
-            func(resp.headers)
-
         logger.debug(
             f'{"*" * 20} START REQUEST {"*" * 20}\n'
             f'METHOD: {resp.request.method}\n'
@@ -231,18 +226,40 @@ class RequestMixIn:
             f'RESPONSE: {resp.content}\n'
             f'{"*" * 20} END REQUEST {"*" * 20}'
         )
+
+        self._check_response_for_errors(resp)
+
+        for func in self._request_finished_callbacks:
+            func(resp.headers)
+
         return resp
 
-    def _check_response_for_errors(self, resp):
+    def _check_response_for_errors(self, resp: requests.Response) -> None:
+        if resp.ok:
+            return
+
         try:
             parsed = resp.json()
         except json.JSONDecodeError:
-            if not resp.ok:
-                if resp.status_code == 404 and '/friendships/' in resp.url:
-                    raise InvalidUserId(f"url: {resp.url} is not recognized by Instagram")
+            if resp.status_code == 404 and '/friendships/' in resp.url:
+                raise InvalidUserId(f"account id: {resp.url.split('/')[-2]} is not recognized by Instagram or you do not have a relation with this account.")
 
-                logger.exception(f"response received: \n{resp.text}\nurl: {resp.url}\nstatus code: {resp.status_code}")
-                raise Exception("Received a non-200 response from Instagram")
-            return
-        if not resp.ok and parsed.get('description') == 'invalid password':
+            logger.exception(f"response received: \n{resp.text}\nurl: {resp.url}\nstatus code: {resp.status_code}")
+            raise BadResponse("Received a non-200 response from Instagram")
+
+        if parsed.get('error_type') == 'bad_password':
             raise IncorrectLoginDetails("Instagram does not recognize the provided login details")
+        if parsed.get('message') in ("checkpoint_required", "challenge_required"):
+            if not hasattr(self, '_handle_challenge'):
+                raise BadResponse("Challenge required. ChallengeMixin is not mixed in.")
+            eh = self._handle_challenge(resp)
+            if eh:
+                return
+        if parsed.get('message') == 'feedback_required':
+            # TODO: implement a handler for this error
+            raise BadResponse("Something unexpected happened. Please check the IG app.")
+        if parsed.get('message') == 'rate_limit_error':
+            raise TimeoutError("Calm down. Please try again in a few minutes.")
+        if parsed.get('message') == 'Not authorized to view user':
+            raise AuthorizationError("This is a private user, which you do not follow.")
+        raise BadResponse("Received a non-200 response from Instagram")

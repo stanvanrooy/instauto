@@ -1,5 +1,6 @@
 from requests import Session, Response
 from typing import Callable, Union, Dict
+from instauto.api.actions.stubs import _request
 
 from ..structs import IGProfile, State, DeviceProfile, Method
 from .structs.profile import SetGender, SetBiography, Update, Info
@@ -11,19 +12,13 @@ class ProfileMixin:
     ig_profile: IGProfile
     state: State
     device_profile: DeviceProfile
-    _request: Callable
+    _request: _request
     _gen_uuid: Callable
     _generate_user_breadcrumb: Callable
 
     def _profile_act(self, obj: Union[Update, SetBiography, SetGender]) -> Response:
-        obj._csrftoken = self._session.cookies['csrftoken']
-        obj._uid = self.state.user_id
-        obj._uuid = self.state.uuid
-        obj.device_id = self.state.device_id
-
         # retrieve the existing data for all profile data fields
         current_data = self._request('accounts/current_user/', Method.GET, query={'edit': 'true'}).json()
-
         # ensure we don't overwrite existing data to nothing
         if obj.phone_number is None: obj.phone_number = current_data['user']['phone_number']
         if obj.first_name is None: obj.first_name = current_data['user']['full_name']
@@ -32,23 +27,16 @@ class ProfileMixin:
         if obj.biography is None: obj.biography = current_data['user']['biography']
         if obj.username is None: obj.username = current_data['user']['trusted_username']
 
-        endpoint = f'accounts/edit_profile/'
-        return self._request(endpoint, Method.POST, data=obj.__dict__, signed=True)
+        endpoint = 'accounts/edit_profile/'
+        return self._request(endpoint, Method.POST, data=obj.to_dict(), signed=True)
 
     def profile_set_biography(self, obj: SetBiography) -> Response:
         """Sets the biography of the currently logged in user"""
-        obj._csrftoken = self._session.cookies['csrftoken']
-        obj._uuid = self.state.uuid
-        obj._uid = self.state.user_id
-
-        return self._request('accounts/set_biography/', Method.POST, data=obj.__dict__)
+        return self._request('accounts/set_biography/', Method.POST, data=obj.to_dict())
 
     def profile_set_gender(self, obj: SetGender) -> Response:
         """Sets the gender of the currently logged in user"""
-        obj._csrftoken = self._session.cookies['csrftoken']
-        obj._uuid = self.state.uuid
-
-        return self._request('accounts/set_gender/', Method.POST, data=obj.__dict__, signed=False)
+        return self._request('accounts/set_gender/', Method.POST, data=obj.to_dict(), signed=False)
 
     def profile_update(self, obj: Update):
         """Updates the name, username, email, phone number and url for the currently logged in user."""

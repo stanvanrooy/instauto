@@ -4,6 +4,7 @@ import base64
 import struct
 
 from typing import Dict, Callable
+from instauto.api.actions.stubs import _request
 
 from Cryptodome.Cipher import AES, PKCS1_v1_5
 from Cryptodome.PublicKey import RSA
@@ -12,11 +13,11 @@ from Cryptodome import Random
 from ..structs import Method, State, IGProfile, LoggedInAccountData
 
 
-class AuthenticationMixIn:
+class AuthenticationMixin:
     """This class handles everything authentication related."""
     _session: Session
     state: State
-    _request: Callable
+    _request: _request
     _update_token: Callable
     _user_name: str
     _user_agent: str
@@ -61,7 +62,13 @@ class AuthenticationMixIn:
         }
         # does the actual login
         resp = self._request('accounts/login/', Method.POST, data=data2, signed=True)
-        self.state.logged_in_account_data = LoggedInAccountData(**resp.json()['logged_in_user'])
+        try:
+            self.state.logged_in_account_data = LoggedInAccountData(**resp.json()['logged_in_user'])
+        except KeyError as e:
+            # The response can be empty if challenge was needed. In that case, the
+            # logged_in_account_data attribute will be set from within in the challenge handler.
+            if self.state.logged_in_account_data is None:
+                raise e
 
     def _build_initial_headers(self) -> Dict[str, str]:
         """Builds a dictionary that contains all header values required for the first request sent, before login,
@@ -90,8 +97,9 @@ class AuthenticationMixIn:
 
     def _encrypt_password(self) -> None:
         """Encrypts the raw password into a form that Instagram accepts."""
-        if not self.state.public_api_key: return  # the api key will be retrieved from the first request, so it will not
-                                                  # be present during the initial request
+        # the api key will be retrieved from the first request, so it will not
+        # be present during the initial request
+        if not self.state.public_api_key: return
         key = Random.get_random_bytes(32)
         iv = Random.get_random_bytes(12)
         time = int(datetime.datetime.now().timestamp())

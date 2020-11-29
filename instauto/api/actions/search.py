@@ -1,11 +1,11 @@
 from requests import Response
-from typing import Union, Callable
-from .structs.search import Username
+from instauto.api.actions.stubs import _request
+from .structs.search import Username,Tag
 from ..structs import Method
 
 
 class SearchMixin:
-    _request: Callable
+    _request: _request
 
     def search_username(self, obj: Username) -> Response:
         """
@@ -48,3 +48,6 @@ class SearchMixin:
           }
         """
         return self._request('users/search/', Method.GET, query=obj.__dict__)
+
+    def search_tag(self, obj: Tag) -> Response:
+        return self._request('tags/search/', Method.GET, query=obj.__dict__)

@@ -1,7 +1,7 @@
 import os
 
-from instauto import profile as pr
-from instauto import ApiClient
+from instauto.api.actions import profile as pr
+from instauto.api.client import ApiClient
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):

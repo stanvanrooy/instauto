@@ -1,8 +1,7 @@
 import os
 
-from instauto import ApiClient
-from instauto import structs as st
-from instauto import post as ps
+from instauto.api.client import ApiClient
+from instauto.api.actions import post as ps
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -16,9 +15,8 @@ if __name__ == '__main__':
     # location = ps.Location(lat=38.897699584711, lng=-77.036494857373)
     # location = ps.Location(name="The white house")
     location = ps.Location(lat=68.14259, lng=148.84371, name="The white house")
-    post = ps.Post.create(
-        path='./test_story.jpg',
-        source_type=st.WhereToPost.Feed,
+    post = ps.PostFeed(
+        path='./test_feed.jpg',
         caption='This is an example. Follow me!',
         location=location
     )

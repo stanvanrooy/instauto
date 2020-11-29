@@ -1,8 +1,7 @@
 import os
 
-from instauto import ApiClient
-from instauto import structs as st
-from instauto import post as ps
+from instauto.api.client import ApiClient
+from instauto.api.actions import post as ps
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -12,11 +11,8 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    post = ps.Post.create(
+    post = ps.PostStory(
         path='./test_story.jpg',
-        source_type=st.WhereToPost.Feed,
-        caption='This is an example. Follow me!'
     )
-
     resp = client.post_post(post, 80)
     print("Success: ", resp.ok)

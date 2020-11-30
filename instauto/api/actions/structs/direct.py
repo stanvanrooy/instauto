@@ -17,6 +17,7 @@ class _Base(cmmn.Base):
 
 class Message(_Base):
 
+    REQUEST = 'direct/message.json'
     endpoint = "direct_v2/threads/broadcast/text/"
 
     def __init__(self, message, recipients=None, threads=None, *args, **kwargs):

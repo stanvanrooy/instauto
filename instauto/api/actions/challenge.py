@@ -22,11 +22,12 @@ class ChallengeMixin:
 
     def _handle_challenge(self, resp: requests.Response) -> bool:
         resp_data = resp.json()
+        print("auth data1\n{}".format(resp_data))
         if resp_data['message'] not in ('challenge_required', 'checkpoint_required'):
             raise BadResponse("Challenge required, but no URL provided.")
 
         api_path = resp_data['challenge']['api_path'][1:]
-        _ = self._request(endpoint=api_path, method=Method.GET, query={
+        resp_data2 = self._request(endpoint=api_path, method=Method.GET, query={
                                     "guid": self.state.uuid,
                                     "device_id": self.state.device_id
                                 }
@@ -34,15 +35,29 @@ class ChallengeMixin:
         # TODO: Add support for different kinds of challenges.
         #       Currently, only the verification pin challenge is supported, and other challenges, such as the
         #       'verify this was you', do not work.
-        _ = self._request(
-            endpoint=api_path, method=Method.POST, data={
-                "choice": 0,  # TODO: enum phone/email verification. Which value represent which one?
-                "_csrftoken": self._session.cookies['csrftoken'],
-                "_uuid": self.state.uuid,
-                "bloks_versioning_id": self.state.bloks_version_id,
-                "post": 1
-            }
-        )
+        resp_json2 = resp_data2.json()
+        if int(resp_json2.get("step_data", {}).get("choice", 0)) == 1:
+            # server only suppor choice 1, this is requiry some other devices to confirm send verification, like web
+            _ = self._request(
+                endpoint=api_path, method=Method.POST, data={
+                    "choice": 1,  # TODO: enum phone/email verification. Which value represent which one?
+                    "_csrftoken": self._session.cookies['csrftoken'],
+                    "_uuid": self.state.uuid,
+                    "bloks_versioning_id": self.state.bloks_version_id,
+                    "post": 1
+                }
+            )
+        else:
+            _ = self._request(
+                endpoint=api_path, method=Method.POST, data={
+                    "choice": 0,  # TODO: enum phone/email verification. Which value represent which one?
+                    "_csrftoken": self._session.cookies['csrftoken'],
+                    "_uuid": self.state.uuid,
+                    "bloks_versioning_id": self.state.bloks_version_id,
+                    "post": 1
+                }
+            )
+
         security_code = input("Verification needed. Type verification code here: ")
         _ = self._request(
             endpoint=api_path, method=Method.POST, data={

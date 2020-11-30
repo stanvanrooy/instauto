@@ -197,7 +197,7 @@ class State:
         self.target = ""
         self.public_api_key = ""
         self.public_api_key_id = 0
-        self.logged_in_account_data = LoggedInAccountData
+        self.logged_in_account_data = LoggedInAccountData()
 
     @property
     def connection_speed(self) -> str:

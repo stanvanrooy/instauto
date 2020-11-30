@@ -37,16 +37,17 @@ class ChallengeMixin:
         #       'verify this was you', do not work.
         resp_json2 = resp_data2.json()
         if int(resp_json2.get("step_data", {}).get("choice", 0)) == 1:
-            # server only suppor choice 1, this is requiry some other devices to confirm send verification, like web
+            # server only support choice 1, this is requiry some other devices to confirm send verification, like web
             _ = self._request(
                 endpoint=api_path, method=Method.POST, data={
-                    "choice": 1,  # TODO: enum phone/email verification. Which value represent which one?
+                    "choice": 1,  # TODO: enum to confirm send verification code.
                     "_csrftoken": self._session.cookies['csrftoken'],
                     "_uuid": self.state.uuid,
                     "bloks_versioning_id": self.state.bloks_version_id,
                     "post": 1
                 }
             )
+            print("Maybe should confirm in web this was me to obtain the verification code.")
         else:
             _ = self._request(
                 endpoint=api_path, method=Method.POST, data={

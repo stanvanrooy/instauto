@@ -3,7 +3,7 @@
 ![tests](https://github.com/stanvanrooy/instauto/workflows/tests/badge.svg)
 [![GitHub stars](https://img.shields.io/github/stars/stanvanrooy/instauto)](https://github.com/stanvanrooy/instauto/stargazers)
 [![PyPI license](https://img.shields.io/pypi/l/instauto)](https://pypi.python.org/project/instauto/)
-[![PyPI download month](https://img.shields.io/pypi/dw/instauto)](https://pypi.org/project/instauto/)
+[![Downloads](https://pepy.tech/badge/instauto/week)](https://pepy.tech/project/instauto)
 ![coverage](https://github.com/stanvanrooy/instauto/blob/master/coverage.svg)
 
 

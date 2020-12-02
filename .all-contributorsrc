@@ -1,4 +1,4 @@
-  {
+{
   "files": [
     "README.md"
   ],
@@ -23,7 +23,8 @@
       "contributions": [
         "code"
       ]
-      }, {
+    },
+    {
       "login": "juhas96",
       "name": "Jakub Juhas",
       "avatar_url": "https://avatars3.githubusercontent.com/u/25826778?v=4",
@@ -32,40 +33,51 @@
         "code",
         "doc",
         "test"
-       ]
-       }, 
-       {
-         "login": "Samu1808",
-         "name": "Samu1808",
-         "avatar_url":"https://avatars3.githubusercontent.com/u/64809910?v=4",
-         "profile":"https://github.com/Samu1808",
-         "contributions":[
-            "code"
-         ]
-      },
-      {
-         "login":"kevinjon27",
-         "name":"Kevin Jonathan",
-         "avatar_url":"https://avatars3.githubusercontent.com/u/12078441?v=4",
-         "profile":"https://www.kevinjonathan.com",
-         "contributions":[
-            "doc"
-         ]
-      },
-      {
-         "login":"marvic2409",
-         "name":"Martin Nikolov",
-         "avatar_url":"https://avatars3.githubusercontent.com/u/25594875?v=4",
-         "profile":"https://github.com/marvic2409",
-         "contributions":[
-            "code"
-         ]
-      }
-   ],
-   "contributorsPerLine":7,
-   "projectName":"instauto",
-   "projectOwner":"stanvanrooy",
-   "repoType":"github",
-   "repoHost":"https://github.com",
-   "skipCi":true
+      ]
+    },
+    {
+      "login": "Samu1808",
+      "name": "Samu1808",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/64809910?v=4",
+      "profile": "https://github.com/Samu1808",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "kevinjon27",
+      "name": "Kevin Jonathan",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/12078441?v=4",
+      "profile": "https://www.kevinjonathan.com",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "marvic2409",
+      "name": "Martin Nikolov",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/25594875?v=4",
+      "profile": "https://github.com/marvic2409",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "b177y",
+      "name": "b177y",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/34008579?v=4",
+      "profile": "https://github.com/b177y",
+      "contributions": [
+        "code",
+        "test",
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "instauto",
+  "projectOwner": "stanvanrooy",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
 }

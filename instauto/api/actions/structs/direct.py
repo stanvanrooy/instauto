@@ -6,21 +6,26 @@ logger = logging.getLogger(__name__)
 
 
 class _Base(cmmn.Base):
-    def __init__(self, recipients, threads, *args, **kwargs):
+    def __init__(self, recipients: list, threads: list, *args, **kwargs):
         if recipients:
             self.recipient_users = json.dumps(recipients)
         if threads:
             self.thread_ids = json.dumps(threads)
         super().__init__(*args, **kwargs)
-        self._exempt.extend(['endpoint'])
+        self._exempt.extend(['endpoint', 'broadcast_type'])
+    
+    @property
+    def endpoint(self):
+        return f'direct_v2/threads/broadcast/{self.broadcast_type}/'
 
 
 class Message(_Base):
 
     REQUEST = 'direct/message.json'
-    endpoint = "direct_v2/threads/broadcast/text/"
+    broadcast_type = 'text'
 
-    def __init__(self, message, recipients=None, threads=None, *args, **kwargs):
+    def __init__(self, message: str, recipients: list=None,
+                 threads: list=None, *args, **kwargs):
         self.text = message
         super().__init__(recipients, threads, *args, **kwargs)
 
@@ -28,9 +33,10 @@ class Message(_Base):
 class MediaShare(_Base):
 
     REQUEST = 'direct/mediashare.json'
-    endpoint = "direct_v2/threads/broadcast/media_share/"
+    broadcast_type = 'media_share'
 
-    def __init__(self, media_id, recipients=None, threads=None, *args, **kwargs):
+    def __init__(self, media_id: str, recipients: list=None,
+                 threads: list=None, *args, **kwargs):
         self.media_id = media_id
         super().__init__(recipients, threads, *args, **kwargs)
 
@@ -38,9 +44,10 @@ class MediaShare(_Base):
 class LinkShare(_Base):
 
     REQUEST = 'direct/linkshare.json'
-    endpoint = "direct_v2/threads/broadcast/link/"
+    broadcast_type = 'link'
 
-    def __init__(self, text, links, recipients=None, threads=None, *args, **kwargs):
+    def __init__(self, text: str, links: list, recipients: list=None,
+                 threads: list=None, *args, **kwargs):
         if type(links) != list:
             links = [links]
         self.link_text = text
@@ -51,9 +58,10 @@ class LinkShare(_Base):
 class ProfileShare(_Base):
 
     REQUEST = 'direct/profileshare.json'
-    endpoint = "direct_v2/threads/broadcast/profile/"
+    broadcast_type = 'profile'
 
-    def __init__(self, profile_id, recipients=None, threads=None, *args, **kwargs):
+    def __init__(self, profile_id: str, recipients: list=None,
+                 threads: list=None, *args, **kwargs):
         self.profile_user_id = profile_id
         super().__init__(recipients, threads, *args, **kwargs)
 
@@ -61,9 +69,10 @@ class ProfileShare(_Base):
 class DirectPhoto(_Base):
 
     REQUEST = 'direct/photoshare.json'
-    endpoint = "direct_v2/threads/broadcast/configure_photo/"
+    broadcast_type = 'configure_photo'
 
-    def __init__(self, upload_id, recipients=None, threads=None, *args, **kwargs):
+    def __init__(self, upload_id: str, recipients: list=None,
+                 threads: list=None, *args, **kwargs):
         self.upload_id = upload_id
         self.allow_full_aspect_ratio = True
         super().__init__(recipients, threads, *args, **kwargs)
@@ -72,11 +81,12 @@ class DirectPhoto(_Base):
 class DirectVideo(_Base):
 
     REQUEST = 'direct/videoshare.json'
-    endpoint = "direct_v2/threads/broadcast/configure_video/"
+    broadcast_type = 'configure_video'
     sampled = True
     video_result = ''
 
-    def __init__(self, upload_id, recipients=None, threads=None, *args, **kwargs):
+    def __init__(self, upload_id: str, recipients: list=None,
+                 threads: list=None, *args, **kwargs):
         self.upload_id = upload_id
         self.sampled = True
         self.video_result = ''

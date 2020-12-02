@@ -14,4 +14,4 @@ if __name__ == '__main__':
     media_id = ""
     ms = MediaShare(media_id, recipients=[[userid]])
     response = client.direct_send(ms)
-    print(response)
+    print(response.json())

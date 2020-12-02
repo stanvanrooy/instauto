@@ -13,4 +13,4 @@ if __name__ == '__main__':
     userid = "" # recipient user id
     m = Message("Testing 1 2 3...", recipients=[[userid]])
     response = client.direct_send(m)
-    print(response)
+    print(response.json())

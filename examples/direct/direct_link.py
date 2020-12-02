@@ -13,4 +13,4 @@ if __name__ == '__main__':
     userid = "" # recipient of link
     ls = LinkShare("Link: https://google.com", "https://google.com", recipients=[[userid]])
     response = client.direct_send(ls)
-    print(response)
+    print(response.json())

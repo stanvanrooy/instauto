@@ -14,4 +14,4 @@ if __name__ == '__main__':
     profile_id = ""
     ps = ProfileShare(profile_id, recipients=[[userid]])
     response = client.direct_send(ps)
-    print(response)
+    print(response.json())

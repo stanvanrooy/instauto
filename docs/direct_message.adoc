@@ -1,0 +1,154 @@
+= Direct Message Usage
+:toc:
+
+== Getting Inbox and Threads
+
+Full example code is in link:../examples/direct/direct_thread.py[direct_thread.py].
+
+Pagination is not yet handled - the current implementation will return the most recent inbox / thread items.
+
+For the following examples you will need the following import:
+
+....
+from instauto.api.client import ApiClient
+....
+
+and you will need to set up a 'client':
+
+....
+client = ApiClient(user_name="username123", password="pass123")
+....
+
+=== Inbox
+
+....
+...
+
+inbox = client.direct_inbox()
+
+threads = inbox['inbox']['threads']
+....
+
+Retrieving the inbox will give you useful information and metadata about your direct inbox, but the most useful data from this response is likely to be the threads - this is a list containing a json object for each thread (each 'chat' in your direct message inbox) with information about users, the latest sent item in the chat and chat metadata.
+
+=== Threads
+
+You can select a thread id from the inbox response above and retrieve the thread:
+
+....
+...
+
+thread = client.direct_thread(thread_id) # using thread_id from a thread in the inbox response
+items = thread['thread']['items']
+....
+
+Retrieving a thread will give you metadata about the chat, such as users and chat settings. The items within the thread object contains a list of chat items (e.g. messages, photos, media shares) - with a json object for each item, containing item type, item content, item timestamp etc.
+
+== Sending Direct Items
+
+For all the following examples you will need the following imports:
+
+....
+from instauto.api.client import ApiClient
+import instauto.api.actions.direct as dr
+....
+
+and you will need to set up a 'client':
+
+....
+client = ApiClient(user_name="username123", password="pass123")
+....
+
+When sending items you need to set either 'recipients' or 'threads' (or both) in the item object. Examples of both are used below.
+
+**recipients** takes the form of a 2D list, where each element of recipients is a list of user ids. For example if recipients was set to `[[user1_id], [user2_id, user3_id]]`, the item would be sent to user1 individually, then to user2 and user3 together (in one thread).
+
+**threads** is a normal list where each element is a thread_id - you can find thread ids from the inbox (see above). For example if threads was set to `[thread1id, thread2id]`, the item would be sent to thread1 and thread2 (separately).
+
+WARNING: Remember to use `thread_id` from inbox as the thread id - not `thread_v2_id`
+
+=== Messages
+
+link:../examples/direct/direct_message.py[Example code].
+
+....
+...
+
+rec = "12345678" # user id of recipient
+m = dr.Message("message text", recipients=[[rec]])
+client.direct_send(m)
+....
+
+=== Link
+
+link:../examples/direct/direct_link.py[Example code].
+
+....
+...
+
+thread = "12345678" # thread id to send to
+ls = dr.LinkShare("test link https://google.com", ["https://google.com"], threads=[thread])
+client.direct_send(ls)
+....
+
+For the LinkShare item, the first parameter is the link text, followed by the list of link URLs. Every link that you want to be clickable should be present in both the text and the URL list.
+
+=== Profile
+
+link:../examples/direct/direct_profile.py[Example code].
+
+....
+...
+
+rec1 = "12345678" # user id of recipient 1
+rec2 = "23456789" # user id of recipient 2
+profile_id = "34567890" # user id of profile you are sharing
+ps = dr.ProfileShare(profile_id, recipients=[[rec1], [rec2]])
+client.direct_send(ps)
+....
+
+=== Media Share
+
+link:../examples/direct/direct_share.py[Example code].
+
+....
+...
+
+rec1 = "12345678" # user id of recipient 1
+rec2 = "23456789" # user id of recipient 2
+rec3 = "34567890" # user id of recipient 3
+media_id = "1212121289898989343434" # id of media being shared
+ms = dr.MediaShare(media_id, recipients=[[rec1], [rec2, rec3]])
+client.direct_send(ms)
+....
+
+=== Photo Share
+
+link:../examples/direct/direct_photo.py[Example code].
+
+To share a photo we first have to upload it:
+
+....
+...
+from instauto.api.actions.post import PostFeed as PhotoUpload
+
+ph = PhotoUpload(path="test.jpg", caption="")
+response = client._upload_image(ph, quality=70)
+
+upload_id = response['upload_id']
+....
+
+Then we can share it using the upload_id:
+....
+...
+
+rec = "12345678" # user id of recipient
+thread = "23456789" # thread id to share to
+upload_id = "1212121289898989343434" # id of media being shared
+dp = dr.DirectPhoto(upload_id, recipients=[[rec]], threads=[thread])
+client.direct_send(dp)
+....
+
+=== Video Share
+
+The video sharing feature is unfinished.

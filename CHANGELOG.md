@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.0.2 (2020-12-2)
+* add direct message functionality ([2683ce8](https://github.com/stanvanrooy/instauto/commit/2683ce806a36e515052dbb16af4b97e75daa2e1b))
+
 ### 1.0.1 (2020-11-23)
 
 ### Bug Fixes

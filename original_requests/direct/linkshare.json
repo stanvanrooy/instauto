@@ -1,11 +1,11 @@
 {
   "request": {
-    "text": "",
+    "link_text": "test link.com",
+    "link_urls": ["link.com"],
     "recipient_users": [],
     "thread_ids": []
   },
   "response": {
-    "status": "ok",
     "threads": [
         {
             "thread_id": "",
@@ -41,14 +41,24 @@
                 {
                     "item_id": "",
                     "user_id": 0,
-                    "timestamp": 0,
-                    "item_type": "text",
-                    "text": "Testing 1 2 3...",
+                    "timestamp": 1606941434135449,
+                    "item_type": "",
+                    "link": {
+                        "text": "Link: https://google.com",
+                        "link_context": {
+                            "link_url": "https://google.com",
+                            "link_title": "Google",
+                            "link_summary": "December Holidays 2020 #GoogleDoodle",
+                            "link_image_url": "https://external.xx.fbcdn.net/safe_image.php?d=AQBzeQ5Sufuu-LYA&w=1080&h=600&url=https%3A%2F%2Fwww.google.com%2Flogos%2Fdoodles%2F2020%2Fdecember-holidays-days-2-30-6753651837108830.2-2xa.gif&upscale=1&_nc_cb=1&_nc_hash=AQCUpzlKZPWCLz3x"
+                        },
+                        "client_context": null,
+                        "mutation_token": null
+                    },
                     "show_forward_attribution": false,
                     "is_shh_mode": false
                 }
             ],
-            "last_activity_at": 1606756641665092,
+            "last_activity_at": 1606941434135449,
             "muted": false,
             "is_pin": false,
             "named": false,
@@ -84,34 +94,46 @@
             "has_older": true,
             "has_newer": true,
             "last_seen_at": {
-                "idstring": {
+                "userid": {
                     "timestamp": "",
                     "item_id": "",
+                    "created_at": "",
                     "shh_seen_state": {}
                 },
-                "idstring2": {
+                "userid": {
                     "timestamp": "",
                     "created_at": "",
                     "item_id": "",
                     "shh_seen_state": {}
                 }
             },
-            "newest_cursor": "29639428557528997473611914959388672",
-            "oldest_cursor": "29639428557528997473611914959388672",
-            "next_cursor": "29639428557528997473611914959388673",
-            "prev_cursor": "29639428557528997473611914959388671",
+            "newest_cursor": "",
+            "oldest_cursor": "",
+            "next_cursor": "",
+            "prev_cursor": "",
             "last_permanent_item": {
                 "item_id": "",
                 "user_id": 0,
-                "timestamp": 1606756641665092,
-                "item_type": "text",
-                "text": "Testing 1 2 3...",
+                "timestamp": 1606941434135449,
+                "item_type": "link",
+                "link": {
+                    "text": "Link: https://google.com",
+                    "link_context": {
+                        "link_url": "https://google.com",
+                        "link_title": "Google",
+                        "link_summary": "December Holidays 2020 #GoogleDoodle",
+                        "link_image_url": "https://external.xx.fbcdn.net/safe_image.php?d=AQBzeQ5Sufuu-LYA&w=1080&h=600&url=https%3A%2F%2Fwww.google.com%2Flogos%2Fdoodles%2F2020%2Fdecember-holidays-days-2-30-6753651837108830.2-2xa.gif&upscale=1&_nc_cb=1&_nc_hash=AQCUpzlKZPWCLz3x"
+                    },
+                    "client_context": null,
+                    "mutation_token": null
+                },
                 "show_forward_attribution": false,
                 "is_shh_mode": false
             }
         }
-    ]
+    ],
+    "status": "ok"
   },
   "method": "post",
-  "endpoint": "direct_v2/threads/broadcast/text/"
+  "endpoint": "direct_v2/threads/broadcast/link/"
 }

@@ -1,0 +1,335 @@
+{
+  "request": {
+    "media_id": "",
+    "recipient_users": [],
+    "thread_ids": []
+  },
+  "response": {
+    "threads": [
+        {
+            "thread_id": "",
+            "thread_v2_id": "",
+            "users": [
+                {
+                    "pk": 0,
+                    "username": "",
+                    "full_name": "",
+                    "is_private": true,
+                    "profile_pic_url": "",
+                    "profile_pic_id": "",
+                    "friendship_status": {
+                        "following": false,
+                        "blocking": false,
+                        "is_private": true,
+                        "incoming_request": false,
+                        "outgoing_request": false,
+                        "is_bestie": false,
+                        "is_restricted": false
+                    },
+                    "is_verified": false,
+                    "has_anonymous_profile_picture": false,
+                    "has_threads_app": false,
+                    "is_using_unified_inbox_for_direct": false,
+                    "interop_messaging_user_fbid": 0,
+                    "account_badges": []
+                }
+            ],
+            "left_users": [],
+            "admin_user_ids": [],
+            "items": [
+                {
+                    "item_id": "",
+                    "user_id": 0,
+                    "timestamp": 1606942357874520,
+                    "item_type": "media_share",
+                    "media_share": {
+                        "taken_at": 1606925972,
+                        "pk": 0,
+                        "id": "",
+                        "device_timestamp": 1606925969345635,
+                        "media_type": 1,
+                        "code": "",
+                        "client_cache_key": "",
+                        "filter_type": 0,
+                        "user": {
+                            "pk": 0,
+                            "username": "",
+                            "full_name": "",
+                            "is_private": false,
+                            "profile_pic_url": "",
+                            "profile_pic_id": "",
+                            "friendship_status": {
+                                "following": false,
+                                "outgoing_request": false,
+                                "is_bestie": false,
+                                "is_restricted": false
+                            },
+                            "has_anonymous_profile_picture": false,
+                            "is_unpublished": false,
+                            "is_favorite": false,
+                            "latest_reel_media": 0,
+                            "account_badges": []
+                        },
+                        "can_viewer_reshare": true,
+                        "caption_is_edited": false,
+                        "liker_config": {
+                            "is_daisy": true,
+                            "hide_view_count": false,
+                            "show_count_in_likers_list": false,
+                            "show_view_count_in_likers_list": false,
+                            "show_daisy_liker_list_header": false,
+                            "show_learn_more": false,
+                            "ads_display_mode": 1,
+                            "display_mode": 8,
+                            "disable_liker_list_navigation": false,
+                            "show_author_view_likes_button": false
+                        },
+                        "comment_likes_enabled": false,
+                        "comment_threading_enabled": true,
+                        "has_more_comments": false,
+                        "max_num_visible_preview_comments": 3,
+                        "can_view_more_preview_comments": false,
+                        "comment_count": 0,
+                        "image_versions2": {
+                            "candidates": [
+                                {
+                                    "width": 580,
+                                    "height": 597,
+                                    "url": "",
+                                    "scans_profile": "",
+                                    "estimated_scans_sizes": [
+                                        4372,
+                                        8744,
+                                        13117,
+                                        17489,
+                                        21862,
+                                        26321,
+                                        759584,
+                                        39352,
+                                        39352
+                                    ]
+                                },
+                                {
+                                    "width": 480,
+                                    "height": 494,
+                                    "url": "",
+                                    "scans_profile": "e35",
+                                    "estimated_scans_sizes": [
+                                        3311,
+                                        6623,
+                                        9935,
+                                        13246,
+                                        16558,
+                                        19935,
+                                        575304,
+                                        29805,
+                                        29805
+                                    ]
+                                }
+                            ]
+                        },
+                        "original_width": 580,
+                        "original_height": 597,
+                        "like_count": 13180,
+                        "bucketed_like_count": 1000,
+                        "has_liked": false,
+                        "top_likers": [
+                            ""
+                        ],
+                        "photo_of_you": false,
+                        "can_see_insights_as_brand": false,
+                        "caption": null,
+                        "can_viewer_save": true,
+                        "organic_tracking_token": "",
+                        "sharing_friction_info": {
+                            "should_have_sharing_friction": false,
+                            "bloks_app_url": null
+                        },
+                        "is_in_profile_grid": false,
+                        "profile_grid_control_enabled": false,
+                        "is_shop_the_look_eligible": false,
+                        "deleted_reason": 0,
+                        "integrity_review_decision": "pending"
+                    },
+                    "show_forward_attribution": false,
+                    "is_shh_mode": false
+                }
+            ],
+            "last_activity_at": 1606942357874520,
+            "muted": false,
+            "is_pin": false,
+            "named": false,
+            "canonical": true,
+            "pending": false,
+            "archived": false,
+            "thread_type": "private",
+            "viewer_id": 0,
+            "thread_title": "",
+            "folder": 0,
+            "vc_muted": false,
+            "is_group": false,
+            "mentions_muted": false,
+            "approval_required_for_new_members": false,
+            "input_mode": 0,
+            "business_thread_folder": null,
+            "read_state": null,
+            "last_non_sender_item_at": 0,
+            "assigned_admin_id": null,
+            "shh_mode_enabled": false,
+            "is_close_friend_thread": false,
+            "inviter": {
+                "pk": 0,
+                "username": "",
+                "full_name": "",
+                "is_private": true,
+                "profile_pic_url": "",
+                "profile_pic_id": "",
+                "is_verified": false,
+                "has_anonymous_profile_picture": false,
+                "account_badges": []
+            },
+            "has_older": true,
+            "has_newer": true,
+            "last_seen_at": {
+                "userid": {
+                    "timestamp": "",
+                    "item_id": "",
+                    "created_at": "1606941711079868",
+                    "shh_seen_state": {}
+                },
+                "userid": {
+                    "timestamp": "1606942357874520",
+                    "created_at": "1606942357874520",
+                    "item_id": "",
+                    "shh_seen_state": {}
+                }
+            },
+            "newest_cursor": "29642854416914655234568675991224320",
+            "oldest_cursor": "29642854416914655234568675991224320",
+            "next_cursor": "29642854416914655234568675991224321",
+            "prev_cursor": "29642854416914655234568675991224319",
+            "last_permanent_item": {
+                "item_id": "",
+                "user_id": 0,
+                "timestamp": 1606942357874520,
+                "item_type": "media_share",
+                "media_share": {
+                    "taken_at": 1606925972,
+                    "pk": 0,
+                    "id": "",
+                    "device_timestamp": 1606925969345635,
+                    "media_type": 1,
+                    "code": "",
+                    "client_cache_key": "",
+                    "filter_type": 0,
+                    "user": {
+                        "pk": 0,
+                        "username": "",
+                        "full_name": "",
+                        "is_private": false,
+                        "profile_pic_url": "",
+                        "profile_pic_id": "",
+                        "friendship_status": {
+                            "following": false,
+                            "outgoing_request": false,
+                            "is_bestie": false,
+                            "is_restricted": false
+                        },
+                        "has_anonymous_profile_picture": false,
+                        "is_unpublished": false,
+                        "is_favorite": false,
+                        "latest_reel_media": 0,
+                        "account_badges": []
+                    },
+                    "can_viewer_reshare": true,
+                    "caption_is_edited": false,
+                    "liker_config": {
+                        "is_daisy": true,
+                        "hide_view_count": false,
+                        "show_count_in_likers_list": false,
+                        "show_view_count_in_likers_list": false,
+                        "show_daisy_liker_list_header": false,
+                        "show_learn_more": false,
+                        "ads_display_mode": 1,
+                        "display_mode": 8,
+                        "disable_liker_list_navigation": false,
+                        "show_author_view_likes_button": false
+                    },
+                    "comment_likes_enabled": false,
+                    "comment_threading_enabled": true,
+                    "has_more_comments": false,
+                    "max_num_visible_preview_comments": 3,
+                    "can_view_more_preview_comments": false,
+                    "comment_count": 0,
+                    "image_versions2": {
+                        "candidates": [
+                            {
+                                "width": 580,
+                                "height": 597,
+                                "url": "",
+                                "scans_profile": "e35",
+                                "estimated_scans_sizes": [
+                                    4372,
+                                    8744,
+                                    13117,
+                                    17489,
+                                    21862,
+                                    26321,
+                                    759584,
+                                    39352,
+                                    39352
+                                ]
+                            },
+                            {
+                                "width": 480,
+                                "height": 494,
+                                "url": "",
+                                "scans_profile": "e35",
+                                "estimated_scans_sizes": [
+                                    3311,
+                                    6623,
+                                    9935,
+                                    13246,
+                                    16558,
+                                    19935,
+                                    575304,
+                                    29805,
+                                    29805
+                                ]
+                            }
+                        ]
+                    },
+                    "original_width": 580,
+                    "original_height": 597,
+                    "like_count": 13180,
+                    "bucketed_like_count": 1000,
+                    "has_liked": false,
+                    "top_likers": [
+                        ""
+                    ],
+                    "photo_of_you": false,
+                    "can_see_insights_as_brand": false,
+                    "caption": null,
+                    "can_viewer_save": true,
+                    "organic_tracking_token": "",
+                    "sharing_friction_info": {
+                        "should_have_sharing_friction": false,
+                        "bloks_app_url": null
+                    },
+                    "is_in_profile_grid": false,
+                    "profile_grid_control_enabled": false,
+                    "is_shop_the_look_eligible": false,
+                    "deleted_reason": 0,
+                    "integrity_review_decision": "pending"
+                },
+                "show_forward_attribution": false,
+                "is_shh_mode": false
+            }
+        }
+    ],
+    "status": "ok"
+  },
+  "method": "post",
+  "endpoint": "direct_v2/threads/broadcast/media_share/"
+}
+

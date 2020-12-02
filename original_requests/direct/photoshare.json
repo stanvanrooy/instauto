@@ -1,0 +1,206 @@
+{
+  "request": {
+    "upload_id": "",
+    "allow_full_aspect_ratio": true,
+    "recipient_users": [],
+    "thread_ids": []
+  },
+  "response": {
+    "threads": [
+        {
+            "thread_id": "",
+            "thread_v2_id": "",
+            "users": [
+                {
+                    "pk": 0,
+                    "username": "",
+                    "full_name": "",
+                    "is_private": true,
+                    "profile_pic_url": "",
+                    "profile_pic_id": "",
+                    "friendship_status": {
+                        "following": false,
+                        "blocking": false,
+                        "is_private": true,
+                        "incoming_request": false,
+                        "outgoing_request": false,
+                        "is_bestie": false,
+                        "is_restricted": false
+                    },
+                    "is_verified": false,
+                    "has_anonymous_profile_picture": false,
+                    "has_threads_app": false,
+                    "is_using_unified_inbox_for_direct": false,
+                    "interop_messaging_user_fbid": 0,
+                    "account_badges": []
+                }
+            ],
+            "left_users": [],
+            "admin_user_ids": [],
+            "items": [
+                {
+                    "item_id": "",
+                    "user_id": 0,
+                    "timestamp": 1606942965005261,
+                    "item_type": "media",
+                    "media": {
+                        "id": 0,
+                        "image_versions2": {
+                            "candidates": [
+                                {
+                                    "width": 1324,
+                                    "height": 1446,
+                                    "url": "",
+                                    "scans_profile": "e35",
+                                    "estimated_scans_sizes": [
+                                        9264,
+                                        18529,
+                                        27794,
+                                        37059,
+                                        46323,
+                                        55912,
+                                        67687,
+                                        75381,
+                                        83383
+                                    ]
+                                },
+                                {
+                                    "width": 480,
+                                    "height": 524,
+                                    "url": "",
+                                    "scans_profile": "e35",
+                                    "estimated_scans_sizes": [
+                                        3394,
+                                        6788,
+                                        10183,
+                                        13577,
+                                        16972,
+                                        21187,
+                                        273633,
+                                        30550,
+                                        30550
+                                    ]
+                                }
+                            ]
+                        },
+                        "original_width": 1324,
+                        "original_height": 1446,
+                        "media_type": 1
+                    },
+                    "show_forward_attribution": false,
+                    "is_shh_mode": false
+                }
+            ],
+            "last_activity_at": 1606942965005261,
+            "muted": false,
+            "is_pin": false,
+            "named": false,
+            "canonical": true,
+            "pending": false,
+            "archived": false,
+            "thread_type": "private",
+            "viewer_id": 0,
+            "thread_title": "",
+            "folder": 0,
+            "vc_muted": false,
+            "is_group": false,
+            "mentions_muted": false,
+            "approval_required_for_new_members": false,
+            "input_mode": 0,
+            "business_thread_folder": null,
+            "read_state": null,
+            "last_non_sender_item_at": 0,
+            "assigned_admin_id": null,
+            "shh_mode_enabled": false,
+            "is_close_friend_thread": false,
+            "inviter": {
+                "pk": 0,
+                "username": "",
+                "full_name": "",
+                "is_private": true,
+                "profile_pic_url": "",
+                "profile_pic_id": "",
+                "is_verified": false,
+                "has_anonymous_profile_picture": false,
+                "account_badges": []
+            },
+            "has_older": true,
+            "has_newer": true,
+            "last_seen_at": {
+                "userid": {
+                    "timestamp": "1606941711079868",
+                    "item_id": "",
+                    "created_at": "1606941711079868",
+                    "shh_seen_state": {}
+                },
+                "userid": {
+                    "timestamp": "1606942965005261",
+                    "created_at": "1606942965005261",
+                    "item_id": "",
+                    "shh_seen_state": {}
+                }
+            },
+            "newest_cursor": "29642865616500053743207367391051776",
+            "oldest_cursor": "29642865616500053743207367391051776",
+            "next_cursor": "29642865616500053743207367391051777",
+            "prev_cursor": "29642865616500053743207367391051775",
+            "last_permanent_item": {
+                "item_id": "",
+                "user_id": 0,
+                "timestamp": 1606942965005261,
+                "item_type": "media",
+                "media": {
+                    "id": 0,
+                    "image_versions2": {
+                        "candidates": [
+                            {
+                                "width": 1324,
+                                "height": 1446,
+                                "url": "",
+                                "scans_profile": "e35",
+                                "estimated_scans_sizes": [
+                                    9264,
+                                    18529,
+                                    27794,
+                                    37059,
+                                    46323,
+                                    55912,
+                                    67687,
+                                    75381,
+                                    83383
+                                ]
+                            },
+                            {
+                                "width": 480,
+                                "height": 524,
+                                "url": "",
+                                "scans_profile": "e35",
+                                "estimated_scans_sizes": [
+                                    3394,
+                                    6788,
+                                    10183,
+                                    13577,
+                                    16972,
+                                    21187,
+                                    273633,
+                                    30550,
+                                    30550
+                                ]
+                            }
+                        ]
+                    },
+                    "original_width": 1324,
+                    "original_height": 1446,
+                    "media_type": 1
+                },
+                "show_forward_attribution": false,
+                "is_shh_mode": false
+            }
+        }
+    ],
+    "status": "ok"
+  },
+  "method": "post",
+  "endpoint": "direct_v2/threads/broadcast/configure_photo/"
+}
+

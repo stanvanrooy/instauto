@@ -1,0 +1,117 @@
+{
+  "request": {
+    "text": "",
+    "recipient_users": [],
+    "thread_ids": []
+  },
+  "response": {
+    "status": "ok",
+    "threads": [
+        {
+            "thread_id": "",
+            "thread_v2_id": "",
+            "users": [
+                {
+                    "pk": 0,
+                    "username": "",
+                    "full_name": "",
+                    "is_private": true,
+                    "profile_pic_url": "",
+                    "profile_pic_id": "",
+                    "friendship_status": {
+                        "following": false,
+                        "blocking": false,
+                        "is_private": true,
+                        "incoming_request": false,
+                        "outgoing_request": false,
+                        "is_bestie": false,
+                        "is_restricted": false
+                    },
+                    "is_verified": false,
+                    "has_anonymous_profile_picture": false,
+                    "has_threads_app": false,
+                    "is_using_unified_inbox_for_direct": false,
+                    "interop_messaging_user_fbid": 0,
+                    "account_badges": []
+                }
+            ],
+            "left_users": [],
+            "admin_user_ids": [],
+            "items": [
+                {
+                    "item_id": "",
+                    "user_id": 0,
+                    "timestamp": 0,
+                    "item_type": "text",
+                    "text": "Testing 1 2 3...",
+                    "show_forward_attribution": false,
+                    "is_shh_mode": false
+                }
+            ],
+            "last_activity_at": 1606756641665092,
+            "muted": false,
+            "is_pin": false,
+            "named": false,
+            "canonical": true,
+            "pending": false,
+            "archived": false,
+            "thread_type": "private",
+            "viewer_id": 0,
+            "thread_title": "",
+            "folder": 0,
+            "vc_muted": false,
+            "is_group": false,
+            "mentions_muted": false,
+            "approval_required_for_new_members": false,
+            "input_mode": 0,
+            "business_thread_folder": null,
+            "read_state": null,
+            "last_non_sender_item_at": 0,
+            "assigned_admin_id": null,
+            "shh_mode_enabled": false,
+            "is_close_friend_thread": false,
+            "inviter": {
+                "pk": 0,
+                "username": "",
+                "full_name": "",
+                "is_private": true,
+                "profile_pic_url": "",
+                "profile_pic_id": "",
+                "is_verified": false,
+                "has_anonymous_profile_picture": false,
+                "account_badges": []
+            },
+            "has_older": true,
+            "has_newer": true,
+            "last_seen_at": {
+                "idstring": {
+                    "timestamp": "",
+                    "item_id": "",
+                    "shh_seen_state": {}
+                },
+                "idstring2": {
+                    "timestamp": "",
+                    "created_at": "",
+                    "item_id": "",
+                    "shh_seen_state": {}
+                }
+            },
+            "newest_cursor": "29639428557528997473611914959388672",
+            "oldest_cursor": "29639428557528997473611914959388672",
+            "next_cursor": "29639428557528997473611914959388673",
+            "prev_cursor": "29639428557528997473611914959388671",
+            "last_permanent_item": {
+                "item_id": "",
+                "user_id": 0,
+                "timestamp": 1606756641665092,
+                "item_type": "text",
+                "text": "Testing 1 2 3...",
+                "show_forward_attribution": false,
+                "is_shh_mode": false
+            }
+        }
+    ]
+  },
+  "method": "post",
+  "endpoint": "direct_v2/threads/broadcast/text/"
+}

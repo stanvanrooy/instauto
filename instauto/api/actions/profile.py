@@ -43,9 +43,7 @@ class ProfileMixin:
         self._profile_act(obj)
 
     def profile_info(self, obj: Info) -> Union[Dict, int]:
-        if obj.user_id is None:
-            obj.user_id = self.state.user_id
-        data = self._request(f'users/{obj.user_id}/info/', Method.GET).json()
+        data = self._request(obj.endpoint, Method.GET).json()
         if data['status'] == 'ok':
             return data['user']
         return data['status']

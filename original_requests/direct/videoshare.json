@@ -1,0 +1,14 @@
+{
+  "request": {
+    "upload_id": "",
+    "sampled": true,
+    "video_result": "",
+    "recipient_users": [],
+    "thread_ids": []
+  },
+  "response": {
+  },
+  "method": "post",
+  "endpoint": "direct_v2/threads/broadcast/configure_video/"
+}
+

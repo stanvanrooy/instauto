@@ -5,9 +5,9 @@ from typing import Union
 
 def get_image_type(p: Union[str, Path]) -> str:
     """Returns the type of image, i.e. jpeg or png."""
-    if isinstance(p, Path):
-        return p.suffix
-    return p.split('.')[-1]
+    if not isinstance(p, Path):
+        p = Path(p)
+    return ''.join(p.suffixes).replace('.', '', 1)
 
 
 def build_default_rupload_params(obj, quality: int) -> dict:

@@ -136,4 +136,4 @@ class AuthenticationMixin:
 
     def _update_session_id(self) -> None:
         """Updates the session id, to simulate a close and open of the app."""
-        self.state._session_id = self._gen_uuid()
+        self.state.session_id = self._gen_uuid()

@@ -11,6 +11,6 @@ if __name__ == '__main__':
         client.save_to_disk('./.instauto.save')
 
     userid = "" # recipient of link
-    ls = LinkShare("Link: https://google.com", "https://google.com", recipients=[[userid]])
+    ls = LinkShare("Link: https://google.com", ["https://google.com"], recipients=[[userid]])
     response = client.direct_send(ls)
     print(response.json())

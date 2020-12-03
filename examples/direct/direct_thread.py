@@ -11,10 +11,10 @@ if __name__ == '__main__':
         client.save_to_disk('./.instauto.save')
 
     # get inbox
-    inbox = client.direct_inbox().json()
+    inbox = client.direct_get_inbox().json()
     print(json.dumps(inbox, indent=4))
 
     # get latest thread
     latest_thread_id = inbox['inbox']['threads'][0]['thread_id']
-    thread = client.direct_thread(latest_thread_id).json()
+    thread = client.direct_get_thread(latest_thread_id).json()
     print(json.dumps(thread, indent=4))

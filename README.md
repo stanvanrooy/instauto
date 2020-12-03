@@ -58,6 +58,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/marvic2409"><img src="https://avatars3.githubusercontent.com/u/25594875?v=4" width="100px;" alt=""/><br /><sub><b>Martin Nikolov</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=marvic2409" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/b177y"><img src="https://avatars1.githubusercontent.com/u/34008579?v=4" width="100px;" alt=""/><br /><sub><b>b177y</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=b177y" title="Code">💻</a> <a href="https://github.com/stanvanrooy/instauto/commits?author=b177y" title="Tests">⚠️</a> <a href="https://github.com/stanvanrooy/instauto/commits?author=b177y" title="Documentation">📖</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/returnWOW"><img src="https://avatars3.githubusercontent.com/u/16145271?v=4" width="100px;" alt=""/><br /><sub><b>wowopo</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=returnWOW" title="Code">💻</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-enable -->

@@ -22,7 +22,6 @@ class ChallengeMixin:
 
     def _handle_challenge(self, resp: requests.Response) -> bool:
         resp_data = resp.json()
-        print("auth data1\n{}".format(resp_data))
         if resp_data['message'] not in ('challenge_required', 'checkpoint_required'):
             raise BadResponse("Challenge required, but no URL provided.")
 
@@ -47,7 +46,7 @@ class ChallengeMixin:
                     "post": 1
                 }
             )
-            print("Maybe should confirm in web this was me to obtain the verification code.")
+            logger.warning("You may should confirm in some other logged device this was me to obtain the verification code.")
         else:
             _ = self._request(
                 endpoint=api_path, method=Method.POST, data={

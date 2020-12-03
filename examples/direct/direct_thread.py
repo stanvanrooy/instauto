@@ -1,6 +1,8 @@
 import os
 import json
 from instauto.api.client import ApiClient
+from instauto.api.actions.structs.direct import DirectThread
+from instauto.api.structs import Thread
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -12,5 +14,6 @@ if __name__ == '__main__':
 
     client.direct_get_inbox()
     latest_thread_id = client.inbox.threads[0]['thread_id']
-    thread = client.direct_get_thread(latest_thread_id).json()
-    print(json.dumps(thread, indent=4))
+    thread = DirectThread(latest_thread_id)
+    thread: Thread = client.direct_get_thread(thread)
+    print(thread)

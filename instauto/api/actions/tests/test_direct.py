@@ -70,11 +70,11 @@ class TestDirectMessage(unittest.TestCase):
         self.assertEqual(len(client.inbox.threads), 2)
 
     @staticmethod
-    def _get_inbox(self):
+    def _get_inbox():
         return Inbox([Thread(*[None for _ in range(7)])], *[None for _ in range(11)])
 
     @staticmethod
-    def _get_threads(self):
+    def _get_threads():
         return [
             {
                 'thread_id': 'test1', 'thread_v2_id': 'test1', 'users': ['user1'],

@@ -72,6 +72,15 @@
         "test",
         "doc"
       ]
+    },
+    {
+      "login": "returnWOW",
+      "name": "wowopo",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/16145271?v=4",
+      "profile": "https://github.com/returnWOW",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

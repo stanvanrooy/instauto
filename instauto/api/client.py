@@ -9,7 +9,7 @@ import json
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from .structs import IGProfile, DeviceProfile, State
+from .structs import IGProfile, DeviceProfile, State, Inbox
 from .constants import (DEFAULT_IG_PROFILE, DEFAULT_DEVICE_PROFILE, DEFAULT_STATE)
 from .exceptions import StateExpired, NoAuthDetailsProvided, CorruptedSaveData
 

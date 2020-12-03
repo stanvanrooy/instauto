@@ -1,8 +1,10 @@
-from typing import Tuple, Union, Callable
+from typing import Tuple, Union, Callable, List
 import time
 import enum
 import pprint
 import random
+
+from dataclasses import dataclass
 
 from .constants import (DEFAULT_SIGNATURE_KEY, DEFAULT_HTTP_ENGINE, DEFAULT_IG_CAPABILITIES, DEFAULT_APP_ID,
                         DEFAULT_IG_VERSION, DEFAULT_BUILD_NUMBER, DEFAULT_ANDROID_RELEASE, DEFAULT_ANDROID_SDK,
@@ -275,3 +277,38 @@ class LoggedInAccountData:
 
     def __repr__(self):
         return pprint.pformat(vars(self))
+
+
+@dataclass
+class Thread:
+    thread_id: str
+    thread_v2_id: str
+    users: List[dict]
+    #: users that have left the thread
+    left_users: List[dict]
+    #: users that are admins in the thread
+    admin_user_ids: List[dict]
+    #: a list of all messages sent in the thread
+    items: List[dict]
+    #: all other properties
+    properties: dict
+
+
+@dataclass
+class Inbox:
+    #: a list of your threads (chats)
+    threads: List[Thread]
+    #: has more threads available
+    has_older: bool
+    #: amount of unseen threads
+    unseen_count: int
+    #: timestamp of last check for unseen threads
+    unseen_count_ts: int
+    oldest_cursor: str
+    prev_cursor: dict
+    next_cursor: dict
+    blended_inbox_enabled: bool
+    seq_id: int
+    snapshot_at_ms: int
+    pending_requests_total: int
+    has_pending_top_requests: bool

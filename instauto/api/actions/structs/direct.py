@@ -10,11 +10,13 @@ logger = logging.getLogger(__name__)
 class _Base(cmmn.Base):
     broadcast_type: str
 
-    def __init__(self, recipients: Optional[List[List[str]]], threads: Optional[List[str]], *args, **kwargs):
+    def __init__(self, recipients: Optional[List[List[str]]], thread_ids: Optional[List[str]], *args, **kwargs):
         if recipients is not None:
             self.recipient_users = json.dumps(recipients)
-        elif threads is not None:
-            self.thread_ids = json.dumps(threads)
+            self.thread_ids = []
+        elif thread_ids is not None:
+            self.thread_ids = json.dumps(thread_ids)
+            self.recipient_users = []
         else:
             raise ValueError("Neither `recipients` or `threads` are provided.")
         super().__init__(*args, **kwargs)

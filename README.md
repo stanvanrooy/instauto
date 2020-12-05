@@ -31,6 +31,32 @@ if __name__ == '__main__':
     )
     client.post_like(like)
 ```
+
+And here is a simple example that uses the `Bot` class. This example, retrieves 100 followers 
+from `@Instagram`, 61 accounts that `@Instagram` follows, 200 accounts that have liked 
+a recent post of` @Instagram` and 200  accounts that recently commented on a post of `@Instagram`.
+
+Each retrieved account has a 25% chance to be followed, a 25% chance that 3 posts 
+will be liked, and a 35% chance that 1 comment will be left.  
+
+```python
+from instauto.bot.bot import Bot
+bot = Bot("your_username", "your_password", 20.0)
+
+bot.input. \
+    from_followers_of("instagram", 100). \
+    from_following_of("instagram", 61). \
+    from_likers_of("instagram", 200). \
+    from_commenters_of("instagram", 200)
+
+bot. \
+    like(25, 3). \  
+    comment(35, 1, ["hey, I like your posts!", "Looks good!"]). \
+    follow(25)
+
+bot.start()
+```
+
 Other examples of how to use the package, can be found in the [examples directory](https://github.com/stanvanrooy/instauto/tree/master/examples).
 
 ## Contributing

@@ -179,11 +179,11 @@ class PostMixin:
         """Retrieve all likers of specific media_id"""
         endpoint = 'media/{media_id}/likers'.format(media_id=obj.media_id)
         resp = self._request(endpoint=endpoint, method=Method.GET)
-        users_as_json = resp.json().get('users')
+        users_as_json = resp.json()['users']
         return users_as_json
       
     def post_get_commenters(self, obj: RetrieveCommenters) -> [any]:
         endpoint = 'media/{media_id}/comments'.format(media_id=obj.media_id)
         resp = self._request(endpoint=endpoint, method=Method.GET)
-        users_as_json = resp.json().get('users')
+        users_as_json = [c['user'] for c in resp.json()['comments']]
         return users_as_json

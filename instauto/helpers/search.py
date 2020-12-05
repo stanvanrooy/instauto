@@ -22,6 +22,8 @@ def get_user_by_username(client: ApiClient, username: str) -> dict:
 
 def get_user_id_from_username(client: ApiClient, username: str):
     user = get_user_by_username(client, username)
+    if user is None:
+        return None
     return user['pk']
 
 

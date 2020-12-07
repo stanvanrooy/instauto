@@ -1,7 +1,7 @@
 import os
 from instauto.api.client import ApiClient
 from instauto.api.actions.structs.direct import DirectPhoto
-from instauto.api.actions.structs.post import PostFeed as PhotoUpload
+from instauto.api.actions.structs.post_old import PostFeed as PhotoUpload
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):

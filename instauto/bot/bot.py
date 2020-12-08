@@ -20,6 +20,13 @@ class Bot:
     _post_cache: Dict[str, List[Dict]] = {}
 
     def __init__(self, user_name: str, password: str, delay_between_action: float = 2.0) -> None:
+        """Initiate a new `Bot` instance.
+
+        Args:
+            user_name: the username of the account
+            password: the password of the account
+            delay_between_action: the amount of seconds to wait between actions (each like, follow, etc. is an action)
+        """
         instauto_save_path = f'.{user_name}.instauto.save'
         if os.path.isfile(instauto_save_path):
             self._client = ApiClient.initiate_from_file(instauto_save_path)
@@ -33,6 +40,15 @@ class Bot:
         self._delay = delay_between_action
 
     def like(self, chance: int, amount: int) -> "Bot":
+        """Like posts of users retrieved with the Input pipeline.
+
+        Args:
+            chance: integer between 0 and 100, represents a percentage between 0 and 100%.
+                Defines the chance of this action being called for an account. Set to
+                25 to call on 1/4 of all accounts, 50 for 1/2 of all accounts, etc.
+            amount:
+                The amount of posts to like, if this action is being called for an account.
+        """
         self._actions.append({
             'func': like_post,
             'chance': chance,
@@ -42,6 +58,17 @@ class Bot:
         return self
 
     def comment(self, chance: int, amount: int, comments: List[str]) -> "Bot":
+        """Comment on posts of users retrieved with the Input pipeline.
+
+        Args:
+            chance: integer between 0 and 100, represents a percentage between 0 and 100%.
+                Defines the chance of this action being called for an account. Set to
+                25 to call on 1/4 of all accounts, 50 for 1/2 of all accounts, etc.
+            amount:
+                The amount of posts to comment on, if this action is being called for an account.
+            comments:
+                A random selected entry out of this list will be used as text to comment.
+        """
         self._actions.append({
             'func': comment_post,
             'chance': chance,
@@ -51,6 +78,13 @@ class Bot:
         return self
 
     def follow(self, chance: int) -> "Bot":
+        """Follow users retrieved with the Input pipeline.
+
+        Args:
+            chance: integer between 0 and 100, represents a percentage between 0 and 100%.
+                Defines the chance of this action being called for an account. Set to
+                25 to call on 1/4 of all accounts, 50 for 1/2 of all accounts, etc.
+        """
         self._actions.append({
             'func': follow_user,
             'chance': chance,
@@ -59,7 +93,11 @@ class Bot:
         return self
 
     def start(self):
-        accounts = self.input.accounts
+        """Start the bot.
+
+        Once the bot is started, it will run until it went through all retrieved accounts,
+        or if the `stop` attribute is set to `True`."""
+        accounts = self.input.filtered_accounts
         while not self.stop:
             sleep(self._delay)
             account = accounts.pop(random.randint(0, len(accounts) - 1))

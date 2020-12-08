@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.0.3 (2020-12-8)
+
+### Features
+
+* add tagging users in posts ([e0a4057](https://github.com/stanvanrooy/instauto/commit/e0a40578c0e92ee1b6d28554d448187687802b13))
+* implement bot for automating tasks on Instagram ([a6fbbd6](https://github.com/stanvanrooy/instauto/commit/a6fbbd671e79c51d3e394ecbfd19be037e3ca230))
+
+### Bug fixes
+
+* actually call start scheduler ([c2fec6e](https://github.com/stanvanrooy/instauto/commit/c2fec6ec43f8cc383ea58dedef9cd08b704c1f37))
+* session_Id doesn't exist ([cf6bd5a](https://github.com/stanvanrooy/instauto/commit/cf6bd5a2c8ab5865feace9becece8ac1bb361030))
+* fix this was me challenge ([d0852d5](https://github.com/stanvanrooy/instauto/commit/d0852d5b1e058c05395b7daf28594944e8646ed9))
+
 ### 1.0.2 (2020-12-2)
 * add direct message functionality ([2683ce8](https://github.com/stanvanrooy/instauto/commit/2683ce806a36e515052dbb16af4b97e75daa2e1b))
 

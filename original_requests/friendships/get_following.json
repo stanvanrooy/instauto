@@ -21,18 +21,8 @@
     "sections": null,
     "status": "ok",
     "users": [
-      {
-        "account_badges": [],
-        "full_name": "",
-        "has_anonymous_profile_picture": false,
-        "is_private": false,
-        "is_verified": false,
-        "latest_reel_media": 0,
-        "pk": 1796107640,
-        "profile_pic_id": "*******",
-        "profile_pic_url": "******",
-        "username": "********"
-      }
+      "objects/user.json",
+      "objects/user.json"
     ]
   }
 }

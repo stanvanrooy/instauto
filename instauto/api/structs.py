@@ -85,6 +85,7 @@ class IGProfile:
 
 class DeviceProfile:
     """Holds all data about the android 'phone' that we simulate using.
+
     Attributes
     ----------
     manufacturer : str,
@@ -176,9 +177,12 @@ class State:
             setattr(self, k, v)
 
     def fill(self, f: Callable) -> None:
-        """Initializes all variables that:
+        """Fills the State with initial values.
+
+        Initializes all variables that:
             1) do not have a default value to start with;
             2) need a unique generated key on a per-user basis
+
         Parameters
         ----------
         f : function
@@ -229,6 +233,7 @@ class State:
         return pprint.pformat(vars(self))
 
     def refresh(self, f: Callable):
+        """Refresh the state. Simulates a re-open of the Instagram app."""
         self.uuid = f()
         self.device_id = f()
         self.ad_id = f()
@@ -296,19 +301,27 @@ class Thread:
 
 @dataclass
 class Inbox:
-    #: a list of your threads (chats)
+    #: a list that contains all your threads(chats)
     threads: List[Thread]
-    #: has more threads available
+    #: True if there are older threads available, else False
     has_older: bool
-    #: amount of unseen threads
+    #: The amount of threads with unseen threads
     unseen_count: int
-    #: timestamp of last check for unseen threads
+    #: Timestamp of the last check for unseen threads
     unseen_count_ts: int
+    #: ID of the oldest cursor
     oldest_cursor: str
+    #: ID of the previous cursor
     prev_cursor: dict
+    #: ID of the next cursor
     next_cursor: dict
+    #: True if blended inboox is available, else False
     blended_inbox_enabled: bool
+    #: Sequence identifier. Used by Instagram to track which messages have been received.
     seq_id: int
+    #: Timestamp of when this snapshot of the inbox was taken
     snapshot_at_ms: int
+    #: Count of pending message requests.
     pending_requests_total: int
+    #: True if inbox has pending top requests else False
     has_pending_top_requests: bool

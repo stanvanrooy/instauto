@@ -134,6 +134,6 @@ class AuthenticationMixin:
         _ = self._request('zr/token/result/', Method.GET, query=query, headers=self._build_initial_headers(),
                           default_headers=False)
 
-    def _update_session_id(self) -> None:
+    def _refresh_session(self) -> None:
         """Updates the session id, to simulate a close and open of the app."""
-        self.state.session_id = self._gen_uuid()
+        self.state.refresh(self._gen_uuid)

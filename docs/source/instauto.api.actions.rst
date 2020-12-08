@@ -1,18 +1,6 @@
 instauto.api.actions package
 ============================
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   instauto.api.actions.structs
-   instauto.api.actions.tests
-
-Submodules
-----------
-
 instauto.api.actions.authentication module
 ------------------------------------------
 
@@ -89,14 +77,6 @@ instauto.api.actions.stubs module
 ---------------------------------
 
 .. automodule:: instauto.api.actions.stubs
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: instauto.api.actions
    :members:
    :undoc-members:
    :show-inheritance:

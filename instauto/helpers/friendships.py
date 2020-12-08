@@ -10,6 +10,19 @@ from .common import is_resp_ok
 
 
 def get_followers(client: ApiClient, user_id: str, limit: int) -> typing.List[dict]:
+    """Retrieve the first x amount of followers from an account.
+
+    If the `user_id` is not known, use `instauto.helpers.search.get_user_id_from_username`
+    to convert a username to user_id.
+
+    Args:
+        client: your ApiClient
+        user_id: the user_id of the account to retrieve followers from
+        limit: the maximum amount of followers to retrieve
+
+    Returns:
+        A list containing Instagram user objects (examples/objects/user.json).
+    """
     obj = GetFollowers(user_id)
 
     obj, result = client.followers_get(obj)
@@ -24,6 +37,19 @@ def get_followers(client: ApiClient, user_id: str, limit: int) -> typing.List[di
 
 
 def get_following(client: ApiClient, user_id: str, limit: int) -> typing.List[dict]:
+    """Retrieve the first x amount of users that follow an account.
+
+    If the `user_id` is not known, use `instauto.helpers.search.get_user_id_from_username`
+    to convert a username to user_id.
+
+    Args:
+        client: your ApiClient
+        user_id: the user_id of the account to retrieve following from
+        limit: the maximum amount of users to retrieve
+
+    Returns:
+        A list containing Instagram user objects (examples/objects/user.json).
+    """
     obj = GetFollowing(user_id)
 
     obj, result = client.following_get(obj)
@@ -38,6 +64,18 @@ def get_following(client: ApiClient, user_id: str, limit: int) -> typing.List[di
 
 
 def follow_user(client: ApiClient, user_id: str = None, username: str = None) -> bool:
+    """Send a follow request to a user.
+
+    Either `user_id` or `username` need to be provided. If both are provided,
+    the user_id takes precedence.
+
+    Args:
+        client: your ApiClient
+        user_id: the user_id of the account to follow
+        username: the username of the account to follow
+    Returns:
+        True if success else False
+    """
     if user_id is not None and username is not None:
         raise ValueError("Both `user_id` and `username` are provided.")
 

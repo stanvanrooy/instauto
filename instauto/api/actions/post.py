@@ -5,10 +5,9 @@ from requests import Session, Response
 from typing import Callable, Union
 from instauto.api.actions.stubs import _request
 
-
 from ..structs import Method, State, DeviceProfile, IGProfile, PostLocation
 from .structs.post import PostFeed, PostStory, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, \
-    Location, RetrieveByTag, RetrieveLikers, RetrieveCommenters
+    Location, RetrieveByTag, RetrieveLikers, RetrieveCommenters, UserTag, UserTags
 
 from ..exceptions import BadResponse
 
@@ -98,6 +97,12 @@ class PostMixin:
                 obj.location.facebook_places_id = self._request_fb_places_id(obj.location)
             as_dict['location'] = json.dumps(obj.location.__dict__)
 
+        if hasattr(obj, 'usertags') and obj.usertags is not None:
+            data = obj.usertags.to_dict()
+            for i, usertag in enumerate(data['in']):
+                data['in'][i] = usertag.to_dict()
+            as_dict['usertags'] = json.dumps(data)
+
         if obj.device is None:
             d = Device(self.device_profile.manufacturer, self.device_profile.model,
                        int(self.device_profile.android_sdk_version), self.device_profile.android_release)
@@ -181,7 +186,7 @@ class PostMixin:
         resp = self._request(endpoint=endpoint, method=Method.GET)
         users_as_json = resp.json()['users']
         return users_as_json
-      
+
     def post_get_commenters(self, obj: RetrieveCommenters) -> [any]:
         endpoint = 'media/{media_id}/comments'.format(media_id=obj.media_id)
         resp = self._request(endpoint=endpoint, method=Method.GET)

@@ -1,3 +1,5 @@
+import os
+
 import requests
 import time
 import json
@@ -22,6 +24,7 @@ class RequestMixin:
     _encrypt_password: Callable
     _session: requests.Session
     _request_finished_callbacks: list
+    _handle_challenge: Callable
 
     def _build_user_agent(self) -> str:
         """Builds a user agent, making use from all required values in `self.ig_profile`, `self.device_profile` and
@@ -256,7 +259,13 @@ class RequestMixin:
             if eh:
                 return
         if parsed.get('message') == 'feedback_required':
-            # TODO: implement a handler for this error
+            if os.environ.get("ENABLE_INSTAUTO_USAGE_METRICS", True):
+                # This logs which actions cause limitations on Instagram accounts.
+                # I use this data to focus my development on area's where it's most needed.
+                requests.post('https://instauto.rooy.dev/feedback_required', data={
+                    'feedback_url': parsed.get('feedback_url'),
+                    'category': parsed.get('category')
+                })
             raise BadResponse("Something unexpected happened. Please check the IG app.")
         if parsed.get('message') == 'rate_limit_error':
             raise TimeoutError("Calm down. Please try again in a few minutes.")

@@ -21,7 +21,7 @@ class RequestMixin:
     device_profile: DeviceProfile
     state: State
     _user_agent: str
-    _encrypt_password: Callable
+    _encode_password: Callable
     _session: requests.Session
     _request_finished_callbacks: list
     _handle_challenge: Callable
@@ -124,7 +124,7 @@ class RequestMixin:
         if public_api_key_id is not None: self.state.public_api_key_id = public_api_key_id
 
         public_api_key = headers.get('ig-set-password-encryption-pub-key')
-        if public_api_key is not None: self.state.public_api_key = public_api_key; self._encrypt_password()
+        if public_api_key is not None: self.state.public_api_key = public_api_key; self._encode_password()
 
     def _request(self, endpoint: str, method: Method, query: dict = None, data: Union[dict, bytes] = None, headers: Dict[str, str]
     = None, default_headers: bool = None, signed: bool = None) -> requests.Response:

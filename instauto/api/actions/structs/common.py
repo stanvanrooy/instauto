@@ -14,7 +14,7 @@ class Base:
         #: list of datapoints that need to be retrieved from the client
         self._datapoint_from_client: Dict[str, Callable[["instauto.api.client.ApiClient"], str]] = {
             "_csrftoken": lambda c: c._session.cookies['csrftoken'],
-            "device_id": lambda c: c.state.device_id,
+            "device_id": lambda c: c.state.android_id,
             "_uuid": lambda c: c.state.uuid,
             "_uid": lambda c: c.state.user_id
         }

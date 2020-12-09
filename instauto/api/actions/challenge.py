@@ -28,7 +28,7 @@ class ChallengeMixin:
         api_path = resp_data['challenge']['api_path'][1:]
         resp_data2 = self._request(endpoint=api_path, method=Method.GET, query={
                                     "guid": self.state.uuid,
-                                    "device_id": self.state.device_id
+                                    "device_id": self.state.android_id
                                 }
                              )
         # TODO: Add support for different kinds of challenges.

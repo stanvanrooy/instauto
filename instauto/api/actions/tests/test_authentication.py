@@ -82,8 +82,8 @@ class TestActionAuthentication(unittest.TestCase):
         client._request.assert_called_with('zr/token/result/', Method.GET, query=unittest.mock.ANY,
                                            headers=unittest.mock.ANY, default_headers=False)
 
-    def test_update_session_id(self):
+    def test_refresh_session(self):
         client = ApiClient(testing=True)
         now = client.state.session_id[::-1]
-        client._update_session_id()
+        client._refresh_session()
         self.assertNotEqual(now, client.state.session_id[::-1])

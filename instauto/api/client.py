@@ -105,7 +105,7 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, Frie
         self.scheduler = BackgroundScheduler()
 
         # update session id every 40 - 80 minutes
-        self.scheduler.add_job(self._update_session_id, trigger='interval', seconds=60*60, jitter=60*20)
+        self.scheduler.add_job(self._refresh_session, trigger='interval', seconds=60*60, jitter=60*20)
         self.scheduler.start()
 
     def _grab_cookies(self) -> dict:

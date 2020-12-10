@@ -10,7 +10,7 @@ def get_image_type(p: Union[str, Path]) -> str:
     return ''.join(p.suffixes).replace('.', '', 1)
 
 
-def build_default_rupload_params(obj, quality: int) -> dict:
+def build_default_rupload_params(obj, quality: int, is_sidecar: bool) -> dict:
     """Builds default parameters used to upload media."""
     return {
         'upload_id': obj.upload_id,
@@ -25,5 +25,6 @@ def build_default_rupload_params(obj, quality: int) -> dict:
             'lib_name': 'moz',
             'lib_version': '3.1.m',
             'quality': str(quality)
-        })
+        }),
+        "is_sidecar": str(int(is_sidecar))
     }

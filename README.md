@@ -16,7 +16,7 @@ For feature requests, ideas, comments, etc., please open an issue.
 The package can be installed with the following pip command:
 ```pip install instauto```
 
-## Usage
+## Usage ([documentation](https://instauto.readthedocs.io/))
 Here is a simple example that likes a post.
 
 ```python

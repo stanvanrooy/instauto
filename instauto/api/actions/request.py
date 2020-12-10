@@ -271,5 +271,4 @@ class RequestMixin:
             raise TimeoutError("Calm down. Please try again in a few minutes.")
         if parsed.get('message') == 'Not authorized to view user':
             raise AuthorizationError("This is a private user, which you do not follow.")
-t         raise BadResponse("Received a non-200 response from Instagram")
-
+        raise BadResponse("Received a non-200 response from Instagram")

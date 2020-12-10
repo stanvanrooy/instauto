@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+
+### 1.0.4 (2020-12-10)
+
+###Features
+
+* upload carousels ([1f36d65](https://github.com/stanvanrooy/instauto/commit/1f36d65c180cde44f2f865a520da742969d28798))
+* change password ([db97b25](https://github.com/stanvanrooy/instauto/commit/db97b2563af69a0dcfeb7aabdfa5ca6f4193923f))
+* track limitations ([b82d014](https://github.com/stanvanrooy/instauto/commit/b82d01467ec6b1e03b1e73e0369cc49055bded98))
+
+### Bugfixes
+* use same device id everywhere ([908335c](https://github.com/stanvanrooy/instauto/commit/b82d01467ec6b1e03b1e73e0369cc49055bded98))
+* several other minor bugfixes
+
+
 ### 1.0.3 (2020-12-8)
 
 ### Features

@@ -4,7 +4,7 @@ from distutils.core import setup
 setup(
   name='instauto',
   packages=setuptools.find_packages(),
-  version='1.0.3',
+  version='1.0.4',
   license='MIT',
   description='Python wrapper for the private Instagram API',
   author='Stan van Rooy',

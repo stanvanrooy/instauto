@@ -81,6 +81,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "stanvanrooy",
+      "name": "Stan van Rooy",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/49564025?v=4",
+      "profile": "https://rooy.works",
+      "contributions": [
+        "doc",
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,

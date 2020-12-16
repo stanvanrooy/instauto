@@ -1,6 +1,7 @@
 import json
 import hmac
 import random
+import uuid
 from time import time
 
 from requests import Session, Response
@@ -9,11 +10,11 @@ from instauto.api.actions.stubs import _request
 
 from ..structs import Method, State, DeviceProfile, IGProfile, PostLocation
 from .structs.post import PostFeed, PostStory, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, \
-    Location, RetrieveByTag, RetrieveLikers, RetrieveCommenters, UserTag, UserTags
+    Location, RetrieveByTag, RetrieveLikers, RetrieveCommenters, UserTag, UserTags, PostFeedVideo
 
 from ..exceptions import BadResponse
 
-from .helpers import build_default_rupload_params
+from .helpers import build_default_rupload_params, get_image_type, remove_from_dict
 
 
 class PostMixin:
@@ -242,3 +243,119 @@ class PostMixin:
 
         responses['configure_sidecar'] = self._request('media/configure_sidecar/', Method.POST, data=data, headers=headers, signed=True)
         return responses
+
+    @staticmethod
+    def _bytes_from_file(filename: str, chunk_size: int):
+        with open(filename, "rb") as f:
+            while True:
+                chunk = f.read(chunk_size)
+                if chunk:
+                    yield chunk
+                else:
+                    break
+
+    def _upload_video_in_chunks(self, obj: PostFeedVideo) -> str:
+        rupload_params = json.dumps({
+            "upload_media_height": str(int(obj.height)),
+            "upload_media_width": str(int(obj.width)),
+            "xsharing_user_ids": json.dumps([]),
+            "upload_media_duration_ms": obj.length.replace('.', '').replace(',', ''),
+            "upload_id": obj.upload_id,
+            "retry_context": json.dumps({"num_step_auto_retry":0,"num_reupload":0,"num_step_manual_retry":0}),
+            "media_type": "2"
+        })
+        resp = self._request(f"https://i.instagram.com/rupload_igvideo/{str(uuid.uuid4())}", Method.POST, headers={
+            "x-instagram-rupload-params": rupload_params,
+        }, query={"segmented": "true", "phase": "start"})
+        stream_id = str(resp.json()['stream_id'])
+        offset = 0
+        waterfall_id = str(time()) + '0000'
+        for chunk in self._bytes_from_file(obj.path, 2621000440):
+            entity_name = f"{str(uuid.uuid4()).replace('-', '')}-0-{obj.length.replace('.', '').replace(',', '')}"
+            self._request(f"https://i.instagram.com/rupload_igvideo/{entity_name}", Method.GET, headers={
+                'stream_id': stream_id,
+                'x-instagram-rupload-params': rupload_params,
+                'segment-start-offset': str(offset),
+                'segment-type': '3',
+                'x_fb_video_waterfall_id': waterfall_id
+            }, query={"segmented": "true", "phase": "transfer"})
+            self._request(f"https://i.instagram.com/rupload_igvideo/{entity_name}", Method.POST, headers={
+                'stream_id': stream_id,
+                'segment-type': '3',
+                'x-entity-type': 'video/mp4',
+                'offset': '0',
+                "segment-start-offset": str(offset),
+                'x-instagram-rupload-params': rupload_params,
+                'x_fb_video_waterfall_id': waterfall_id,
+                'x-entity-name': entity_name,
+                'x-entity-length': str(len(chunk))
+            }, data=chunk, query={"segmented": "true", "phase": "transfer"})
+
+            offset += len(chunk)
+        _ = self._request(f"https://i.instagram.com/rupload_igvideo/{str(uuid.uuid4())}", Method.POST, headers={
+            "x-instagram-rupload-params": rupload_params,
+            "stream-id": stream_id
+        }, query={"segmented": "true", "phase": "end"})
+        return stream_id
+
+    def _upload_video_thumbnail(self, obj: PostFeedVideo):
+        post = PostFeed(obj.thumbnail_path, "", upload_id=obj.upload_id)
+        resp, obj = self._upload_image(post, 80)
+
+    def _finish_video_upload(self, obj: PostFeedVideo):
+        as_dict = obj.fill(self).to_dict()
+        as_dict = remove_from_dict(as_dict, ["path", "thumbnail_path", "creation_logger_session_id", "multi_sharing",
+                                             "height", "width", "quality_info", "pdg_hash_info", "entity_name" ])
+        as_dict['extra']['source_width'] = int(as_dict['extra']['source_width'])
+        as_dict['extra']['source_height'] = int(as_dict['extra']['source_height'])
+        self._request('media/upload_finish/?video=1', Method.POST, data=as_dict, signed=True)
+
+    def _configure_video(self, obj: PostFeedVideo):
+        as_dict = obj.fill(self).to_dict()
+        as_dict = remove_from_dict(as_dict, ["path", "thumbnail_path", "audio_muted", "height", "width",
+                                             "quality_info", "pdg_hash_info"])
+        as_dict['extra']['source_width'] = int(as_dict['extra']['source_width'])
+        as_dict['extra']['source_height'] = int(as_dict['extra']['source_height'])
+        self._request('media/upload_finish/?video=1', Method.POST, data=as_dict, signed=True)
+
+    def _update_video_with_pdq_hash_info(self, upload_id: str):
+        data = {
+            'pdq_hash_info': [],
+            '_csrftoken': self._session.cookies['csrftoken'],
+            '_uid': self.state.user_id,
+            '_uuid': self.state.uuid,
+            'upload_id': upload_id
+        }
+        self._request('media/update_media_with_pdq_hash_info/', Method.POST, data=data, signed=True)
+
+    def _update_video_with_quality(self, obj: PostFeedVideo):
+        data = {
+            'quality_info': json.dumps({
+                'original_width': str(int(obj.width)),
+                'encoded_width': str(int(obj.width)),
+                'original_height': str(int(obj.height)),
+                'encoded_height': str(int(obj.height)),
+                'original_bitrate': '80000000',
+                'encoded_bitrate': '80000000',
+                'measured_frames': [
+                    {
+                        'timestamp': 0,
+                        'ssim': 0.99234923,
+                        'index': 0
+                    }
+                ]
+            }),
+            '_csrftoken': self._session.cookies['csrftoken'],
+            '_uid': self.state.user_id,
+            '_uuid': self.state.uuid,
+            'upload_id': obj.upload_id
+        }
+        self._request('media/update_video_with_quality_info/', Method.POST, data=data, signed=True)
+
+    def post_video(self, obj: PostFeedVideo):
+        stream_id = self._upload_video_in_chunks(obj)
+        self._upload_video_thumbnail(obj)
+        self._finish_video_upload(obj)
+        self._configure_video(obj)
+        self._update_video_with_quality(obj)
+        self._update_video_with_pdq_hash_info(obj.upload_id)

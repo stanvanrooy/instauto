@@ -6,7 +6,7 @@ import json
 import urllib.parse
 import logging
 
-from typing import Dict, Callable, Union
+from typing import Dict, Callable, Union, Optional
 
 from instauto.api.structs import DeviceProfile, IGProfile, State, Method
 from instauto.api.constants import API_BASE_URL
@@ -126,7 +126,7 @@ class RequestMixin:
         public_api_key = headers.get('ig-set-password-encryption-pub-key')
         if public_api_key is not None: self.state.public_api_key = public_api_key; self._encode_password()
 
-    def _request(self, endpoint: str, method: Method, query: dict = None, data: Union[dict, bytes] = None, headers: Dict[str, str]
+    def _request(self, endpoint: str, method: Method, query: dict = None, data: Optional[Union[dict, bytes]] = None, headers: Dict[str, str]
     = None, default_headers: bool = None, signed: bool = None) -> requests.Response:
         """Creates and sends a request to the specified endpoint.
 
@@ -166,7 +166,6 @@ class RequestMixin:
             or that the method should be set to POST.
         """
         if query is None: query = {}
-        if data is None: data = {}
         if default_headers is None: default_headers = True
         if headers is None: headers = {}
         if signed is None: signed = False
@@ -207,7 +206,10 @@ class RequestMixin:
 
         try:
             if method == Method.POST:
-                resp = self._session.post(url, data, headers=headers)
+                if data is not None:
+                    resp = self._session.post(url, data, headers=headers)
+                else:
+                    resp = self._session.post(url, headers=headers)
             elif method == Method.GET:
                 resp = self._session.get(url, headers=headers)
             else:

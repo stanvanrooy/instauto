@@ -10,9 +10,10 @@ from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Optional, List, Union
 
-from ..helpers import get_image_type
+from ..helpers import get_image_type, get_creation_date
 from instauto.api.structs import PostLocation
 from instauto.api.constants import DEFAULT_DEVICE_PROFILE
+import cv2
 
 logger = logging.getLogger(__name__)
 
@@ -300,3 +301,80 @@ class RetrieveCommenters(cmmn.Base):
         self.media_id = media_id
         super().__init__(*args, **kwargs)
 
+
+class PostFeedVideo(cmmn.Base):
+    _csrftoken: str = None
+    _uid: str = None
+    _uuid: str = None
+    device_id: str = None
+
+    def __init__(self, path: Union[str, Path], caption: str, thumbnail_path: Union[str, Path], device: Optional[Device] = None, *args, **kwargs):
+        self.path = path
+        self.thumbnail_path = thumbnail_path
+        self.caption = caption
+
+        self.upload_id = str(time.time() + random.randint(1, 100000)).split('.')[0]
+        self.entity_name = f'{self.upload_id}_0_-{str(random.randint(100000000, 999999999))}'
+
+        self.filter_type = "0"
+        self.timezone_offset = str(time.localtime().tm_gmtoff)
+        self.source_type = PostLocation.Feed.value
+        self.video_result = ""
+
+        self.device = device or Device(
+            DEFAULT_DEVICE_PROFILE['manufacturer'],
+            DEFAULT_DEVICE_PROFILE['model'],
+            DEFAULT_DEVICE_PROFILE['android_sdk_version'],
+            DEFAULT_DEVICE_PROFILE['android_release']
+        )
+
+        self.audio_muted = False
+        self.poster_frame_index = 0
+
+        self.creation_logger_session_id = str(uuid.uuid4())
+        self.multi_sharing = 1
+
+        self.date_time_original = get_creation_date(path)
+
+        vid = cv2.VideoCapture(self.path)
+        self.height = vid.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        self.width = vid.get(cv2.CAP_PROP_FRAME_WIDTH)
+        fps = vid.get(cv2.CAP_PROP_FPS)
+        duration = float(vid.get(cv2.CAP_PROP_FRAME_COUNT)) / float(fps)  # in seconds
+
+        self.extra = Extra(self.height, self.width)
+        self.length = str(duration.__round__(3))
+        self.clips = {
+            "length": self.length,
+            "source_type": PostLocation.Feed.value
+        }
+
+        self.quality_info = {
+            "original_width": "",
+            "original_height": "",
+            "original_bit_rate": "",
+            "encoded_width": "",
+            "encoded_height": "",
+            "encoded_bit_rate": "",
+            "measured_frames": [
+                {
+                    "timestamp": "",
+                    "ssim": "",
+                    "index": "",
+                }
+            ]
+
+        }
+
+        self.pdg_hash_info = [
+            {
+                "pdq_hash": "",
+                "frame_time": 0
+            },
+            {
+                "pdq_hash": "",
+                "frame_time": 1000
+            }
+        ]
+
+        super().__init__(*args, **kwargs)

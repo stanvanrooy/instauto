@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 
+### 1.0.5 (2020-12-16)
+
+### Bugfixes
+
+* use a bit more random upload id ([1435d3b](https://github.com/stanvanrooy/instauto/commit/1435d3b33b277cca024eaa063d591a1ffb635d04))
+
+
 ### 1.0.4 (2020-12-10)
 
 ### Features

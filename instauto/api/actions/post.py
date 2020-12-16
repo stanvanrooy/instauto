@@ -196,7 +196,7 @@ class PostMixin:
         return users_as_json
 
     def post_carousel(self, posts: List[PostFeed], caption: str, quality: int) -> Dict[str, Response]:
-        upload_id = str(time()).split('.')[0]
+        upload_id = str(time()).replace('.', '')
 
         data = {
             "timezone_offset": posts[0].timezone_offset,
@@ -217,7 +217,7 @@ class PostMixin:
                 {
                     "scene_capture_type": post.scene_capture_type,
                     "upload_id": post.upload_id,
-                    "caption": post.caption,
+                    "caption": "",
                     "timezone_offset": post.timezone_offset,
                     "source_type": str(post.source_type),
                     "scene_type": None,
@@ -226,9 +226,9 @@ class PostMixin:
                     "device": json.dumps(post.to_dict()['device'])
                 }
             )
-            if hasattr(post, 'usertags'):
+            if hasattr(post, 'usertags') and post.usertags is not None:
                 usertags = post.usertags.to_dict()
-                for i, usertag in enumerate(data['in']):
+                for i, usertag in enumerate(usertags['in']):
                     usertags['in'][i] = usertag.to_dict()
                 data['children_metadata'][-1]['usertags'] = json.dumps(usertags)
 

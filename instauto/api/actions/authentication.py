@@ -114,6 +114,7 @@ class AuthenticationMixin:
         # the api key will be retrieved from the first request, so it will not
         # be present during the initial request
         if not self.state.public_api_key: return
+        if not password and not self._unencrypted_password: return
         key = Random.get_random_bytes(32)
         iv = Random.get_random_bytes(12)
         time = int(datetime.datetime.now().timestamp())

@@ -126,7 +126,7 @@ class Bot:
                     except Exception as e:
                         logger.warning("Caught exception: ", e)
                   
-    def _sleep_between_actions():
+    def _sleep_between_actions(self):
         min = (self._delay - self._delay_tolerance) if(self._delay - self._delay_tolerance) else 0
         max = self._delay + self._delay_tolerance
         sleeptime = round(random.uniform(min, max), 2)

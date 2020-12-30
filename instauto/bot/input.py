@@ -70,6 +70,15 @@ class Input:
         self._accounts.extend(commenters[:limit:])
         return self
 
+    def from_user_list(self, accounts: List[dict]) -> "Input":
+        """Add supplied accounts to input
+        
+        Args:
+            accounts: List of account objects (objects/user.json)
+        """
+        self._accounts.extend(accounts)
+        return self
+
     @property
     def filtered_accounts(self) -> List[dict]:
         seen = []

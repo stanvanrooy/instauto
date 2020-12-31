@@ -38,8 +38,8 @@ class Bot:
 
         self.input = Input(self._client)
         self._actions = []
-        self._delay = delay_between_action
-        self._delay_tolerance = delay_tolerance_delta
+        self._delay = delay_between_action if(delay_between_action) else 0
+        self._delay_tolerance = abs(delay_tolerance_delta)
 
     def like(self, chance: int, amount: int) -> "Bot":
         """Like posts of users retrieved with the Input pipeline.

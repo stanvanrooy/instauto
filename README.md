@@ -88,6 +88,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/returnWOW"><img src="https://avatars3.githubusercontent.com/u/16145271?v=4" width="100px;" alt=""/><br /><sub><b>wowopo</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=returnWOW" title="Code">💻</a></td>
     <td align="center"><a href="https://rooy.works"><img src="https://avatars1.githubusercontent.com/u/49564025?v=4" width="100px;" alt=""/><br /><sub><b>Stan van Rooy</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=stanvanrooy" title="Documentation">📖</a> <a href="https://github.com/stanvanrooy/instauto/commits?author=stanvanrooy" title="Code">💻</a> <a href="https://github.com/stanvanrooy/instauto/commits?author=stanvanrooy" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/tibotix"><img src="https://avatars3.githubusercontent.com/u/38123657?v=4" width="100px;" alt=""/><br /><sub><b>Tizian Seehaus</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=tibotix" title="Code">💻</a></td>
   </tr>
 </table>
 

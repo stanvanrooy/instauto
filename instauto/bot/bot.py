@@ -19,13 +19,14 @@ class Bot:
     _actions: List = []
     _post_cache: Dict[str, List[Dict]] = {}
 
-    def __init__(self, user_name: str, password: str, delay_between_action: float = 2.0) -> None:
+    def __init__(self, user_name: str, password: str, delay_between_action: float = 2.0, delay_variance: float = 0.0) -> None:
         """Initiate a new `Bot` instance.
 
         Args:
             user_name: the username of the account
             password: the password of the account
             delay_between_action: the amount of seconds to wait between actions (each like, follow, etc. is an action)
+            delay_variance: the amount of variance to add to the delay. Delay will be random number between (delay - variance) - (delay + variance).
         """
         instauto_save_path = f'.{user_name}.instauto.save'
         if os.path.isfile(instauto_save_path):
@@ -37,7 +38,8 @@ class Bot:
 
         self.input = Input(self._client)
         self._actions = []
-        self._delay = delay_between_action
+        self._delay = delay_between_action if(delay_between_action) else 0
+        self._delay_variance = abs(delay_variance)
 
     def like(self, chance: int, amount: int) -> "Bot":
         """Like posts of users retrieved with the Input pipeline.
@@ -99,7 +101,7 @@ class Bot:
         or if the `stop` attribute is set to `True`."""
         accounts = self.input.filtered_accounts
         while not self.stop:
-            sleep(self._delay)
+            self._sleep_between_actions()
             account = accounts.pop(random.randint(0, len(accounts) - 1))
             for action in self._actions:
                 if random.randint(0, 100) > action['chance']:
@@ -123,6 +125,12 @@ class Bot:
                         action['func'](self._client, *args)
                     except Exception as e:
                         logger.warning("Caught exception: ", e)
+                  
+    def _sleep_between_actions(self):
+        min = (self._delay - self._delay_variance) if(self._delay - self._delay_variance) else 0
+        max = self._delay + self._delay_variance
+        sleeptime = round(random.uniform(min, max), 2)
+        sleep(sleeptime)
 
     def _get_posts(self, account_name: str, force: bool = False) -> List[Dict]:
         if account_name not in self._post_cache or force:

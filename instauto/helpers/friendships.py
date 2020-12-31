@@ -59,7 +59,7 @@ def get_following(client: ApiClient, user_id: str, limit: int) -> typing.List[di
             result.json()["users"]
         )
         logger.info("Retrieved {} of following, {} more to go.".format(len(following), limit - len(following)))
-        obj, result = client.followers_get(obj)
+        obj, result = client.following_get(obj)
     return following[:min(len(following), limit)]
 
 

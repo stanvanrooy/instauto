@@ -92,6 +92,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "tibotix",
+      "name": "Tizian Seehaus",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/38123657?v=4",
+      "profile": "https://github.com/tibotix",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

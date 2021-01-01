@@ -19,22 +19,15 @@ class Bot:
     _actions: List = []
     _post_cache: Dict[str, List[Dict]] = {}
 
-    def __init__(self, user_name: str, password: str, delay_between_action: float = 2.0, delay_variance: float = 0.0) -> None:
+    def __init__(self, client: ApiClient, delay_between_action: float = 2.0, delay_variance: float = 0.0) -> None:
         """Initiate a new `Bot` instance.
 
         Args:
-            user_name: the username of the account
-            password: the password of the account
+            client: the `ApiClient` instance the Bot communicates with
             delay_between_action: the amount of seconds to wait between actions (each like, follow, etc. is an action)
             delay_variance: the amount of variance to add to the delay. Delay will be random number between (delay - variance) - (delay + variance).
-        """
-        instauto_save_path = f'.{user_name}.instauto.save'
-        if os.path.isfile(instauto_save_path):
-            self._client = ApiClient.initiate_from_file(instauto_save_path)
-        else:
-            self._client = ApiClient(user_name=user_name, password=password)
-            self._client.login()
-            self._client.save_to_disk(instauto_save_path)
+        """ 
+        self._client = client
 
         self.input = Input(self._client)
         self._actions = []
@@ -154,3 +147,15 @@ class Bot:
             elif arg == 'ACCOUNT_ID' and account is not None:
                 a[i] = account['pk']
         return a
+
+    @classmethod
+    def from_credentials(cls, user_name: str, password: str, delay_between_action: float = 2.0, delay_variance: float = 0.0) -> Bot:
+        instauto_save_path = f'.{user_name}.instauto.save'
+        if os.path.isfile(instauto_save_path):
+            client = ApiClient.initiate_from_file(instauto_save_path)
+        else:
+            client = ApiClient(user_name=user_name, password=password)
+            client.login()
+            client.save_to_disk(instauto_save_path)
+        return cls(client, delay_between_action=delay_between_action, delay_variance=delay_variance)
+        

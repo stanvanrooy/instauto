@@ -149,7 +149,7 @@ class Bot:
         return a
 
     @classmethod
-    def from_credentials(cls, user_name: str, password: str, delay_between_action: float = 2.0, delay_variance: float = 0.0) -> Bot:
+    def from_credentials(cls, user_name: str, password: str, delay_between_action: float = 2.0, delay_variance: float = 0.0) -> "Bot":
         instauto_save_path = f'.{user_name}.instauto.save'
         if os.path.isfile(instauto_save_path):
             client = ApiClient.initiate_from_file(instauto_save_path)

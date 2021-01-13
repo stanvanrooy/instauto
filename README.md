@@ -42,7 +42,7 @@ will be liked, and a 35% chance that 1 comment will be left.
 
 ```python
 from instauto.bot.bot import Bot
-bot = Bot.from_credentials("your_username", "your_password", 20.0)
+bot = Bot("your_username", "your_password", 20.0)
 
 bot.input. \
     from_followers_of("instagram", 100). \

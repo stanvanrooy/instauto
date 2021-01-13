@@ -25,7 +25,7 @@ class Bot:
         Args:
             user_name: the username of the account
             password: the password of the account
-            client: the `ApiClient` instance the Bot communicates with
+            client: the `ApiClient` instance the Bot communicates with. If given, it will take precedence over credentials.
             delay_between_action: the amount of seconds to wait between actions (each like, follow, etc. is an action)
             delay_variance: the amount of variance to add to the delay. Delay will be random number between (delay - variance) - (delay + variance).
         """ 

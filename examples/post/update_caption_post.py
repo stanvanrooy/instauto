@@ -11,7 +11,7 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    caption = ps.UpdateCaption.create(
+    caption = ps.UpdateCaption(
         media_id="1734612737423614055_6400760974",
         caption_text="This is an example for update caption post."
     )

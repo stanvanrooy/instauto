@@ -30,7 +30,7 @@ class Bot:
             delay_variance: the amount of variance to add to the delay. Delay will be random number between (delay - variance) - (delay + variance).
         """ 
         
-        if(isinstance(client, ApiClient)):
+        if(client is not None):
             self._client = client
         else:
             self._initialize_client_from_credentials(user_name, password)

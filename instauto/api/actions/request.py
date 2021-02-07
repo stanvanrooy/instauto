@@ -220,12 +220,14 @@ class RequestMixin:
             logger.exception(f"Exception while sending request to {url} with data: \n {data}")
             raise e
 
+        headers_wo_pii = headers.copy()
+        headers_wo_pii["Authorization"] = "REMOVED PII"
         logger.debug(
             f'{"*" * 20} START REQUEST {"*" * 20}\n'
             f'METHOD: {resp.request.method}\n'
             f'URL: {url}\n'
             f'DATA: {data}\n'
-            f'HEADERS: {headers}\n'
+            f'HEADERS: {headers_wo_pii}\n'
             f'RESPONSE: {resp.content}\n'
             f'{"*" * 20} END REQUEST {"*" * 20}'
         )

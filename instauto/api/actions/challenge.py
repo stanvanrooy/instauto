@@ -36,7 +36,6 @@ class ChallengeMixin:
         #       'verify this was you', do not work.
         resp_json2 = resp_data2.json()
         if int(resp_json2.get("step_data", {}).get("choice", 0)) == 1:
-            # server only support choice 1, this is requiry some other devices to confirm send verification, like web
             _ = self._request(
                 endpoint=api_path, method=Method.POST, data={
                     "choice": 1,  # TODO: enum to confirm send verification code.
@@ -46,7 +45,7 @@ class ChallengeMixin:
                     "post": 1
                 }
             )
-            logger.warning("You may should confirm in some other logged device this was me to obtain the verification code.")
+            logger.warning("You need to complete a challenge manually, by using another logged in devied.")
         else:
             _ = self._request(
                 endpoint=api_path, method=Method.POST, data={

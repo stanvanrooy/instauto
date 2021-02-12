@@ -235,6 +235,7 @@ class State:
     def refresh(self, f: Callable):
         """Refresh the state. Simulates a re-open of the Instagram app."""
         self.uuid = f()
+        self.pigeon_session_id = f()
         self.device_id = f()
         self.ad_id = f()
         self.session_id = f()

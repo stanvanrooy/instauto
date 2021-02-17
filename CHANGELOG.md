@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.0.6 (2021-02-17)
+
+### Bugfixes
+
+* null check ([2cb0f26](https://github.com/stanvanrooy/instauto/commit/2cb0f26180b220f06e5568a9909b8c8ada7c7565))
+
+### Features
+
+* Add time window to vary delay between actions ([5435c84](https://github.com/stanvanrooy/instauto/commit/5435c84d3caf5731ab7cbbd5b438c37dfd5a0f8a))
+* Changed init arguments of `Bot` to expect an `ApiClient` instance ([e1d1b2f](https://github.com/stanvanrooy/instauto/commit/e1d1b2f4b2aba3a01e74e3f43ab09bb8fab95323))
+* Do not log authorization header ([fca481e](https://github.com/stanvanrooy/instauto/commit/7ca481ecef1d18d0d983f266dcb1b3c029e8f2f0))
+* Refresh pigeon session ([c25788c](https://github.com/stanvanrooy/instauto/commit/c25788cfbe9848c8e22950eb07929d7737697ca4))
+* Support two factor authentication ([a1e8c99](https://github.com/stanvanrooy/instauto/commit/a1e8c990803725c55af3d89a816e88c2023a277f))
 
 ### 1.0.5 (2020-12-16)
 

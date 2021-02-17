@@ -1,4 +1,5 @@
 import os
+import uuid
 
 import requests
 import time
@@ -7,6 +8,8 @@ import urllib.parse
 import logging
 
 from typing import Dict, Callable, Union
+
+from requests import Response
 
 from instauto.api.structs import DeviceProfile, IGProfile, State, Method
 from instauto.api.constants import API_BASE_URL
@@ -25,6 +28,7 @@ class RequestMixin:
     _session: requests.Session
     _request_finished_callbacks: list
     _handle_challenge: Callable
+    _2fa_function: Callable[[str], str]
 
     def _build_user_agent(self) -> str:
         """Builds a user agent, making use from all required values in `self.ig_profile`, `self.device_profile` and
@@ -247,30 +251,68 @@ class RequestMixin:
             parsed = resp.json()
         except json.JSONDecodeError:
             if resp.status_code == 404 and '/friendships/' in resp.url:
-                raise InvalidUserId(f"account id: {resp.url.split('/')[-2]} is not recognized by Instagram or you do not have a relation with this account.")
+                raise InvalidUserId(f"account id: {resp.url.split('/')[-2]} is not recognized "
+                                    f"by Instagram or you do not have a relation with this account.")
 
             logger.exception(f"response received: \n{resp.text}\nurl: {resp.url}\nstatus code: {resp.status_code}")
             raise BadResponse("Received a non-200 response from Instagram")
 
-        if parsed.get('error_type') == 'bad_password':
+        message = parsed.get('message')
+        error_type = parsed.get('error_type')
+        two_factor_required = parsed.get('two_factor_required', False)
+
+        if two_factor_required:
+            return self._handle_2fa(parsed)
+        if error_type == 'bad_password':
             raise IncorrectLoginDetails("Instagram does not recognize the provided login details")
-        if parsed.get('message') in ("checkpoint_required", "challenge_required"):
-            if not hasattr(self, '_handle_challenge'):
-                raise BadResponse("Challenge required. ChallengeMixin is not mixed in.")
-            eh = self._handle_challenge(resp)
-            if eh:
+        if message in ("checkpoint_required", "challenge_required"):
+            if self._handle_checkpoint(resp):
                 return
-        if parsed.get('message') == 'feedback_required':
-            if os.environ.get("ENABLE_INSTAUTO_USAGE_METRICS", True):
-                # This logs which actions cause limitations on Instagram accounts.
-                # I use this data to focus my development on area's where it's most needed.
-                requests.post('https://instauto.rooy.dev/feedback_required', data={
-                    'feedback_url': parsed.get('feedback_url'),
-                    'category': parsed.get('category')
-                })
-            raise BadResponse("Something unexpected happened. Please check the IG app.")
-        if parsed.get('message') == 'rate_limit_error':
+        if message == 'feedback_required':
+            self._handle_feedback_required(parsed)
+        if message == 'rate_limit_error':
             raise TimeoutError("Calm down. Please try again in a few minutes.")
-        if parsed.get('message') == 'Not authorized to view user':
+        if message == 'Not authorized to view user':
             raise AuthorizationError("This is a private user, which you do not follow.")
         raise BadResponse("Received a non-200 response from Instagram")
+
+    def _handle_checkpoint(self, resp: Response) -> bool:
+        if not hasattr(self, '_handle_challenge'):
+            raise BadResponse("Challenge required. ChallengeMixin is not mixed in.")
+        return self._handle_challenge(resp)
+
+    def _handle_feedback_required(self, parsed: dict) -> None:
+        if os.environ.get("ENABLE_INSTAUTO_USAGE_METRICS", True):
+            # This logs which actions cause limitations on Instagram accounts.
+            # I use this data to focus my development on area's where it's most needed.
+            requests.post('https://instauto.rooy.dev/feedback_required', data={
+                'feedback_url': parsed.get('feedback_url'),
+                'category': parsed.get('category')
+            })
+        raise BadResponse("Something unexpected happened. Please check the IG app.")
+
+    def _handle_2fa(self, parsed: dict) -> None:
+        endpoint = "accounts/two_factor_login/"
+        username = parsed['two_factor_info']['username']
+
+        if self._2fa_function is None:
+            code = input(f"Enter 2fa code for {username}: ")
+        else:
+            code = self._2fa_function(username)
+
+        # 1 = phone verification, 3 = authenticator app verification
+        verification_method = "1" if parsed['two_factor_info'].get('sms_two_factor_on') else "3"
+
+        data = {
+            'verification_code': code,
+            'phone_id': uuid.uuid4(),
+            '_csrftoken': self._session.cookies['csrftoken'],
+            'two_factor_identifier': parsed['two_factor_info']['two_factor_identifier'],
+            'username': username,
+            'trust_this_device': 0,
+            'guid': uuid.uuid4(),
+            'device_id': self.state.android_id,
+            'waterfall_id': uuid.uuid4(),
+            'verification_method': verification_method
+        }
+        self._request(endpoint, Method.POST, data=data)

@@ -2,6 +2,8 @@ import logging
 import uuid
 import random
 import hmac
+from collections import Callable
+
 import requests
 import base64
 import time
@@ -33,7 +35,8 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, Frie
     bc_hmac = hmac.HMAC(breadcrumb_private_key, digestmod='SHA256')
 
     def __init__(self, ig_profile: IGProfile = None, device_profile: DeviceProfile = None, state: State = None,
-                 user_name: str = None, password: str = None, session_cookies: dict = None, testing=False):
+                 user_name: str = None, password: str = None, session_cookies: dict = None, testing=False,
+                 _2fa_function: Callable[[str], str] = None):
         """Initializes all attributes. Can be instantiated with no params.
 
         Needs to be provided with either:
@@ -58,7 +61,11 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, Frie
         password : str
         session_cookies : dict
             Dictionary containing all cookies from a session.
+        testing: bool
+        _2fa_function: Callable[[str], List[str, str]]
+            Function that returns the 2fa code.
         """
+        self._2fa_function = _2fa_function
 
         if not ig_profile:
             ig_profile = IGProfile(**DEFAULT_IG_PROFILE)

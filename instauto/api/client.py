@@ -2,12 +2,13 @@ import logging
 import uuid
 import random
 import hmac
-from collections import Callable
 
 import requests
 import base64
 import time
 import json
+
+from typing import Callable
 
 from apscheduler.schedulers.background import BackgroundScheduler
 

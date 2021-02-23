@@ -1,6 +1,5 @@
 import os
 
-from instauto.api.actions import profile as pr
 from instauto.api.client import ApiClient
 
 if __name__ == '__main__':

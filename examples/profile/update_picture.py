@@ -1,8 +1,8 @@
 import os
 
 from instauto.api.client import ApiClient
-from instauto.api.actions import profile as pr
-from instauto.api import structs as st
+import instauto.api.actions.structs.profile as pr
+import instauto.api.actions.structs.post as ps
 
 if __name__ == '__main__':
     if os.path.isfile('./.instauto.save'):
@@ -12,15 +12,14 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    # FOR CUSTOM GENDER
-    # p = ProfileSetGender.create(
-    #     gender=WhichGender.other,
-    #     custom_gender="Blue whale"
-    # )
-
-    # FOR MALE / FEMALE / PREFER NOT TO SAY
-    p = pr.SetGender(
-        gender=st.WhichGender.male,
+    post = ps.PostFeed(
+        path='./test_feed.jpg',
+        caption='This is an example. Follow me!'
     )
+    resp = client.post_post(post, 80)
 
-    client.profile_set_gender(p)
+    upload_id = resp.json()['upload_id']
+    p = pr.SetPicture(
+        upload_id=upload_id,
+    )
+    client.profile_set_picture(p)

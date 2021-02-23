@@ -11,7 +11,7 @@ if __name__ == '__main__':
         client.login()
         client.save_to_disk('./.instauto.save')
 
-    p = pr.Update.create(
+    p = pr.Update(
         external_url="https://google.com",
         first_name="Hello! It's me!"
     )

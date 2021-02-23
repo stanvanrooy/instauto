@@ -17,7 +17,7 @@ if __name__ == '__main__':
     print(info_username)
 
     # get user info by user id
-    i_id = Info(user_id="")
+    i_id = Info(user_id=0)
     info_id = client.profile_info(i_id)
     print(info_id)
 

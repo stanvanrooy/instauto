@@ -3,7 +3,7 @@ from typing import Callable, Union, Dict
 from instauto.api.actions.stubs import _request
 
 from ..structs import IGProfile, State, DeviceProfile, Method
-from .structs.profile import SetGender, SetBiography, Update, Info
+from .structs.profile import SetGender, SetBiography, Update, Info, SetPicture
 
 
 class ProfileMixin:
@@ -24,7 +24,6 @@ class ProfileMixin:
         if obj.first_name is None: obj.first_name = current_data['user']['full_name']
         if obj.external_url is None: obj.external_url = current_data['user']['external_url']
         if obj.email is None: obj.email = current_data['user']['email']
-        if obj.biography is None: obj.biography = current_data['user']['biography']
         if obj.username is None: obj.username = current_data['user']['trusted_username']
 
         endpoint = 'accounts/edit_profile/'
@@ -47,3 +46,13 @@ class ProfileMixin:
         if data['status'] == 'ok':
             return data['user']
         return data['status']
+
+    def profile_set_picture(self, obj: SetPicture) -> Response:
+        def internal() -> None:
+            """These requests are unrelated, but are always sent in the ig app."""
+            self._request("accounts/current_user/?edit=true", Method.GET)
+            self.profile_update(Update(None))
+
+        internal()
+        data = obj.to_dict()
+        return self._request("accounts/change_profile_picture/", Method.POST, data=data)

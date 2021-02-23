@@ -233,14 +233,14 @@ class PostFeed(_PostBase):
     def __init__(self, path: Union[str, Path], caption: str,
                  location: Optional[Location] = None, usertags: Optional[UserTags] = None,
                  edits: Optional[Edits] = None, extra: Optional[Extra] = None,
-                 device: Optional[Device] = None, *args, **kwargs):
+                 device: Optional[Device] = None, source_type: PostLocation = PostLocation.Feed, *args, **kwargs):
         self.suggested_venue_position = -1
         self.multi_sharing = '-1'
         self.caption = caption
         self.location = location
         self.size = imagesize.get(path)
         self.usertags = usertags
-        super().__init__(path, PostLocation.Feed, edits, extra, device, *args, **kwargs)
+        super().__init__(path, source_type, edits, extra, device, *args, **kwargs)
 
 
 class PostStory(_PostBase):
@@ -262,6 +262,12 @@ class PostStory(_PostBase):
         self.supported_capabilities_new = "[{\"name\":\"SUPPORTED_SDK_VERSIONS\",\"value\":\"66.0,67.0,68.0,69.0,70.0,71.0,72.0,73.0,74.0,75.0,76.0,77.0,78.0,79.0,80.0,81.0,82.0,83.0,84.0,85.0,86.0,87.0,88.0,89.0,90.0,91.0,92.0\"},{\"name\":\"FACE_TRACKER_VERSION\",\"value\":\"14\"},{\"name\":\"segmentation\",\"value\":\"segmentation_enabled\"},{\"name\":\"COMPRESSION\",\"value\":\"ETC2_COMPRESSION\"},{\"name\":\"world_tracker\",\"value\":\"world_tracker_enabled\"},{\"name\":\"gyroscope\",\"value\":\"gyroscope_enabled\"}]"
         super().__init__(path, PostLocation.Story, edits, extra, device, *args, **kwargs)
         self._datapoint_from_client['device_id'] = lambda client: client.state.android_id
+
+
+class PostNull(PostFeed):
+    def __init__(self, path: Union[str, Path], edits: Optional[Edits] = None,
+                 extra: Optional[Extra] = None, device: Optional[Device] = None, *args, **kwargs):
+        super().__init__(path, None, None, None, edits, extra, device, PostLocation.Null, *args,**kwargs)
 
 
 class RetrieveByUser(cmmn.Base):

@@ -39,8 +39,6 @@ class Update(cmmn.Base):
 
     def __init__(self, external_url: Optional[str], phone_number: Optional[str] = None, username: Optional[str] = None,
                  first_name: Optional[str] = None, email: Optional[str] = None, *args, **kwargs):
-        if all([not x for x in [external_url, phone_number, username, first_name, email]]):
-            raise ValueError("No value(s) to update provided.")
         self.external_url = external_url
         self.phone_number = phone_number
         self.username = username
@@ -63,3 +61,13 @@ class Info(cmmn.Base):
             return f'users/{self.user_id}/info/'
         elif self.username:
             return f'users/{self.username}/usernameinfo/'
+
+
+class SetPicture(cmmn.Base):
+    _csrftoken: str = None
+    _uuid: str = None
+
+    def __init__(self, upload_id: int, *args, **kwargs):
+        self.upload_id = upload_id
+        self.use_fbuploader = True
+        super().__init__(*args, **kwargs)

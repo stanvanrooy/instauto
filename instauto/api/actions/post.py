@@ -9,7 +9,7 @@ from instauto.api.actions.stubs import _request
 
 from ..structs import Method, State, DeviceProfile, IGProfile, PostLocation
 from .structs.post import PostFeed, PostStory, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, \
-    Location, RetrieveByTag, RetrieveLikers, RetrieveCommenters, UserTag, UserTags
+    Location, RetrieveByTag, RetrieveLikers, RetrieveCommenters, UserTag, UserTags, PostNull
 
 from ..exceptions import BadResponse
 
@@ -115,7 +115,7 @@ class PostMixin:
                           headers=headers, data=f.read())
         return resp, as_dict
 
-    def post_post(self, obj: Union[PostStory, PostFeed], quality: int = None) -> Response:
+    def post_post(self, obj: Union[PostStory, PostFeed, PostNull], quality: int = None) -> Response:
         """Uploads a new picture/video to your Instagram account.
         Parameters
         ----------
@@ -130,7 +130,7 @@ class PostMixin:
         """
         if quality is None:
             quality = 70
-        as_dict = self._upload_image(obj, quality)[1]
+        resp, as_dict = self._upload_image(obj, quality)
         headers = {
             'retry_context': json.dumps({"num_reupload": 0, "num_step_auto_retry": 0, "num_step_manual_retry": 0})
         }
@@ -138,6 +138,8 @@ class PostMixin:
             return self._request('media/configure/', Method.POST, data=as_dict, headers=headers, signed=True)
         elif obj.source_type == PostLocation.Story.value:
             return self._request('media/configure_to_story/', Method.POST, data=as_dict, headers=headers, signed=True)
+        elif obj.source_type == PostLocation.Null.value:
+            return resp
         else:
             raise Exception("{} is not a supported post location.", obj.source_type)
 

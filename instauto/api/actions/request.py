@@ -220,6 +220,8 @@ class RequestMixin:
             logger.debug(f"Sent request to {url}, method: {resp.request.method} with data: \n {data}")
         except ValueError as e:
             raise e
+        except ConnectionError:
+            raise Exception("Request aborted. Instagram has probably blocked your fingerprint.")
         except Exception as e:  # todo: narrow down
             logger.exception(f"Exception while sending request to {url} with data: \n {data}")
             raise e

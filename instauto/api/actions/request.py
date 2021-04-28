@@ -33,10 +33,10 @@ class RequestMixin(StubMixin):
                  ) -> requests.Response:
         query = query or {}
         body = body or {}
-        add_default_headers = add_default_headers or {}
+        add_default_headers = add_default_headers or True
         headers = headers or {}
-        sign_request = sign_request or {}
-        self._request_preflight_check(method, endpoint, body)
+        sign_request = sign_request or False
+        self._request_preflight_check(method, endpoint, body, sign_request)
 
         url = self._prepare_url(endpoint, query)
         headers = self._build_headers(add_default_headers, headers, method)
@@ -125,9 +125,9 @@ class RequestMixin(StubMixin):
                                  data: Optional[Union[dict, bytes]],
                                  sign_request: bool
                                  ) -> None:
-        assert not method == method.GET and data is not None
+        assert not (method == method.GET and data)
         assert not endpoint.startswith('/')
-        assert not isinstance(data, bytes) and sign_request
+        assert not (isinstance(data, bytes) and sign_request)
 
     def _prepare_url(self, endpoint: str, query: dict) -> str:
         url = API_BASE_URL.format(endpoint) if 'https://' not in endpoint else endpoint

@@ -182,10 +182,11 @@ class UpdateCaption(_Base):
 
 
 class _PostBase(cmmn.Base):
+    timezone_offset: str = ''
+
     def __init__(self, path: Union[str, Path], source_type: PostLocation, edits: Optional[Edits],
                  extra: Optional[Extra], device: Optional[Device], *args, **kwargs):
         self.upload_id = str(time.time() + random.randint(1, 100000)).split('.')[0]
-        self.timezone_offset = str(time.localtime().tm_gmtoff)
         self.scene_capture_type = ''
         self.media_folder = 'Pictures'
         self.x_fb_waterfall_id = str(uuid.uuid4())

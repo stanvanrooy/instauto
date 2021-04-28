@@ -143,7 +143,8 @@ class State:
                  bandwidth_totalbytes_b: str = None, bandwidth_totaltime_ms: str =
                  None, connection_type: str = None, accept_language: str = None, accept_encoding: str = None,
                  accept: str = None, ads_opt_out: bool = None, authorization: str = None, www_claim: str = None,
-                 rur: str = None, bloks_version_id: str = None, bloks_is_layout_rtl: str = None, **kwargs):
+                 rur: str = None, bloks_version_id: str = None, bloks_is_layout_rtl: str = None,
+                 battery_level: int = None, is_charging: int = None, is_dark_mode: bool = None, **kwargs):
         self.app_startup_country = app_startup_country or DEFAULT_APP_STARTUP_COUNTRY
         self.device_locale = device_locale or DEFAULT_DEVICE_LOCALE
         self.app_locale = app_locale or DEFAULT_APP_LOCALE
@@ -159,6 +160,9 @@ class State:
         self.rur = rur or DEFAULT_RUR
         self.bloks_version_id = bloks_version_id or DEFAULT_BLOKS_VERSION_ID
         self.bloks_is_layout_rtl = bloks_is_layout_rtl or DEFAULT_BLOKS_IS_LAYOUT_RTL
+        self.battery_level = battery_level or random.randint(0, 100)
+        self.is_charging = is_charging or random.randint(0, 1)
+        self.is_dark_mode = is_dark_mode or random.randint(0, 100) > 50
 
         self.uuid = None
         self.device_id = None

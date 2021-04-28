@@ -1,5 +1,4 @@
-
-
+import orjson
 from requests import Response
 
 

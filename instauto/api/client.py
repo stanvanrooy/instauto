@@ -3,6 +3,7 @@ import uuid
 import random
 import hmac
 
+import orjson
 import requests
 import base64
 import time
@@ -12,6 +13,7 @@ from typing import Callable, Optional
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
+from .actions.feed import FeedMixin
 from .actions.helpers import HelperMixin
 from .structs import IGProfile, DeviceProfile, State, Inbox
 from .constants import (DEFAULT_IG_PROFILE, DEFAULT_DEVICE_PROFILE, DEFAULT_STATE)
@@ -31,7 +33,7 @@ logging.captureWarnings(True)
 
 
 class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, FriendshipsMixin,
-                SearchMixin, ChallengeMixin, DirectMixin, HelperMixin):
+                SearchMixin, ChallengeMixin, DirectMixin, HelperMixin, FeedMixin):
     breadcrumb_private_key = "iN4$aGr0m".encode()
     bc_hmac = hmac.HMAC(breadcrumb_private_key, digestmod='SHA256')
 
@@ -115,14 +117,14 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, Frie
         overwrite = overwrite or False
 
         try:
-            f = open(file_name, "wb" if not overwrite else "wb+")
+            f = open(file_name, "w" if not overwrite else "w+")
             state_as_dict = self.state.__dict__
             try:
                 logged_in_data = state_as_dict.pop('logged_in_account_data').__dict__
             except KeyError:
                 logged_in_data = {}
 
-            as_json = orself._json_dumps({
+            as_json = self._json_dumps({
                 'State': state_as_dict,
                 'IGProfile': self.ig_profile.__dict__,
                 'DeviceProfile': self.device_profile.__dict__,

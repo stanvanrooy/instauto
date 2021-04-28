@@ -79,6 +79,10 @@ class Input:
         self._accounts.extend(accounts)
         return self
 
+    def from_feed(self, limit: int):
+
+        self._accounts.extend(followers)
+
     @property
     def filtered_accounts(self) -> List[dict]:
         seen = []

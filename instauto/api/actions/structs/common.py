@@ -1,4 +1,4 @@
-import enum
+import time
 from typing import Callable, Dict, Union
 import pprint
 import inspect
@@ -16,7 +16,14 @@ class Base:
             "_csrftoken": lambda c: c._session.cookies['csrftoken'],
             "device_id": lambda c: c.state.android_id,
             "_uuid": lambda c: c.state.uuid,
-            "_uid": lambda c: c.state.user_id
+            "_uid": lambda c: c.state.user_id,
+            "phone_id": lambda c: c.state.phone_id,
+            "battery_level": lambda c: c.state.battery_level,
+            "timezone_offset": lambda _: str(time.localtime().tm_gmtoff),
+            "is_charging": lambda c: c.state.is_charging,
+            "is_dark_mode": lambda c: c.state.is_dark_mode,
+            "session_id": lambda c: c.state.session_id,
+            "bloks_versioning_id": lambda c: c.state.bloks_version_id
         }
 
     def fill(self, client) -> "Base":

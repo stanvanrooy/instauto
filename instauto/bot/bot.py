@@ -166,4 +166,3 @@ class Bot:
     @classmethod
     def from_client(cls, client: ApiClient, delay_between_action: float = 2.0, delay_variance: float = 0.0) -> "Bot":
         return cls("", "", client=client, delay_between_action=delay_between_action, delay_variance=delay_variance)
-        

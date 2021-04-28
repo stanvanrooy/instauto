@@ -10,7 +10,7 @@ from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Optional, List, Union
 
-from ..helpers import get_image_type
+from ..helpers import HelperMixin
 from instauto.api.structs import PostLocation
 from instauto.api.constants import DEFAULT_DEVICE_PROFILE
 
@@ -193,7 +193,7 @@ class _PostBase(cmmn.Base):
 
         self.source_type = source_type.value
 
-        image_type = get_image_type(path)
+        image_type = HelperMixin.get_image_type(path)
         # See issue #65
         if image_type not in ['jpg', 'jpeg']:
             raise ValueError("Instagram only accepts jpg/jpeg images")
@@ -239,7 +239,7 @@ class PostFeed(_PostBase):
         self.caption = caption
         self.location = location
         self.size = imagesize.get(path)
-        self.usertags = usertags
+        self.user_tags = usertags
         super().__init__(path, source_type, edits, extra, device, *args, **kwargs)
 
 

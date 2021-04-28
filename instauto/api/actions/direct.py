@@ -1,23 +1,15 @@
-from requests import Session, Response
-from typing import Callable, Union, Dict, List, Optional
-from instauto.api.actions.stubs import _request
+from requests import Response
+from typing import Union, List
 
-from ..structs import IGProfile, State, DeviceProfile, Method, Thread, Inbox
+from .stub import StubMixin
+from ..structs import Method, Thread, Inbox
 from .structs.direct import Message, MediaShare, LinkShare, ProfileShare, \
     DirectPhoto, DirectVideo, DirectThread
 
 
-class DirectMixin:
-    """Handles everything related to
-    Instagram direct message threads"""
-    _session: Session
-    ig_profile: IGProfile
-    state: State
-    device_profile: DeviceProfile
-    _request: _request
-    _gen_uuid: Callable
-    _generate_user_breadcrumb: Callable
-    _inbox: Optional[Inbox] = None
+class DirectMixin(StubMixin):
+    def __init__(self):
+        self._inbox = None
 
     @property
     def inbox(self):
@@ -35,53 +27,35 @@ class DirectMixin:
         Updates the threads with a distinct set of the old & new threads. Overwrites
         all other properties.
 
-        Returns
-        ----------
-        bool
-            True if inbox has been updated, else False
+        Returns:
+            bool: True if the inbox has been updated
         """
         resp = self._request('direct_v2/inbox', Method.GET)
-        stat = self._set_inbox_from_json(resp.json())
+        stat = self._set_inbox_from_json(self._json_loads(resp.text))
         return resp.ok and stat
 
     def direct_get_thread(self, obj: DirectThread) -> Thread:
         """Retrieve more information about a thread.
 
-        If this thread exists in the inbox, update it, else add it to the thread lists.
+        If this thread exists in the inbox, it will be updated. If not, it
+        will be added to the thread lists.
 
-        Parameters
-        ----------
-        obj : DirectThread
-            The thread you want to retrieve
-        Returns
-        ----------
-        Thread
-            The retrieved thread.
+        Returns:
+            Thread: The retrieved thread.
         """
         resp = self._request(f"direct_v2/threads/{obj.thread_id}", Method.GET)
-        thread = resp.json()['thread']
+        thread = self._json_loads(resp.text)['thread']
         thread = Thread(thread.pop('thread_id'), thread.pop('thread_v2_id'), thread.pop('users'),
                         thread.pop('left_users'), thread.pop('admin_user_ids'), thread.pop('items'),
-                        {k : v for k, v in thread.items()})
-
+                        {k: v for k, v in thread.items()})
         self._add_or_update_inbox_with_thread(thread)
         return thread
 
     def direct_send(self, obj: Union[Message, MediaShare, LinkShare,
                     ProfileShare, DirectPhoto, DirectVideo]) -> Response:
-        """Send a message to a thread.
-
-        Parameters
-        ----------
-        obj
-            The message that needs to be send
-        Returns
-        ----------
-        Response
-            The response sent by Instagram
-        """
+        """Send a message to a thread."""
         as_dict = obj.to_dict()
-        return self._request(obj.endpoint, Method.POST, data=as_dict)
+        return self._request(obj.endpoint, Method.POST, body=as_dict)
 
     def _build_thread_objects(self, threads_as_dict: List[dict]) -> List[Thread]:
         threads: List[Thread] = []
@@ -108,7 +82,6 @@ class DirectMixin:
             data['pending_requests_total'], data['has_pending_top_requests']
         )
         self._extend_inbox_threads(threads)
-
         return True
 
     def _add_or_update_inbox_with_thread(self, thread: Thread):

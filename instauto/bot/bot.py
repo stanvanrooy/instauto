@@ -45,8 +45,8 @@ class Bot:
         if os.path.isfile(instauto_save_path):
             self._client = ApiClient.initiate_from_file(instauto_save_path)
         else:
-            self._client = ApiClient(user_name=user_name, password=password)
-            self._client.login()
+            self._client = ApiClient(username=user_name, password=password)
+            self._client.log_in()
             self._client.save_to_disk(instauto_save_path)
 
     def like(self, chance: int, amount: int) -> "Bot":

@@ -24,13 +24,13 @@ from instauto.api.client import ApiClient
 from instauto.api.actions import post as ps
 
 if __name__ == '__main__':
-    client = ApiClient("your_username", "your_password")
-    client.login()
-    
-    like = ps.Like(
-        media_id="1734612737423614055_6400760974"
-    )
-    client.post_like(like)
+  client = ApiClient("your_username", "your_password")
+  client.log_in()
+
+  like = ps.Like(
+    media_id="1734612737423614055_6400760974"
+  )
+  client.post_like(like)
 ```
 
 And here is a simple example that uses the `Bot` class. This example, retrieves 100 followers 

@@ -21,7 +21,7 @@ def search_username(client: ApiClient, username, count: int) -> List[dict]:
         count=count
     )
     resp = client.search_username(username)
-    return resp.json()['users']
+    return self._json_loads(resp.text)['users']
 
 
 def get_user_by_username(client: ApiClient, username: str) -> dict:

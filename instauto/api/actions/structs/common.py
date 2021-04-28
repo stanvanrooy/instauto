@@ -1,5 +1,5 @@
 import enum
-from typing import Callable, Dict
+from typing import Callable, Dict, Union
 import pprint
 import inspect
 from dataclasses import asdict
@@ -27,7 +27,7 @@ class Base:
                 setattr(self, k, func(client))
         return self
 
-    def to_dict(self) -> Dict[str, str]:
+    def to_dict(self) -> Dict[str, Union[dict, str, int]]:
         """Converts the object to a dictionary"""
         d = {}
 

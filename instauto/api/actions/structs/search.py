@@ -3,7 +3,7 @@ import time
 
 
 class Username(cmmn.Base):
-    timezone_offset: int
+    timezone_offset: str
     q: str
     count: int
 
@@ -12,6 +12,7 @@ class Username(cmmn.Base):
         self.count = count
         self.timezone_offset = str(time.localtime().tm_gmtoff)
         super().__init__(*args, **kwargs)
+
 
 class Tag(cmmn.Base):
     q: str

@@ -8,11 +8,6 @@ class NoAuthDetailsProvided(Exception):
     pass
 
 
-class WrongMethodException(Exception):
-    """Raised when (presumable) the wrong method is used for a request."""
-    pass
-
-
 class IncorrectLoginDetails(Exception):
     """Raised when the provided loging details are incorrect."""
     pass

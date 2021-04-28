@@ -1,4 +1,4 @@
-import json
+
 
 from requests import Response
 
@@ -9,7 +9,7 @@ def is_resp_ok(resp: Response) -> bool:
     if not resp.content:
         return False
     try:
-        d = resp.json()
-    except json.JSONDecodeError:
+        d = orjson.loads(resp.text)
+    except orjson.JSONDecodeError:
         return False
     return d['status'] == 'ok'

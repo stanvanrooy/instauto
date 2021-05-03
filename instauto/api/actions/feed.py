@@ -19,3 +19,4 @@ class FeedMixin(StubMixin):
       obj.reason = 'pagination'
     obj.max_id = data['next_max_id']
     return obj, resp
+

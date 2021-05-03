@@ -271,6 +271,12 @@ class PostNull(PostFeed):
         super().__init__(path, None, None, None, edits, extra, device, PostLocation.Null, *args,**kwargs)
 
 
+class RetrieveById(cmmn.Base):
+    def __init__(self, media_id: str, *args, **kwargs) -> None:
+        self.media_id = media_id
+        super().__init__(*args, **kwargs)
+
+
 class RetrieveByUser(cmmn.Base):
     def __init__(self, user_id: str, exclude_comment: str = 'true', only_fetch_first_carousel_media: str = 'false',
                  *args, **kwargs):
@@ -301,6 +307,14 @@ class RetrieveLikers(cmmn.Base):
 
 
 class RetrieveCommenters(cmmn.Base):
+    REQUEST = "post/retrieve_commenters.json"
+
+    def __init__(self, media_id: str, *args, **kwargs):
+        self.media_id = media_id
+        super().__init__(*args, **kwargs)
+
+
+class RetrieveComments(cmmn.Base):
     REQUEST = "post/retrieve_commenters.json"
 
     def __init__(self, media_id: str, *args, **kwargs):

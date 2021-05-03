@@ -6,7 +6,7 @@ from typing import Union, List, Tuple, Dict
 from .stub import StubMixin
 from ..structs import Method, PostLocation
 from .structs.post import PostFeed, PostStory, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, \
-    Location, RetrieveByTag, RetrieveLikers, RetrieveCommenters, UserTags, PostNull
+    Location, RetrieveByTag, RetrieveLikers, RetrieveCommenters, UserTags, PostNull, RetrieveComments, RetrieveById
 
 from ..exceptions import BadResponse
 
@@ -59,6 +59,11 @@ class PostMixin(StubMixin):
             return resp
         else:
             raise Exception("{} is not a supported post location.", obj.source_type)
+
+    def post_retrieve_by_id(self, obj: RetrieveById) -> Response:
+        url = f'media/{obj.media_id}/info/'
+        return self._request(url, Method.GET)
+
 
     def post_retrieve_by_user(self, obj: RetrieveByUser) -> (RetrieveByUser, Union[dict, bool]):
         """Retrieves 12 posts of the user at a time. If there was a response / if there were any more posts
@@ -113,6 +118,12 @@ class PostMixin(StubMixin):
         resp = self._request(endpoint=endpoint, method=Method.GET)
         users_as_json = [c['user'] for c in self._json_loads(resp.text)['comments']]
         return users_as_json
+
+    def post_get_comments(self, obj: RetrieveComments):
+        endpoint = 'media/{media_id}/comments'.format(media_id=obj.media_id)
+        resp = self._request(endpoint=endpoint, method=Method.GET)
+        breakpoint()
+
 
     def post_carousel(self, posts: List[PostFeed], caption: str, quality: int) -> Dict[str, Response]:
         upload_id = str(time()).replace('.', '')

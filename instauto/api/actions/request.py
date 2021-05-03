@@ -125,9 +125,11 @@ class RequestMixin(StubMixin):
                                  data: Optional[Union[dict, bytes]],
                                  sign_request: bool
                                  ) -> None:
-        assert not (method == method.GET and data)
+        if method == Method.GET:
+            assert not data
         assert not endpoint.startswith('/')
-        assert not (isinstance(data, bytes) and sign_request)
+        if sign_request:
+            assert not isinstance(data, bytes)
 
     def _prepare_url(self, endpoint: str, query: dict) -> str:
         url = API_BASE_URL.format(endpoint) if 'https://' not in endpoint else endpoint

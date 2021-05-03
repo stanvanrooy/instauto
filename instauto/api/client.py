@@ -27,13 +27,14 @@ from .actions.friendships import FriendshipsMixin
 from .actions.search import SearchMixin
 from .actions.challenge import ChallengeMixin
 from .actions.direct import DirectMixin
+from .actions.activity import ActivityMixin
 
 logger = logging.getLogger(__name__)
 logging.captureWarnings(True)
 
 
 class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, FriendshipsMixin,
-                SearchMixin, ChallengeMixin, DirectMixin, HelperMixin, FeedMixin):
+                SearchMixin, ChallengeMixin, DirectMixin, HelperMixin, FeedMixin, ActivityMixin):
     breadcrumb_private_key = "iN4$aGr0m".encode()
     bc_hmac = hmac.HMAC(breadcrumb_private_key, digestmod='SHA256')
 

@@ -12,12 +12,12 @@ if __name__ == '__main__':
         client.log_in()
         client.save_to_disk('./.instauto.save')
 
-    s = se.Username.create('instagram', 1)
+    s = se.Username('instagram', 1)
     resp = client.search_username(s).json()
     user = resp['users'][0]
     user_id = user['pk']
 
-    r = ps.RetrieveByUser.create(user_id)
+    r = ps.RetrieveByUser(user_id)
 
     obj, result = client.post_retrieve_by_user(r)
     retrieved_items = []
@@ -26,5 +26,6 @@ if __name__ == '__main__':
     while result and len(retrieved_items) < 20:
         retrieved_items.extend(result)
         obj, result = client.post_retrieve_by_user(obj)
+        print(set([r['pk'] for r in retrieved_items]))
         print(f"Retrieved {len(result)} new posts!")
     print(f"Retrieved a total of {len(retrieved_items)} posts!")

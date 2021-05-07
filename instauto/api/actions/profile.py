@@ -18,10 +18,12 @@ class ProfileMixin(StubMixin):
         if obj.username is None: obj.username = current_data['user']['trusted_username']
 
         endpoint = 'accounts/edit_profile/'
+        obj.fill(self)
         return self._request(endpoint, Method.POST, body=obj.to_dict(), sign_request=True)
 
     def profile_set_biography(self, obj: SetBiography) -> Response:
         """Sets the biography of the currently logged in user"""
+        obj.fill(self)
         return self._request('accounts/set_biography/', Method.POST, body=obj.to_dict())
 
     def profile_set_gender(self, obj: SetGender) -> Response:

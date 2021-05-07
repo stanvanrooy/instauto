@@ -9,15 +9,15 @@ logger = logging.getLogger(__name__)
 
 
 class SetGender(cmmn.Base):
-    _csrftoken: str = None
-    _uuid: str = None
+    _csrftoken: str = ''
+    _uuid: str = ''
 
     def __init__(self, gender: Optional[WhichGender] = None, custom_gender: Optional[str] = None, *args, **kwargs):
         if gender is None and custom_gender is None:
             raise ValueError("Either gender or custom_gender needs to be provided")
 
         self.gender = gender
-        self.custom_gender = custom_gender
+        self.custom_gender = custom_gender or ""
         super().__init__(*args, **kwargs)
 
 

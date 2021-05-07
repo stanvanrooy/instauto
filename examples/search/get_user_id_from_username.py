@@ -11,6 +11,6 @@ if __name__ == '__main__':
         client.log_in()
         client.save_to_disk('./.instauto.save')
 
-    s = se.Username.create("instapowr", 1)
+    s = se.Username("instapowr", 1)
     resp = client.search_username(s).json()
     user_id = resp['users'][0]['pk']

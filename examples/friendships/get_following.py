@@ -5,6 +5,7 @@ import random
 
 from instauto.api.client import ApiClient
 from instauto.api.actions import friendships as fs
+from instauto.api.actions import search as se
 
 
 if __name__ == '__main__':
@@ -15,7 +16,11 @@ if __name__ == '__main__':
         client.log_in()
         client.save_to_disk('./.instauto.save')
 
-    f = fs.GetFollowing(user_id="2283025667")
+    s = se.Username("instagram", 1)
+    resp = client.search_username(s).json()
+    user_id = resp['users'][0]['pk']
+
+    f = fs.GetFollowing(user_id)
     obj, result = client.following_get(f)  # grabs the first page
     while result:  # paginate until all users are extracted
         parsed = result.json()

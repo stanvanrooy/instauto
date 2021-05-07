@@ -78,6 +78,8 @@ class FriendshipsMixin(StubMixin):
         endpoint = 'friendships/{user_id}/followers/' if isinstance(obj, GetFollowers) else 'friendships/{user_id}/following/'
         resp = self._request(endpoint.format(user_id=obj.user_id), Method.GET, query=query_params)
         as_json = self._json_loads(resp.text)
+        if 'next_max_id' not in as_json:
+            return obj, False
         obj.max_id = as_json['next_max_id']
         obj.page = (data.get('page') or 0) + 1
         return obj, resp

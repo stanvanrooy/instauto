@@ -1,4 +1,5 @@
 import os
+import orjson
 
 from instauto.api.client import ApiClient
 import instauto.api.actions.structs.profile as pr
@@ -12,13 +13,13 @@ if __name__ == '__main__':
         client.log_in()
         client.save_to_disk('./.instauto.save')
 
-    post = ps.PostFeed(
+    post = ps.PostNull(
         path='./test_feed.jpg',
         caption='This is an example. Follow me!'
     )
     resp = client.post_post(post, 80)
 
-    upload_id = self._json_loads(resp.text)['upload_id']
+    upload_id = orjson.loads(resp.text)['upload_id']
     p = pr.SetPicture(
         upload_id=upload_id,
     )

@@ -15,7 +15,6 @@ if __name__ == '__main__':
 
     post = ps.PostNull(
         path='./test_feed.jpg',
-        caption='This is an example. Follow me!'
     )
     resp = client.post_post(post, 80)
 

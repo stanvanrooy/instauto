@@ -35,7 +35,7 @@ class Update(cmmn.Base):
     _csrftoken: str = None
     _uid: str = None  # user id
     _uuid: str = None
-    raw_text: str = None
+    _csrftoken: str = None
 
     def __init__(self, external_url: Optional[str], phone_number: Optional[str] = None, username: Optional[str] = None,
                  first_name: Optional[str] = None, email: Optional[str] = None, *args, **kwargs):

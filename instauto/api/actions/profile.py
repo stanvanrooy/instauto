@@ -16,6 +16,8 @@ class ProfileMixin(StubMixin):
         if obj.external_url is None: obj.external_url = current_data['user']['external_url']
         if obj.email is None: obj.email = current_data['user']['email']
         if obj.username is None: obj.username = current_data['user']['trusted_username']
+        if not isinstance(obj, SetBiography) or obj.biography is None: 
+            obj.biography = current_data['user']['biography_with_entities']['raw_text']
 
         endpoint = 'accounts/edit_profile/'
         obj.fill(self)

@@ -94,6 +94,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://rooy.works"><img src="https://avatars1.githubusercontent.com/u/49564025?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Stan van Rooy</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=stanvanrooy" title="Documentation">📖</a> <a href="https://github.com/stanvanrooy/instauto/commits?author=stanvanrooy" title="Code">💻</a> <a href="https://github.com/stanvanrooy/instauto/commits?author=stanvanrooy" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/tibotix"><img src="https://avatars3.githubusercontent.com/u/38123657?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tizian Seehaus</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=tibotix" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/ItsFlorkast"><img src="https://avatars.githubusercontent.com/u/43137808?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Florkast</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=ItsFlorkast" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://atnartur.dev"><img src="https://avatars.githubusercontent.com/u/5189110?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Artur</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=atnartur" title="Code">💻</a></td>
   </tr>
 </table>
 

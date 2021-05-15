@@ -6,11 +6,13 @@ import orjson
 from instauto.api.actions.structs.feed import FeedGet
 from instauto.api.client import ApiClient
 
+from instauto.helpers import models
+
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
-def get_feed(client: ApiClient, limit: int) -> List[dict]:
+def get_feed(client: ApiClient, limit: int) -> List[models.Post]:
   ret = []
   obj = FeedGet()
 
@@ -22,4 +24,4 @@ def get_feed(client: ApiClient, limit: int) -> List[dict]:
     if len(items) == 0:
       break
     ret.extend(items)
-  return ret
+  return [models.Post.parse(p) for p in ret]

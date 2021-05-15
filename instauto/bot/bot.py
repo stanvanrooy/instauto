@@ -5,10 +5,10 @@ from time import sleep
 from typing import List, Dict, Tuple
 
 from instauto.api.client import ApiClient
-from instauto.api.exceptions import AuthorizationError
 from instauto.bot.input import Input
+from instauto.helpers import models
 from instauto.helpers.friendships import follow_user
-from instauto.helpers.post import like_post, comment_post, retrieve_posts_from_user
+from instauto.helpers.post import like_post, comment_post
 
 logger = logging.getLogger(__name__)
 
@@ -17,9 +17,9 @@ class Bot:
     stop: bool = False
     input: Input
     _actions: List = []
-    _post_cache: Dict[str, List[Dict]] = {}
 
-    def __init__(self, user_name: str, password: str, client: ApiClient=None, delay_between_action: float = 2.0, delay_variance: float = 0.0) -> None:
+    def __init__(self, user_name: str, password: str, client: ApiClient = None,
+                 delay_between_action: float = 2.0, delay_variance: float = 0.0) -> None:
         """Initiate a new `Bot` instance.
 
         Args:
@@ -30,7 +30,7 @@ class Bot:
             delay_variance: the amount of variance to add to the delay. Delay will be random number between (delay - variance) - (delay + variance).
         """ 
         
-        if(client is not None):
+        if client is not None:
             self._client = client
         else:
             self._initialize_client_from_credentials(user_name, password)
@@ -140,16 +140,11 @@ class Bot:
         sleeptime = round(random.uniform(min, max), 2)
         sleep(sleeptime)
 
-    def _get_posts(self, account_name: str, force: bool = False) -> List[Dict]:
-        if account_name not in self._post_cache or force:
-            try:
-                self._post_cache[account_name] = retrieve_posts_from_user(self._client, 30, account_name)
-            except AuthorizationError:
-                logger.info(f"Can't retrieve posts from {account_name}. This is a private account.")
-        return self._post_cache.get(account_name)
+    def _get_posts(self, account_name: str, force: bool = False) -> List[models.Post]:
+        return self.input.get_posts(account_name, force)
 
     @staticmethod
-    def _resolve_args(args: Tuple, post: Dict = None, account: Dict = None) -> List:
+    def _resolve_args(args: Tuple, post: models.Post = None, account: models.User = None) -> List:
         a = list()
         for arg in args:
             if isinstance(arg, tuple) and callable(arg[0]):
@@ -158,9 +153,9 @@ class Bot:
                 a.append(arg)
         for i, arg in enumerate(a.copy()):
             if arg == 'POST_ID' and post is not None:
-                a[i] = post['pk']
+                a[i] = post.pk
             elif arg == 'ACCOUNT_ID' and account is not None:
-                a[i] = account['pk']
+                a[i] = account.pk
         return a
 
     @classmethod

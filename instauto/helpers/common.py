@@ -12,3 +12,4 @@ def is_resp_ok(resp: Response) -> bool:
     except orjson.JSONDecodeError:
         return False
     return d['status'] == 'ok'
+

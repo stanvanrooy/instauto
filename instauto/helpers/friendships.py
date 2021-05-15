@@ -1,15 +1,16 @@
 from instauto.api.client import ApiClient
 from instauto.api.actions.structs.friendships import GetFollowers, Create, GetFollowing
 from instauto.helpers.search import get_user_id_from_username
+from instauto.helpers.common import is_resp_ok
+from instauto.helpers import models
 
 import typing
 import logging
+
 logger = logging.getLogger(__name__)
 
-from .common import is_resp_ok
 
-
-def get_followers(client: ApiClient, user_id: str, limit: int) -> typing.List[dict]:
+def get_followers(client: ApiClient, user_id: str, limit: int) -> typing.List[models.User]:
     """Retrieve the first x amount of followers from an account.
 
     If the `user_id` is not known, use `instauto.helpers.search.get_user_id_from_username`
@@ -33,10 +34,10 @@ def get_followers(client: ApiClient, user_id: str, limit: int) -> typing.List[di
         )
         logger.info("Retrieved {} followers, {} more to go.".format(len(followers), limit - len(followers)))
         obj, result = client.followers_get(obj)
-    return followers[:min(len(followers), limit)]
+    return [models.User.parse(f) for f in followers[:min(len(followers), limit)]]
 
 
-def get_following(client: ApiClient, user_id: str, limit: int) -> typing.List[dict]:
+def get_following(client: ApiClient, user_id: str, limit: int) -> typing.List[models.User]:
     """Retrieve the first x amount of users that follow an account.
 
     If the `user_id` is not known, use `instauto.helpers.search.get_user_id_from_username`
@@ -60,7 +61,7 @@ def get_following(client: ApiClient, user_id: str, limit: int) -> typing.List[di
         )
         logger.info("Retrieved {} of following, {} more to go.".format(len(following), limit - len(following)))
         obj, result = client.following_get(obj)
-    return following[:min(len(following), limit)]
+    return [models.User.parse(f) for f in following[:min(len(following), limit)]]
 
 
 def follow_user(client: ApiClient, user_id: str = None, username: str = None) -> bool:
@@ -85,6 +86,6 @@ def follow_user(client: ApiClient, user_id: str = None, username: str = None) ->
     if user_id is None:
         raise ValueError("Both `user_id` and `username` are not provided.")
 
-    obj = Create(user_id)
+    obj = Create(str(user_id))
     resp = client.user_follow(obj)
     return is_resp_ok(resp)

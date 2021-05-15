@@ -1,5 +1,7 @@
 from typing import List
 
+import orjson
+
 from instauto.api.client import ApiClient
 from instauto.api.actions import search as se
 
@@ -21,7 +23,7 @@ def search_username(client: ApiClient, username, count: int) -> List[dict]:
         count=count
     )
     resp = client.search_username(username)
-    return self._json_loads(resp.text)['users']
+    return orjson.loads(resp.text)['users']
 
 
 def get_user_by_username(client: ApiClient, username: str) -> dict:

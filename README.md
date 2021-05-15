@@ -17,6 +17,10 @@ The package can be installed with the following pip command:
 
 ## Usage ([documentation](https://instauto.readthedocs.io/))
 
+I think the easiest way, to learn a new library, is by looking at examples(available for the [api](https://github.com/stanvanrooy/instauto/tree/master/examples/api), [helpers](https://github.com/stanvanrooy/instauto/tree/master/examples/helpers) and [bot](https://github.com/stanvanrooy/instauto/tree/master/examples/bot) package). That's why `instauto` has a rich library of examples. Right here in the repo. There are examples available, for all 3 packages. There are also a couple of [articles up on the wiki](https://github.com/stanvanrooy/instauto/wiki/)
+
+If that's not your cup of tea, there's also documentation available [here](https://instauto.readthedocs.io/en/latest/).
+
 Instauto has 3 main api's that can be used: `instauto.api`, `instauto.bot` and `instauto.helpers`.
 
 Everything in `instauto`, is based around the 'core' `instauto.api` package. This package interacts directly with the private Instagram API and contains all functionality. This package is both the most flexible (you can update all requests sent and receive the full response back, for example), but also the most complex. You likely do not need to use this package.
@@ -24,10 +28,6 @@ Everything in `instauto`, is based around the 'core' `instauto.api` package. Thi
 The `instauto.helpers` package, is an abstraction above the `instauto.api` pacakge. It offers a little bit less flexibility, but is a lot less complex to use. 
 
 The `instauto.bot` package, is another abstraction, but this time over the `instauto.helpers` package. This package has pretty much no flexibility, but can be set up in 10 lines of Python code.
-
-I think the easiest way, to learn a new library, is by looking at examples. That's why `instauto` has a rich library of examples. Right here in the repo. There are examples available, for all 3 packages.
-
-If that's not your cup of tea, there's also documentation available [here](https://instauto.readthedocs.io/en/latest/).
 
 ## Support
 This is a hobby project, which means sometimes other things take priority. I will review issues and work on issues when I have the time. Spamming new issues, asking for a ton of updates, or things like that, will not speed up the process. It will probably even give me less motivation to work on it :)

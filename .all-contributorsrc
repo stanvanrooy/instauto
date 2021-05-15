@@ -110,6 +110,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "atnartur",
+      "name": "Artur",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5189110?v=4",
+      "profile": "http://atnartur.dev",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

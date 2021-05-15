@@ -23,7 +23,7 @@ from instauto.api.client import ApiClient
 from instauto.api.actions import post as ps
 
 if __name__ == '__main__':
-  client = ApiClient("your_username", "your_password")
+  client = ApiClient(username="your_username", password="your_password")
   client.log_in()
 
   like = ps.Like(

@@ -16,48 +16,18 @@ The package can be installed with the following pip command:
 ```pip install instauto```
 
 ## Usage ([documentation](https://instauto.readthedocs.io/))
-Here is a simple example that likes a post.
 
-```python
-from instauto.api.client import ApiClient
-from instauto.api.actions import post as ps
+Instauto has 3 main api's that can be used: `instauto.api`, `instauto.bot` and `instauto.helpers`.
 
-if __name__ == '__main__':
-  client = ApiClient(username="your_username", password="your_password")
-  client.log_in()
+Everything in `instauto`, is based around the 'core' `instauto.api` package. This package interacts directly with the private Instagram API and contains all functionality. This package is both the most flexible (you can update all requests sent and receive the full response back, for example), but also the most complex. You likely do not need to use this package.
 
-  like = ps.Like(
-    media_id="1734612737423614055_6400760974"
-  )
-  client.post_like(like)
-```
+The `instauto.helpers` package, is an abstraction above the `instauto.api` pacakge. It offers a little bit less flexibility, but is a lot less complex to use. 
 
-And here is a simple example that uses the `Bot` class. This example, retrieves 100 followers 
-from `@Instagram`, 61 accounts that `@Instagram` follows, 200 accounts that have liked 
-a recent post of` @Instagram` and 200  accounts that recently commented on a post of `@Instagram`.
+The `instauto.bot` package, is another abstraction, but this time over the `instauto.helpers` package. This package has pretty much no flexibility, but can be set up in 10 lines of Python code.
 
-Each retrieved account has a 25% chance to be followed, a 25% chance that 3 posts 
-will be liked, and a 35% chance that 1 comment will be left.  
+I think the easiest way, to learn a new library, is by looking at examples. That's why `instauto` has a rich library of examples. Right here in the repo. There are examples available, for all 3 packages.
 
-```python
-from instauto.bot.bot import Bot
-bot = Bot("your_username", "your_password", 20.0)
-
-bot.input. \
-    from_followers_of("instagram", 100). \
-    from_following_of("instagram", 61). \
-    from_likers_of("instagram", 200). \
-    from_commenters_of("instagram", 200)
-
-bot. \
-    like(25, 3). \  
-    comment(35, 1, ["hey, I like your posts!", "Looks good!"]). \
-    follow(25)
-
-bot.start()
-```
-
-Other examples of how to use the package, can be found in the [examples directory](https://github.com/stanvanrooy/instauto/tree/master/examples).
+If that's not your cup of tea, there's also documentation available [here](https://instauto.readthedocs.io/en/latest/).
 
 ## Support
 This is a hobby project, which means sometimes other things take priority. I will review issues and work on issues when I have the time. Spamming new issues, asking for a ton of updates, or things like that, will not speed up the process. It will probably even give me less motivation to work on it :)

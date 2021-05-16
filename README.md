@@ -37,7 +37,7 @@ If you're looking for paid support, please reach out to me at [stan@rooy.dev](ma
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
+There's an [article up on the wiki](https://github.com/stanvanrooy/instauto/wiki/Setting-up-a-development-environment),  that explains how to set up a development environment.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

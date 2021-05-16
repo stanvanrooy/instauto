@@ -120,6 +120,15 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "Fislix",
+      "name": "Felix Fischer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84190063?v=4",
+      "profile": "https://github.com/Fislix",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -1,5 +1,5 @@
 from instauto.api.client import ApiClient
-from instauto.api.actions.structs.friendships import GetFollowers, Create, GetFollowing
+from instauto.api.actions.structs.friendships import GetFollowers, Create, GetFollowing, Destroy
 from instauto.helpers.search import get_user_id_from_username
 from instauto.helpers.common import is_resp_ok
 from instauto.helpers import models
@@ -89,3 +89,31 @@ def follow_user(client: ApiClient, user_id: str = None, username: str = None) ->
     obj = Create(str(user_id))
     resp = client.user_follow(obj)
     return is_resp_ok(resp)
+
+
+def unfollow_user(client: ApiClient, user_id: str = None, username: str = None) -> bool:
+    """Unfollow a user.
+
+    Either `user_id` or `username` need to be provided. If both are provided,
+    the user_id takes precedence.
+
+    Args:
+        client: your ApiClient
+        user_id: the user_id of the account to follow
+        username: the username of the account to follow
+    Returns:
+        True if success else False
+    """
+    if user_id is not None and username is not None:
+        raise ValueError("Both `user_id` and `username` are provided.")
+
+    if user_id is None and username is not None:
+        user_id = get_user_id_from_username(client, username)
+
+    if user_id is None:
+        raise ValueError("Both `user_id` and `username` are not provided.")
+
+    obj = Destroy(str(user_id))
+    resp = client.unfollow_user(obj)
+    return is_resp_ok(resp)
+

@@ -25,9 +25,6 @@ def get_followers(client: ApiClient, user_id: str, username: str, limit: int) ->
     Returns:
         A list containing Instagram user objects (examples/objects/user.json).
     """
-    if user_id is not None and username is not None:
-        raise ValueError("Both `user_id` and `username` are provided.")
-
     if user_id is None and username is not None:
         user_id = get_user_id_from_username(client, username)
 
@@ -62,9 +59,6 @@ def get_following(client: ApiClient, user_id: str, username: str, limit: int) ->
     Returns:
         A list containing Instagram user objects (examples/objects/user.json).
     """
-    if user_id is not None and username is not None:
-        raise ValueError("Both `user_id` and `username` are provided.")
-
     if user_id is None and username is not None:
         user_id = get_user_id_from_username(client, username)
 
@@ -97,9 +91,6 @@ def follow_user(client: ApiClient, user_id: str = None, username: str = None) ->
     Returns:
         True if success else False
     """
-    if user_id is not None and username is not None:
-        raise ValueError("Both `user_id` and `username` are provided.")
-
     if user_id is None and username is not None:
         user_id = get_user_id_from_username(client, username)
 
@@ -124,9 +115,6 @@ def unfollow_user(client: ApiClient, user_id: str = None, username: str = None) 
     Returns:
         True if success else False
     """
-    if user_id is not None and username is not None:
-        raise ValueError("Both `user_id` and `username` are provided.")
-
     if user_id is None and username is not None:
         user_id = get_user_id_from_username(client, username)
 

@@ -10,20 +10,30 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def get_followers(client: ApiClient, user_id: str, limit: int) -> typing.List[models.User]:
+def get_followers(client: ApiClient, user_id: str, username: str, limit: int) -> typing.List[models.User]:
     """Retrieve the first x amount of followers from an account.
 
-    If the `user_id` is not known, use `instauto.helpers.search.get_user_id_from_username`
-    to convert a username to user_id.
+    Either `user_id` or `username` need to be provided. If both are provided,
+    the user_id takes precedence.
 
     Args:
         client: your ApiClient
         user_id: the user_id of the account to retrieve followers from
+	    username: the username of the account to retrieve followers from
         limit: the maximum amount of followers to retrieve
 
     Returns:
         A list containing Instagram user objects (examples/objects/user.json).
     """
+    if user_id is not None and username is not None:
+        raise ValueError("Both `user_id` and `username` are provided.")
+
+    if user_id is None and username is not None:
+        user_id = get_user_id_from_username(client, username)
+
+    if user_id is None:
+        raise ValueError("Both `user_id` and `username` are not provided.")
+
     obj = GetFollowers(user_id)
 
     obj, result = client.followers_get(obj)
@@ -37,20 +47,30 @@ def get_followers(client: ApiClient, user_id: str, limit: int) -> typing.List[mo
     return [models.User.parse(f) for f in followers[:min(len(followers), limit)]]
 
 
-def get_following(client: ApiClient, user_id: str, limit: int) -> typing.List[models.User]:
-    """Retrieve the first x amount of users that follow an account.
+def get_following(client: ApiClient, user_id: str, username: str, limit: int) -> typing.List[models.User]:
+    """Retrieve the first x amount of users that an account is following.
 
-    If the `user_id` is not known, use `instauto.helpers.search.get_user_id_from_username`
-    to convert a username to user_id.
+    Either `user_id` or `username` need to be provided. If both are provided,
+    the user_id takes precedence.
 
     Args:
         client: your ApiClient
         user_id: the user_id of the account to retrieve following from
+	    username: the username of the account to retrieve following from
         limit: the maximum amount of users to retrieve
 
     Returns:
         A list containing Instagram user objects (examples/objects/user.json).
     """
+    if user_id is not None and username is not None:
+        raise ValueError("Both `user_id` and `username` are provided.")
+
+    if user_id is None and username is not None:
+        user_id = get_user_id_from_username(client, username)
+
+    if user_id is None:
+        raise ValueError("Both `user_id` and `username` are not provided.")
+
     obj = GetFollowing(user_id)
 
     obj, result = client.following_get(obj)
@@ -99,8 +119,8 @@ def unfollow_user(client: ApiClient, user_id: str = None, username: str = None) 
 
     Args:
         client: your ApiClient
-        user_id: the user_id of the account to follow
-        username: the username of the account to follow
+        user_id: the user_id of the account to unfollow
+        username: the username of the account to unfollow
     Returns:
         True if success else False
     """

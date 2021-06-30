@@ -6,7 +6,8 @@ from typing import Union, List, Tuple, Dict
 from .stub import StubMixin
 from ..structs import Method, PostLocation
 from .structs.post import PostFeed, PostStory, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, \
-    Location, RetrieveByTag, RetrieveLikers, RetrieveCommenters, UserTags, PostNull, RetrieveComments, RetrieveById
+    Location, RetrieveByTag, RetrieveLikers, RetrieveCommenters, UserTags, PostNull, RetrieveComments, RetrieveById ,\
+    Archive, Unarchive
 
 from ..exceptions import BadResponse
 
@@ -31,6 +32,13 @@ class PostMixin(StubMixin):
     def post_update_caption(self, obj: UpdateCaption) -> Response:
         """Updates the caption of a post"""
         return self._post_act(obj)
+
+    def post_archive(self, obj: Archive) -> Response:
+        return self._post_act(obj)
+
+    def post_unarchive(self, obj: Unarchive) -> Response:
+        return self._post_act(obj)
+
 
     def post_post(self, obj: Union[PostStory, PostFeed, PostNull], quality: int = None) -> Response:
         """Uploads a new picture/video to your Instagram account.
@@ -229,7 +237,7 @@ class PostMixin(StubMixin):
                                  headers=headers, body=f.read())
         return resp, as_dict
 
-    def _post_act(self, obj: Union[Save, Comment, UpdateCaption, Like, Unlike]):
+    def _post_act(self, obj: Union[Save, Comment, UpdateCaption, Like, Unlike, Archive, Unarchive]):
         """Peforms the actual action and calls the Instagram API with the data provided."""
         if obj.feed_position is None:
             delattr(obj, 'feed_position')

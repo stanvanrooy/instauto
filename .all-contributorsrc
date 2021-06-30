@@ -129,6 +129,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "alperenkaplan",
+      "name": "alperenkaplan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48252753?v=4",
+      "profile": "https://github.com/alperenkaplan",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

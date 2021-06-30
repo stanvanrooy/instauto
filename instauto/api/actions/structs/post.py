@@ -171,6 +171,20 @@ class Comment(_Base):
         super().__init__(media_id=media_id, container_module=container_module, *args, **kwargs)
 
 
+class Archive(_Base):
+    action = 'only_me'
+
+    def __init__(self, media_id: str, container_module: str = "something", *args, **kwargs):
+        super().__init__(media_id=media_id, container_module=container_module, *args, **kwargs)
+
+
+class Unarchive(_Base):
+    action = 'undo_only_me'
+
+    def __init__(self, media_id: str, container_module: str = "something", *args, **kwargs):
+        super().__init__(media_id=media_id, container_module=container_module, *args, **kwargs)
+
+
 class UpdateCaption(_Base):
     action = 'edit_media'
 

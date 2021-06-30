@@ -16,7 +16,7 @@ Pygments==2.7.4
 pyparsing==2.4.7
 pytz==2020.1
 recommonmark==0.6.0
-requests==2.24.0
+requests==2.25.1
 six==1.15.0
 snowballstemmer==2.0.0
 tzlocal==2.1

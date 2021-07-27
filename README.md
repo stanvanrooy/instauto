@@ -7,27 +7,75 @@
 [![Documentation Status](https://readthedocs.org/projects/instauto/badge/?version=latest)](https://instauto.readthedocs.io/en/latest/?badge=latest)
 
 
-Instauto is a Python package for automating various parts of Instagram, making use of the private Instagram API.
-
-For feature requests, ideas, comments, etc., please open an issue. 
+`instauto` is a Python package for automating Instagram, making use of the private Instagram API. `instauto` tries to have feature parity with the Instagram app.
 
 ## Installation
 The package can be installed with the following pip command:
 ```pip install instauto```
 
-## Usage ([documentation](https://instauto.readthedocs.io/))
+## Getting started
+Below are a few examples for getting stared quickly. After getting started, you'll probably want to take a quick look at the more [detailed documentation](instauto.readthedocs.io/) on readthedocs.
 
-I think the easiest way, to learn a new library, is by looking at examples(available for the [api](https://github.com/stanvanrooy/instauto/tree/master/examples/api), [helpers](https://github.com/stanvanrooy/instauto/tree/master/examples/helpers) and [bot](https://github.com/stanvanrooy/instauto/tree/master/examples/bot) package). That's why `instauto` has a rich library of examples. Right here in the repo. There are examples available, for all 3 packages. There are also a couple of [articles up on the wiki](https://github.com/stanvanrooy/instauto/wiki/)
+### Authentication
+You'll want to do this as little as possible. Instagram sees logging in often as a huge red flag.
+```python
+from instauto.api import ApiClient
+client = ApiClient(username='your_username', password='your_password')
+client.log_in()
+```
 
-If that's not your cup of tea, there's also documentation available [here](https://instauto.readthedocs.io/en/latest/).
+### Restoring state
+Because of that, you can restore your session.
+```python
+client.save_to_disk('your-savefile.instauto')
+client = ApiClient.initiate_from_file('your-savefile.instauto')
+```
 
-Instauto has 3 main api's that can be used: `instauto.api`, `instauto.bot` and `instauto.helpers`.
+### Making new friends
+Ofcourse `instauto` also supports (un)following users.
+```python
+from instauto.helpers.friendships import follow_user, unfollow_user
+follow_user(client, username='stan000_')
+unfollow_user(client, username='stan000_')
+```
 
-Everything in `instauto`, is based around the 'core' `instauto.api` package. This package interacts directly with the private Instagram API and contains all functionality. This package is both the most flexible (you can update all requests sent and receive the full response back, for example), but also the most complex. You likely do not need to use this package.
+### Finding new friends
+But before you can follow users, you'll need to find them first.
+```python
+from instauto.helpers.search import search_username
+users = search_username(client, "username", 10)
+```
 
-The `instauto.helpers` package, is an abstraction above the `instauto.api` pacakge. It offers a little bit less flexibility, but is a lot less complex to use. 
+### Retrieving 100 of your followers
+Getting a list of users that follow you is also super simple. 
+```python
+from instauto.helpers.friendships import get_followers
+followers = get_followers(client, username='your_username', 100)
+```
 
-The `instauto.bot` package, is another abstraction, but this time over the `instauto.helpers` package. This package has pretty much no flexibility, but can be set up in 10 lines of Python code.
+### Uploading images
+`instauto` also offers a simple API for uploading images to your feed and story.
+```python
+from instauto.helpers.post import upload_image_to_feed
+upload_image_to_feed(client, './cat.jpg', 'Hello from instauto!')
+```
+
+### Looking at your feed
+Your feed can't be missing, it's pretty much what Instagram is about, isn't it?
+```python
+from instato.helpers.feed import get_feed
+posts = get_feed(client, 100)
+```
+
+## More examples 
+Looking for something else? We have more examples:
+- [feed helper functions](https://github.com/stanvanrooy/instauto/tree/master/examples/helpers/feed)
+- [friendship helper functions](https://github.com/stanvanrooy/instauto/tree/master/examples/helpers/friendships)
+- [post helper functions](https://github.com/stanvanrooy/instauto/tree/master/examples/helpers/post)
+- [search helper function](https://github.com/stanvanrooy/instauto/tree/master/examples/helpers/search)
+- [advanced examples](https://github.com/stanvanrooy/instauto/tree/master/examples/api)
+
+Stil no look? Submit a feature request!
 
 ## Support
 This is a hobby project, which means sometimes other things take priority. I will review issues and work on issues when I have the time. Spamming new issues, asking for a ton of updates, or things like that, will not speed up the process. It will probably even give me less motivation to work on it :)

@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def get_followers(client: ApiClient, user_id: str, username: str, limit: int) -> typing.List[models.User]:
+def get_followers(client: ApiClient, limit: int, user_id: str = None, username: str = None) -> typing.List[models.User]:
     """Retrieve the first x amount of followers from an account.
 
     Either `user_id` or `username` need to be provided. If both are provided,
@@ -44,7 +44,7 @@ def get_followers(client: ApiClient, user_id: str, username: str, limit: int) ->
     return [models.User.parse(f) for f in followers[:min(len(followers), limit)]]
 
 
-def get_following(client: ApiClient, user_id: str, username: str, limit: int) -> typing.List[models.User]:
+def get_following(client: ApiClient, limit: int, user_id: str = None, username: str = None) -> typing.List[models.User]:
     """Retrieve the first x amount of users that an account is following.
 
     Either `user_id` or `username` need to be provided. If both are provided,

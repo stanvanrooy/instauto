@@ -20,7 +20,7 @@ Below are a few examples for getting stared quickly. After getting started, you'
 You'll want to do this as little as possible. Instagram sees logging in often as a huge red flag.
 ```python
 from instauto.api import ApiClient
-client = ApiClient(username='your_username', password='your_password')
+client = ApiClient(user_name='your_username', password='your_password')
 client.log_in()
 ```
 

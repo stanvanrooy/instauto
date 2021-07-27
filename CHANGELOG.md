@@ -1,5 +1,42 @@
 # Changelog
 
+## 2.0.1 (2021-07-28)
+
+#### New Features
+
+* support both `user_id` and `username` as arguments in helper functions
+* add  helper function
+* use structured models for helper functions
+#### Fixes
+
+* use correct order for arguments
+#### Docs
+
+* wasn't a typo
+* fix typo
+* add alperenkaplan as a contributor for code, doc ([#183](https://github.com/stanvanrooy/instauto/issues/183))
+* add Fislix as a contributor ([#175](https://github.com/stanvanrooy/instauto/issues/175))
+* update readme
+* add examples for the helper functions
+* add examples for search actions
+* add examples for profile actions
+* add examples for post actions
+* add examples for friendship actions
+* add examples for feed actions
+* add examples for direct actions
+* add examples for authentication actions
+* add examples for activity actions
+* update readme
+* update readme
+* add atnartur as a contributor ([#171](https://github.com/stanvanrooy/instauto/issues/171))
+* fix code example in usage section in readme ([#170](https://github.com/stanvanrooy/instauto/issues/170))
+#### Others
+
+* (deps): bump urllib3 from 1.25.9 to 1.26.5 ([#179](https://github.com/stanvanrooy/instauto/issues/179))
+* update contributor count
+
+Full set of changes: [`2.0.0...2.0.1`](https://github.com/stanvanrooy/instauto/compare/2.0.0...2.0.1)
+
 ## 2.0.0 (2021-05-12)
 
 #### New Features

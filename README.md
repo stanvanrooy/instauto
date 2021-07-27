@@ -50,7 +50,7 @@ users = search_username(client, "username", 10)
 Getting a list of users that follow you is also super simple. 
 ```python
 from instauto.helpers.friendships import get_followers
-followers = get_followers(client, username='your_username', 100)
+followers = get_followers(client, username='your_username', limit=100)
 ```
 
 ### Uploading images

@@ -20,7 +20,7 @@ Below are a few examples for getting stared quickly. After getting started, you'
 You'll want to do this as little as possible. Instagram sees logging in often as a huge red flag.
 ```python
 from instauto.api import ApiClient
-client = ApiClient(user_name='your_username', password='your_password')
+client = ApiClient(username='your_username', password='your_password')
 client.log_in()
 ```
 
@@ -50,7 +50,7 @@ users = search_username(client, "username", 10)
 Getting a list of users that follow you is also super simple. 
 ```python
 from instauto.helpers.friendships import get_followers
-followers = get_followers(client, username='your_username', 100)
+followers = get_followers(client, username='your_username', limit=100)
 ```
 
 ### Uploading images

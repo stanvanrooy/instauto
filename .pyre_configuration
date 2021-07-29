@@ -3,8 +3,7 @@
     "instauto"
   ],
   "search_path": [
-    ".",
-    "venv/"
+    "."
   ],
   "ignore_all_errors": [
     "instauto/api/structs.py",

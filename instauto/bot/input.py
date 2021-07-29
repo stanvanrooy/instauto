@@ -40,7 +40,7 @@ class Input:
         user_id = get_user_id_from_username(self._client, account_name)
         if user_id is None:
             return self
-        followers = get_followers(self._client, str(user_id), limit)
+        followers = get_followers(self._client, limit, str(user_id))
         self._accounts.extend(followers)
         return self
 

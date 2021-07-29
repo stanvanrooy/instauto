@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.0.2 (2021-07-29)
+
+#### Fixes
+
+* client.unfollow_user -> client.user_unfollow ([#191](https://github.com/stanvanrooy/instauto/issues/191))
+* change order of parameters ([#192](https://github.com/stanvanrooy/instauto/issues/192))
+#### Docs
+
+* update readme
+
+Full set of changes: [`2.0.1...2.0.1`](https://github.com/stanvanrooy/instauto/compare/2.0.1...2.0.1)
+
 ## 2.0.1 (2021-07-28)
 
 #### New Features

@@ -1,6 +1,14 @@
 {
   "source_directories": [
-    "."
+    "instauto"
+  ],
+  "search_path": [
+    ".",
+    "venv/"
+  ],
+  "ignore_all_errors": [
+    "instauto/api/structs.py",
+    "instauto/api/actions/stub.py"
   ],
   "taint_models_path": "/home/stan/.local/lib"
 }

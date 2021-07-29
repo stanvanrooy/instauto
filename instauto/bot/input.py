@@ -8,7 +8,6 @@ from instauto.helpers.post import retrieve_posts_from_user
 
 
 class Input:
-    _input: List[Callable]
     _client: ApiClient
     _post_cache: Dict[str, List[models.Post]] = {}
     _accounts: List[models.User] = []
@@ -26,7 +25,7 @@ class Input:
         user_id = get_user_id_from_username(self._client, account_name)
         if user_id is None:
             return self
-        following = get_following(self._client, str(user_id), limit)
+        following = get_following(self._client, user_id, limit)
         self._accounts.extend(following)
         return self
 
@@ -40,7 +39,7 @@ class Input:
         user_id = get_user_id_from_username(self._client, account_name)
         if user_id is None:
             return self
-        followers = get_followers(self._client, limit, str(user_id))
+        followers = get_followers(self._client, limit, user_id)
         self._accounts.extend(followers)
         return self
 
@@ -54,7 +53,7 @@ class Input:
         likers = []
         posts = self.get_posts(account_name)
         for post in posts:
-            likers.extend(get_likers_of_post(self._client, post['id']))
+            likers.extend(get_likers_of_post(self._client, post.id))
             if len(likers) > limit:
                 break
         self._post_cache[account_name] = posts
@@ -77,7 +76,7 @@ class Input:
         self._accounts.extend(commenters[:limit:])
         return self
 
-    def from_user_list(self, accounts: List[dict]) -> "Input":
+    def from_user_list(self, accounts: List[models.User]) -> "Input":
         """Add supplied accounts to input
         
         Args:
@@ -89,9 +88,14 @@ class Input:
     @property
     def filtered_accounts(self) -> List[models.User]:
         seen = []
-        return list(filter(lambda x: x['id'] not in seen and seen.append(x['id']) is None, self._accounts))
+        return list(filter(
+            lambda x: x['id'] not in seen and seen.append(x['id']) is None,
+            self._accounts
+        ))
 
-    def get_posts(self, account_name: str, force: bool = False) -> List[models.Post]:
+    def get_posts(self, account_name: str, force: bool = False) \
+            -> List[models.Post]:
         if account_name not in self._post_cache or force:
-            self._post_cache[account_name] = retrieve_posts_from_user(self._client, 30, account_name)
-        return self._post_cache.get(account_name)
+            self._post_cache[account_name] = retrieve_posts_from_user(
+                self._client, 30, account_name)
+        return self._post_cache.get(account_name) or []

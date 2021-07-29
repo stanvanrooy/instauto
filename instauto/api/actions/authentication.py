@@ -5,12 +5,14 @@ import struct
 
 from typing import Dict, Optional
 
+# pyre-ignore[21]
 from Cryptodome.Cipher import AES, PKCS1_v1_5
+# pyre-ignore[21]
 from Cryptodome.PublicKey import RSA
+# pyre-ignore[21]
 from Cryptodome import Random
 
 from .stub import StubMixin
-from ..exceptions import NoAuthDetailsProvided
 from ..structs import Method, LoggedInAccountData
 
 
@@ -35,6 +37,7 @@ class AuthenticationMixin(StubMixin):
         }
         resp = self._request('accounts/login/', Method.POST, body=body, sign_request=True)
         try:
+            # pyre-ignore[6]
             self.state.logged_in_account_data = LoggedInAccountData(**self._json_loads(resp.text)['logged_in_user'])
         except KeyError as e:
             # The response can be empty if challenge was needed. In that case, the logged_in_account_data
@@ -42,7 +45,7 @@ class AuthenticationMixin(StubMixin):
             if self.state.logged_in_account_data is None:
                 raise e
 
-    def change_password(self, new_password: str, current_password: str = None) -> requests.Response:
+    def change_password(self, new_password: str, current_password: Optional[str] = None) -> requests.Response:
         cp = current_password or self._raw_password
         if cp is None:
             raise ValueError("No current password provided")
@@ -81,7 +84,7 @@ class AuthenticationMixin(StubMixin):
         }
         return d
 
-    def _encode_password(self, password: str = None) -> Optional[str]:
+    def _encode_password(self, password: Optional[str] = None) -> Optional[str]:
         """Encrypts the raw password into a form that Instagram accepts."""
         if not self.state.public_api_key:
             return

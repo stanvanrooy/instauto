@@ -36,3 +36,8 @@ class MissingValue(Exception):
 class AuthorizationError(Exception):
     """Raised when you try to get an object you're not authorized to get"""
     pass
+
+
+class NotFoundError(Exception):
+    """Raised when an entity is not found."""
+    pass

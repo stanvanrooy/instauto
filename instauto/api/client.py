@@ -8,9 +8,9 @@ import requests
 import base64
 import time
 
-
 from typing import Callable, Optional
 
+# pyre-ignore[21]
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from .actions.feed import FeedMixin
@@ -38,14 +38,16 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, Frie
     breadcrumb_private_key = "iN4$aGr0m".encode()
     bc_hmac = hmac.HMAC(breadcrumb_private_key, digestmod='SHA256')
 
-    def __init__(self, ig_profile: IGProfile = None, device_profile: DeviceProfile = None, state: State = None,
-                 username: str = None, password: str = None, session_cookies: dict = None, testing=False,
-                 _2fa_function: Callable[[str], str] = None) -> None:
+    def __init__(
+        self, ig_profile: Optional[IGProfile] = None, device_profile: Optional[DeviceProfile] = None,
+        state: Optional[State] = None, username: Optional[str] = None, password: Optional[str] = None,
+        session_cookies: Optional[dict] = None, testing=False, _2fa_function: Optional[Callable[[str], str]] = None
+    ) -> None:
         """Initializes all attributes. Can be instantiated with no params.
 
         Needs to be provided with either:
             1) state and session_cookies, to resume an old session, in this case all other params are optional
-            2) user_name and password, in this case all other params are optional
+            2) username and password, in this case all other params are optional
 
         In the case that the class is initialized without params, or with a few of the params not provided,
         they will automatically be filled with default values from constants.py.
@@ -158,6 +160,7 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, Frie
         return i
 
     @staticmethod
+    # pyre-ignore[40]: invalid override
     def _gen_uuid() -> str:
         return str(uuid.uuid4())
 

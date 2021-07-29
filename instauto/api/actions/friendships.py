@@ -32,6 +32,7 @@ class FriendshipsMixin(StubMixin):
              as an argument, but with updated max_id and page attributes, and the response or False. If the
              second item is False, there were no more items available.
         """
+        # pyre-ignore[7]
         return self._get_base(obj)
 
     def following_get(self, obj: GetFollowing) -> Tuple[GetFollowing, Union[Response, bool]]:
@@ -42,12 +43,14 @@ class FriendshipsMixin(StubMixin):
              as an argument, but with updated max_id and page attributes, and the response or False. If the
              second item is False, there were no more items available.
         """
+        # pyre-ignore[7]
         return self._get_base(obj)
 
     def follow_requests_get(self, obj: PendingRequests) -> List[dict]:
         """Retrieve all follow requests"""
         resp = self._request('friendships/pending/', Method.GET)
         parsed = self._json_loads(resp.text)
+        # pyre-ignore[6]
         return parsed['users']
 
     def follow_request_approve(self, obj: ApproveRequest) -> Response:
@@ -59,10 +62,11 @@ class FriendshipsMixin(StubMixin):
         obj.fill(self)
         return self._request(f"friendships/{obj.endpoint}/{obj.user_id}/", Method.POST, body=obj.to_dict(), sign_request=True)
 
-    def _get_base(self, obj: Union[GetFollowing, GetFollowers, dict]) -> \
+    def _get_base(self, obj: Union[GetFollowing, GetFollowers]) -> \
             Tuple[Union[GetFollowing, GetFollowers], Union[Response, bool]]:
         obj.fill(self)
         data = obj.to_dict()
+        # pyre-ignore[58]
         if 'max_id' not in data and data.get('page', 0) > 0:
             return obj, False
 
@@ -73,6 +77,7 @@ class FriendshipsMixin(StubMixin):
             "query": "",
             "rank_token": obj.rank_token
         }
+        # pyre-ignore[58]
         if data.get('page', 0) > 0:  # make sure we don't include max_id on the first request
             query_params['max_id'] = obj.max_id
         endpoint = 'friendships/{user_id}/followers/' if isinstance(obj, GetFollowers) else 'friendships/{user_id}/following/'
@@ -80,7 +85,9 @@ class FriendshipsMixin(StubMixin):
         as_json = self._json_loads(resp.text)
         if 'next_max_id' not in as_json:
             return obj, False
+        # pyre-ignore[6]
         obj.max_id = as_json['next_max_id']
-        obj.page = (data.get('page') or 0) + 1
+        # pyre-ignore[58]
+        obj.page = data['page'] + 1
         return obj, resp
 

@@ -13,15 +13,17 @@ logger = logging.getLogger(__name__)
 
 
 def get_feed(client: ApiClient, limit: int) -> List[models.Post]:
-  ret = []
-  obj = FeedGet()
+    ret = []
+    obj = FeedGet()
 
-  while len(ret) < limit:
-    obj, resp = client.feed_get(obj)
-    data = orjson.loads(resp.text)
-    items = [i['media_or_ad'] for i in data['feed_items'] if 'media_or_ad' in i]
-    logger.info("Retrieved {} posts, {} more to go.".format(len(ret), limit - len(ret)))
-    if len(items) == 0:
-      break
-    ret.extend(items)
-  return [models.Post.parse(p) for p in ret]
+    while len(ret) < limit:
+        obj, resp = client.feed_get(obj)
+        data = orjson.loads(resp.text)
+        items = list(filter(lambda i: 'media_or_ad' in i, data['feed_items']))
+        logger.info("Retrieved {} posts, {} more to go.".format(
+            len(ret), limit - len(ret))
+        )
+        if len(items) == 0:
+            break
+        ret.extend(items)
+    return [models.Post.parse(p) for p in ret]

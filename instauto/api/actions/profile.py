@@ -1,8 +1,8 @@
-from requests import Session, Response
-from typing import Callable, Union, Dict
+from requests import Response
+from typing import Union, Dict
 
 from .stub import StubMixin
-from ..structs import IGProfile, State, DeviceProfile, Method
+from ..structs import Method
 from .structs.profile import SetGender, SetBiography, Update, Info, SetPicture
 
 
@@ -11,12 +11,19 @@ class ProfileMixin(StubMixin):
         # retrieve the existing data for all profile data fields
         current_data = self._request('accounts/current_user/', Method.GET, query={'edit': 'true'}).json()
         # ensure we don't overwrite existing data to nothing
+        # TODO: fix Pyre ignores
+        # pyre-ignore[16]
         if obj.phone_number is None: obj.phone_number = current_data['user']['phone_number']
+        # pyre-ignore[16]
         if obj.first_name is None: obj.first_name = current_data['user']['full_name']
+        # pyre-ignore[16]
         if obj.external_url is None: obj.external_url = current_data['user']['external_url']
+        # pyre-ignore[16]
         if obj.email is None: obj.email = current_data['user']['email']
+        # pyre-ignore[16]
         if obj.username is None: obj.username = current_data['user']['trusted_username']
-        if not isinstance(obj, SetBiography) or obj.biography is None: 
+        # pyre-ignore[16]
+        if not isinstance(obj, SetBiography) or obj.biography is None:
             obj.biography = current_data['user']['biography_with_entities']['raw_text']
 
         endpoint = 'accounts/edit_profile/'

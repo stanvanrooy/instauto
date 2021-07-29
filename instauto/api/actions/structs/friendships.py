@@ -1,3 +1,5 @@
+from typing import Optional
+
 from . import common as cmmn
 
 import logging
@@ -12,7 +14,7 @@ class _Base(cmmn.Base):
     _uid: str = ''
     _uuid: str = ''
 
-    def __init__(self, user_id: str, surface: Surface = None,  *args, **kwargs) -> None:
+    def __init__(self, user_id: str, surface: Optional[Surface] = None,  *args, **kwargs) -> None:
         # user_id is returned as int by instagram. That makes it error prone,
         # since sending the user_id as int will not work.
         self.user_id = str(user_id)
@@ -72,15 +74,20 @@ class ApproveRequest(_Base):
         super().__init__(*args, **kwargs)
 
 
+# pyre-ignore[13]: page is declared when utilized to keep track of how many pages we've retrieved.
 class _GetBase(cmmn.Base):
-    user_id: str
-    page: int
+    user_id: int
+    page: int = 0
     max_id: str
     rank_token: str
     search_surface: str
     order: str
 
-    def __init__(self, user_id: str, order='default', surface: Surface = Surface.follow_list, enable_groups=False, query="", *args, **kwargs):
+    def __init__(
+        self, user_id: int , order='default',
+        surface: Surface = Surface.follow_list, enable_groups=False,
+        query="", *args, **kwargs
+    ):
         self.rank_token = str(uuid.uuid4())
         self.order = order
         self.query = query

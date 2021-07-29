@@ -1,3 +1,5 @@
+from typing import Optional
+
 from . import common as cmmn
 
 
@@ -11,7 +13,7 @@ class FeedGet(cmmn.Base):
   is_dark_mode: str = ''
   session_id: str = ''
   bloks_versioning_id: str = ''
-  max_id: str = None
+  max_id: Optional[str] = None
 
   def __init__(self, reason: str = 'cold_start_fetch', *args, **kwargs):
     self.reason = reason

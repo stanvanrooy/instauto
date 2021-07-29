@@ -2,13 +2,14 @@ from . import common as cmmn
 import uuid
 import random
 import time
+# pyre-ignore[21]
 import imagesize
 import logging
 import pprint
 
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Optional, List, Union
+from typing import Optional, List, Union, Tuple
 
 from ..helpers import HelperMixin
 from instauto.api.structs import PostLocation
@@ -31,14 +32,18 @@ class UserTag:
     :param y: relative y-coordinate with 0 <= y <= 1, with 0 for top and 1 for bottom
     """
     user_id: str = ""
-    x: float = None
-    y: float = None
+    x: Optional[float] = None
+    y: Optional[float] = None
 
     def to_dict(self) -> dict:
+        if self.x is None or self.y is None:
+            raise Exception("Invalid x, y coordinates.")
         data = {
             "user_id": self.user_id,
             "position": [
+                # pyre-ignore[6]
                 round(self.x, ndigits=8),
+                # pyre-ignore[6]
                 round(self.y, ndigits=8)
             ]
         }
@@ -54,13 +59,13 @@ class UserTags:
     Contains all information about UserTags. This can be used to set usertags for an Instagram post.
     :param usertags: this takes a list of UserTag objects
     """
-    usertags: List[UserTag] = None
+    usertags: Optional[List[UserTag]] = None
 
     def to_dict(self) -> dict:
         data = {
             "in": []
         }
-        for usertag in self.usertags:
+        for usertag in self.usertags or []:
             data["in"].append(usertag)
         return data
 
@@ -73,8 +78,8 @@ class Location:
     """Contains all information about the location. This can be used to set the location tag for an Instagram post."""
     name: str = ""
     address: str = ""
-    lat: float = None
-    lng: float = None
+    lat: Optional[float] = None
+    lng: Optional[float] = None
     external_source: str = ""
     facebook_places: str = ""
     facebook_places_id: str = ""
@@ -124,12 +129,12 @@ class Extra:
 class _Base(cmmn.Base):
     """Contains values that are pretty much shared across all API requests."""
     radio_type: str = ''
-    is_carousel_bumped_post: str = 'False'
-    container_module: str = None
-    media_id: str = None
-    feed_position: str = None
+    is_carousel_bumped_post: Optional[str] = None
+    container_module: Optional[str] = None
+    media_id: Optional[str] = None
+    feed_position: Optional[str] = None
 
-    def __init__(self, media_id: str, feed_position: str = None, container_module: str = None,
+    def __init__(self, media_id: str, feed_position: Optional[str] = None, container_module: Optional[str] = None,
                  delivery_class: str = 'organic', is_carousel_bumped_post: str = 'False', *args, **kwargs):
         self.media_id = media_id
         self.container_module = container_module
@@ -197,6 +202,7 @@ class UpdateCaption(_Base):
 
 class _PostBase(cmmn.Base):
     timezone_offset: str = ''
+    size: Optional[Tuple[Union[int, float], Union[int, float]]] = None
 
     def __init__(self, path: Union[str, Path], source_type: PostLocation, edits: Optional[Edits],
                  extra: Optional[Extra], device: Optional[Device], *args, **kwargs):
@@ -225,7 +231,7 @@ class _PostBase(cmmn.Base):
         elif extra is not None and edits is None:
             self.edits = Edits([extra.source_width, extra.source_height])
         elif extra is None and edits is None:
-            if hasattr(self, 'size'):
+            if self.size is not None:
                 size = self.size
             else:
                 size = imagesize.get(self.image_path)
@@ -243,12 +249,13 @@ class _PostBase(cmmn.Base):
 
 class PostFeed(_PostBase):
     """Contains all information about a post, that is necessary to upload it to Instagram."""
-    device_id: str = None
+    device_id: Optional[str] = None
 
-    def __init__(self, path: Union[str, Path], caption: str,
-                 location: Optional[Location] = None, usertags: Optional[UserTags] = None,
-                 edits: Optional[Edits] = None, extra: Optional[Extra] = None,
-                 device: Optional[Device] = None, source_type: PostLocation = PostLocation.Feed, *args, **kwargs):
+    def __init__(
+        self, path: Union[str, Path], caption: Optional[str], location: Optional[Location] = None,
+        usertags: Optional[UserTags] = None, edits: Optional[Edits] = None, extra: Optional[Extra] = None,
+        device: Optional[Device] = None, source_type: PostLocation = PostLocation.Feed, *args, **kwargs
+    ):
         self.suggested_venue_position = -1
         self.multi_sharing = '-1'
         self.caption = caption
@@ -259,10 +266,10 @@ class PostFeed(_PostBase):
 
 
 class PostStory(_PostBase):
-    _csrftoken: str = None
-    _uid: str = None
-    _uuid: str = None
-    device_id: str = None
+    _csrftoken: Optional[str] = None
+    _uid: Optional[str] = None
+    _uuid: Optional[str] = None
+    device_id: Optional[str] = None
 
     def __init__(self, path: Union[str, Path], edits: Optional[Edits] = None,
                  extra: Optional[Extra] = None, device: Optional[Device] = None, *args, **kwargs):
@@ -292,8 +299,11 @@ class RetrieveById(cmmn.Base):
 
 
 class RetrieveByUser(cmmn.Base):
-    def __init__(self, user_id: str, exclude_comment: str = 'true', only_fetch_first_carousel_media: str = 'false',
-                 *args, **kwargs):
+    def __init__(
+        self, user_id: int, exclude_comment: str = 'true',
+        only_fetch_first_carousel_media: str = 'false',
+        *args, **kwargs
+    ):
         self.user_id = user_id
         self.max_id: Optional[str] = None
         self.exclude_comment = exclude_comment

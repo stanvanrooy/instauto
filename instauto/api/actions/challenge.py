@@ -14,8 +14,10 @@ logger.setLevel(logging.DEBUG)
 class ChallengeMixin(StubMixin):
     def _handle_challenge(self, resp: requests.Response) -> bool:
         resp_data = self._json_loads(resp.text)
+        # pyre-ignore[6]
         if resp_data['message'] not in ('challenge_required', 'checkpoint_required'):
             raise BadResponse("Challenge required, but no URL provided.")
+        # pyre-ignore[6]
         api_path = resp_data['challenge']['api_path'][1:]
 
         resp = self._request(
@@ -35,6 +37,7 @@ class ChallengeMixin(StubMixin):
             "post": 1,
         }
         body = base_body.copy()
+        # pyre-ignore[16]
         body["choice"] = int(data.get("step_data", {}).get("choice", 0))
 
         _ = self._request(endpoint=api_path, method=Method.POST, body=body)

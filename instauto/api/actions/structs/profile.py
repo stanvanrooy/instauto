@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 class SetGender(cmmn.Base):
     _csrftoken: str = ''
     _uuid: str = ''
+    biography: Optional[str] = None
 
     def __init__(self, gender: Optional[WhichGender] = None, custom_gender: Optional[str] = None, *args, **kwargs):
         if gender is None and custom_gender is None:
@@ -22,9 +23,9 @@ class SetGender(cmmn.Base):
 
 
 class SetBiography(cmmn.Base):
-    _csrftoken: str = None
-    _uid: str = None
-    _uuid: str = None
+    _csrftoken: Optional[str] = None
+    _uid: Optional[str] = None
+    _uuid: Optional[str] = None
 
     def __init__(self, raw_text: str, *args, **kwargs):
         self.raw_text = raw_text
@@ -32,10 +33,10 @@ class SetBiography(cmmn.Base):
 
 
 class Update(cmmn.Base):
-    _csrftoken: str = None
-    _uid: str = None  # user id
-    _uuid: str = None
-    _csrftoken: str = None
+    _csrftoken: Optional[str] = None
+    _uid: Optional[str] = None
+    _uuid: Optional[str] = None
+    biography: Optional[str] = None
 
     def __init__(self, external_url: Optional[str], phone_number: Optional[str] = None, username: Optional[str] = None,
                  first_name: Optional[str] = None, email: Optional[str] = None, *args, **kwargs):
@@ -48,7 +49,7 @@ class Update(cmmn.Base):
 
 
 class Info(cmmn.Base):
-    def __init__(self, user_id: int = None, username: str = None, *args, **kwargs):
+    def __init__(self, user_id: Optional[int] = None, username: Optional[str] = None, *args, **kwargs):
         if not (user_id or username):
             raise ValueError("Argument required for either user_id or username.")
         self.user_id = user_id
@@ -64,8 +65,8 @@ class Info(cmmn.Base):
 
 
 class SetPicture(cmmn.Base):
-    _csrftoken: str = None
-    _uuid: str = None
+    _csrftoken: Optional[str] = None
+    _uuid: Optional[str] = None
 
     def __init__(self, upload_id: int, *args, **kwargs):
         self.upload_id = upload_id

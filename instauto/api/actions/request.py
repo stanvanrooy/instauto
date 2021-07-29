@@ -8,7 +8,7 @@ import time
 import urllib.parse
 import logging
 
-from typing import Dict, Callable, Union, Optional
+from typing import Dict, Callable, Union, Optional, Any
 
 from requests import Response
 
@@ -22,20 +22,17 @@ logging.captureWarnings(True)
 
 
 class RequestMixin(StubMixin):
-    def _request(self,
-                 endpoint: str,
-                 method: Method,
-                 query: dict = None,
-                 body: Union[dict, list, bytes] = None,
-                 headers: Dict[str, str] = None,
-                 add_default_headers: bool = None,
-                 sign_request: bool = None
-                 ) -> requests.Response:
+    def _request(
+        self, endpoint: str, method: Method, query: Optional[dict] = None,
+        body: Optional[Union[dict, list, bytes]] = None, headers: Optional[Dict[str, str]] = None,
+        add_default_headers: Optional[bool] = None, sign_request: Optional[bool] = None
+    ) -> requests.Response:
         query = query or {}
         body = body or {}
         add_default_headers = add_default_headers or True
         headers = headers or {}
         sign_request = sign_request or False
+        # pyre-ignore[6]
         self._request_preflight_check(method, endpoint, body, sign_request)
 
         url = self._prepare_url(endpoint, query)
@@ -64,6 +61,7 @@ class RequestMixin(StubMixin):
 
     def _build_body(self, data: Optional[Union[dict, list, bytes]], sign_request):
         if sign_request:
+            # pyre-ignore[6]
             as_json = self._json_dumps(data)
             data = {
                 'ig_sig_key_version': self.ig_profile.signature_key_version,
@@ -76,7 +74,8 @@ class RequestMixin(StubMixin):
             return
 
         try:
-            parsed = self._json_loads(resp.text)
+            # pyre-ignore[9]: assume the response is a dictionary
+            parsed: Dict[Any, Any] = self._json_loads(resp.text)
         except orjson.JSONDecodeError:
             if resp.status_code == 404 and '/friendships/' in resp.url:
                 raise InvalidUserId(f"account id: {resp.url.split('/')[-2]} is not recognized "

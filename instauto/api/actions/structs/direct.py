@@ -4,7 +4,7 @@ from . import common as cmmn
 
 import logging
 
-from typing import Optional, List
+from typing import Optional, List, Union
 
 logger = logging.getLogger(__name__)
 
@@ -54,9 +54,10 @@ class MediaShare(_Base):
 class LinkShare(_Base):
     REQUEST = 'direct/linkshare.json'
 
-    def __init__(self, text: str, links: List[str], recipients: Optional[List[List[str]]] = None,
+    def __init__(self, text: str, links: Union[List[str], str], recipients: Optional[List[List[str]]] = None,
                  threads: Optional[List[str]] = None, *args, **kwargs):
         if type(links) != list:
+            # pyre-ignore[9]: we check if it's a list
             links = [links]
         self.link_text = text
         self.link_urls = orjson.dumps(links).decode()

@@ -122,6 +122,6 @@ def unfollow_user(client: ApiClient, user_id: str = None, username: str = None) 
         raise ValueError("Both `user_id` and `username` are not provided.")
 
     obj = Destroy(str(user_id))
-    resp = client.unfollow_user(obj)
+    resp = client.user_unfollow(obj)
     return is_resp_ok(resp)
 

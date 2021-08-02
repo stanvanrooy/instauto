@@ -23,7 +23,7 @@ The package can be installed with the following pip command:
 ```pip install instauto```
 
 ## Getting started
-Below are a few examples for getting stared quickly. After getting started, you'll probably want to take a quick look at the more [detailed documentation](instauto.readthedocs.io/) on readthedocs.
+Below are a few examples for getting stared quickly. After getting started, you'll probably want to take a quick look at the more [detailed documentation](https://instauto.readthedocs.io/) on readthedocs.
 
 ### Authentication
 You'll want to do this as little as possible. Instagram sees logging in often as a huge red flag.

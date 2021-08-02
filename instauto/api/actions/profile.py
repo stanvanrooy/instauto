@@ -40,7 +40,6 @@ class ProfileMixin(StubMixin):
         obj.fill(self)
         return self._request('accounts/set_gender/', Method.POST, body=obj.to_dict(), sign_request=True)
 
-
     def profile_update(self, obj: Update):
         """Updates the name, username, email, phone number and url for the currently logged in user."""
         self._profile_act(obj)

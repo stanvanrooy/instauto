@@ -126,7 +126,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/alperenkaplan"><img src="https://avatars.githubusercontent.com/u/48252753?v=4?s=100" width="100px;" alt=""/><br /><sub><b>alperenkaplan</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=alperenkaplan" title="Code">💻</a> <a href="https://github.com/stanvanrooy/instauto/commits?author=alperenkaplan" title="Documentation">📖</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/javad94"><img src="https://avatars.githubusercontent.com/u/7765309?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Javadz</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=javad94" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/javad94"><img src="https://avatars.githubusercontent.com/u/7765309?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Javadz</b></sub></a><br /><a href="https://github.com/stanvanrooy/instauto/commits?author=javad94" title="Code">💻</a> <a href="https://github.com/stanvanrooy/instauto/commits?author=javad94" title="Documentation">📖</a></td>
   </tr>
 </table>
 

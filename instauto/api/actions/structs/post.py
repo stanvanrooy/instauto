@@ -322,6 +322,21 @@ class RetrieveByTag(cmmn.Base):
         super().__init__(*args, **kwargs)
 
 
+class RetrieveStory(cmmn.Base):
+    def __init__(self, user_id: int, *args, **kwargs):
+        self.user_id = user_id
+        self.capabilities_string = \
+                              "%5B%7B%22name%22%3A%22SUPPORTED_SDK_VERSIONS%22%2C%22value%22%3A%2266.0%2C67.0%2C68." \
+                              "0%2C69.0%2C70.0%2C71.0%2C72.0%2C73.0%2C74.0%2C75.0%2C76.0%2C77.0%2C78.0%2C79.0%2C80." \
+                              "0%2C81.0%2C82.0%2C83.0%2C84.0%2C85.0%2C86.0%2C87.0%2C88.0%2C89.0%2C90.0%2C91.0%2C92." \
+                              "0%22%7D%2C%7B%22name%22%3A%22FACE_TRACKER_VERSION%22%2C%22value%22%3A%2214%22%7D%2C%" \
+                              "7B%22name%22%3A%22segmentation%22%2C%22value%22%3A%22segmentation_enabled%22%7D%2C%7" \
+                              "B%22name%22%3A%22COMPRESSION%22%2C%22value%22%3A%22ETC2_COMPRESSION%22%7D%2C%7B%22na" \
+                              "me%22%3A%22world_tracker%22%2C%22value%22%3A%22world_tracker_enabled%22%7D%2C%7B%22n" \
+                              "ame%22%3A%22gyroscope%22%2C%22value%22%3A%22gyroscope_enabled%22%7D%5D"
+        super().__init__(*args, **kwargs)
+
+
 class RetrieveLikers(cmmn.Base):
     REQUEST = "post/retrieve_likers.json"
 

@@ -1,5 +1,6 @@
 from time import time
 
+import requests
 from requests import Response
 from typing import Union, List, Tuple, Dict, Optional
 
@@ -7,10 +8,9 @@ from .stub import StubMixin
 from ..structs import Method, PostLocation
 from .structs.post import PostFeed, PostStory, Comment, UpdateCaption, Save, Like, Unlike, Device, RetrieveByUser, \
     Location, RetrieveByTag, RetrieveLikers, RetrieveCommenters, UserTags, PostNull, RetrieveComments, RetrieveById ,\
-    Archive, Unarchive
+    Archive, Unarchive, RetrieveStory
 
 from ..exceptions import BadResponse
-from ...helpers import models
 
 
 class PostMixin(StubMixin):
@@ -96,6 +96,12 @@ class PostMixin(StubMixin):
         obj.page += 1
         # pyre-ignore[6]
         return obj, resp_as_json['items']
+
+    def post_retrieve_story(self, obj: RetrieveStory) -> requests.Response:
+        qp = {
+            'supported_capabilities_new': obj.capabilities_string
+        }
+        return self._request(f'feed/user/{obj.user_id}/story/', Method.GET, qp)
 
     def post_retrieve_by_tag(self, obj: RetrieveByTag) -> Tuple[RetrieveByTag, Union[dict, bool]]:
         as_dict = obj.to_dict()

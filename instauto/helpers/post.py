@@ -238,3 +238,37 @@ def get_commenters_of_post(client: ApiClient, media_id: str) -> List[models.User
     logger.info(f"Getting commenters of {media_id}")
     return [models.User.parse(l) for l in client.post_get_likers(RetrieveLikers(media_id))]
 
+
+def retrieve_story_from_user(
+    client: ApiClient,
+    username: Optional[str] = None,
+    user_id: Optional[int] = None
+) -> List[models.Story]:
+    """Retrieve x amount of posts from a user.
+
+    Either `user_id` or `username` need to be provided. If both are provided,
+    the user_id takes precedence.
+
+    Args:
+        client: your `ApiClient`
+        limit: maximum amount of posts to retrieve
+        username: username of the account to retrieve posts from
+        user_id: user_id of the account to retrieve posts from
+
+    Returns:
+        A list of Instagram post objects (objects/post.json).
+    """
+    if username is None and user_id is None:
+        raise ValueError("Either `username` or `user_id` param need to be provider")
+    if username is not None and user_id is None:
+        user_id = get_user_id_from_username(client, username)
+    elif username is not None and user_id is not None:
+        logger.warning("Both `username` and `user_id` are provided. `user_id` will be used.")
+
+    if user_id is None:
+        raise NotFoundError(f"Couldn't find user {username}")
+    obj = ps.RetrieveStory(user_id=user_id)
+    resp = client.post_retrieve_story(obj).json()
+    items = resp['reel'].get('items')
+    return [models.Story.parse(i) for i in items]
+

@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.0.3 (2021-08-02)
+
+#### New Features
+
+* retrieve stories from a user
+#### Docs
+
+* add examples for retrieving stories
+* add javad94 as a contributor for code ([#197](https://github.com/stanvanrooy/instauto/issues/197))
+* fixed documentation link ([#195](https://github.com/stanvanrooy/instauto/issues/195))
+
+Full set of changes: [`2.0.2...2.0.3`](https://github.com/stanvanrooy/instauto/compare/2.0.2...2.0.3)
+
 ## 2.0.2 (2021-07-29)
 
 #### Fixes
@@ -10,7 +23,7 @@
 
 * update readme
 
-Full set of changes: [`2.0.1...2.0.1`](https://github.com/stanvanrooy/instauto/compare/2.0.1...2.0.1)
+Full set of changes: [`2.0.1...2.0.2`](https://github.com/stanvanrooy/instauto/compare/2.0.1...2.0.2)
 
 ## 2.0.1 (2021-07-28)
 
@@ -19,9 +32,23 @@ Full set of changes: [`2.0.1...2.0.1`](https://github.com/stanvanrooy/instauto/c
 * support both `user_id` and `username` as arguments in helper functions
 * add  helper function
 * use structured models for helper functions
+* retrieve recent activity
+* retrieve post by id
+* retrieve posts from your feed
+* update instagram profile picture
 #### Fixes
 
 * use correct order for arguments
+* (profile): do not set biography to an empty string when updating profile
+* (examples): don't set a caption for null post :)
+* (friendships): return False, when there are no more user accounts to retrieve
+* (examples): use ctor, instead of .create
+* (examples): use valid user id
+* (examples): use ctor, instead of .Create
+* (post): we should probably include the next max id
+* (examples): use  instead of , when updating profile picture
+* (profile): add missing obj.fill calls
+* (profile): always send (empty)  parameter when updating gender.
 #### Docs
 
 * wasn't a typo
@@ -42,38 +69,11 @@ Full set of changes: [`2.0.1...2.0.1`](https://github.com/stanvanrooy/instauto/c
 * update readme
 * add atnartur as a contributor ([#171](https://github.com/stanvanrooy/instauto/issues/171))
 * fix code example in usage section in readme ([#170](https://github.com/stanvanrooy/instauto/issues/170))
+* update/add examples
 #### Others
 
 * (deps): bump urllib3 from 1.25.9 to 1.26.5 ([#179](https://github.com/stanvanrooy/instauto/issues/179))
 * update contributor count
-
-Full set of changes: [`2.0.0...2.0.1`](https://github.com/stanvanrooy/instauto/compare/2.0.0...2.0.1)
-
-## 2.0.0 (2021-05-12)
-
-#### New Features
-
-* retrieve recent activity
-* retrieve post by id
-* retrieve posts from your feed
-* update instagram profile picture
-#### Fixes
-
-* (profile): do not set biography to an empty string when updating profile
-* (examples): don't set a caption for null post :)
-* (friendships): return False, when there are no more user accounts to retrieve
-* (examples): use ctor, instead of .create
-* (examples): use valid user id
-* (examples): use ctor, instead of .Create
-* (post): we should probably include the next max id
-* (examples): use  instead of , when updating profile picture
-* (profile): add missing obj.fill calls
-* (profile): always send (empty)  parameter when updating gender.
-#### Docs
-
-* update/add examples
-#### Others
-
 * add example for retrieving your feed
 * update readme
 * update .gitignore
@@ -82,7 +82,7 @@ Full set of changes: [`2.0.0...2.0.1`](https://github.com/stanvanrooy/instauto/c
 * (deps): bump jinja2 from 2.11.2 to 2.11.3 ([#151](https://github.com/stanvanrooy/instauto/issues/151))
 * delete 'ready' folder
 
-Full set of changes: [`1.0.6...2.0.0`](https://github.com/stanvanrooy/instauto/compare/1.0.6...2.0.0)
+Full set of changes: [`1.0.6...2.0.1`](https://github.com/stanvanrooy/instauto/compare/1.0.6...2.0.1)
 
 ## 1.0.6 (2021-02-17)
 

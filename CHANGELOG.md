@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.4 (2021-08-07)
+
+#### Fixes 
+* use `dict.get` instead of key index
+
+Full set of changes: [`2.0.2...2.0.4`](https://github.com/stanvanrooy/instauto/compare/2.0.3...2.0.4)
+
+
 ## 2.0.3 (2021-08-02)
 
 #### New Features

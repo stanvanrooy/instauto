@@ -88,6 +88,6 @@ class FriendshipsMixin(StubMixin):
         # pyre-ignore[6]
         obj.max_id = as_json['next_max_id']
         # pyre-ignore[58]
-        obj.page = data['page'] + 1
+        obj.page = data.get('page', 0) + 1
         return obj, resp
 

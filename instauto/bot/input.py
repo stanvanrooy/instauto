@@ -89,7 +89,7 @@ class Input:
     def filtered_accounts(self) -> List[models.User]:
         seen = []
         return list(filter(
-            lambda x: x['id'] not in seen and seen.append(x['id']) is None,
+            lambda x: x.pk not in seen and seen.append(x.pk) is None,
             self._accounts
         ))
 
@@ -99,3 +99,4 @@ class Input:
             self._post_cache[account_name] = retrieve_posts_from_user(
                 self._client, 30, account_name)
         return self._post_cache.get(account_name) or []
+

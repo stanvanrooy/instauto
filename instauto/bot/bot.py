@@ -2,7 +2,7 @@ import os
 import random
 import logging
 from time import sleep
-from typing import List, Dict, Tuple, Optional
+from typing import List, Tuple, Optional
 
 from instauto.api.client import ApiClient
 from instauto.bot.input import Input

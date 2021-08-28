@@ -73,10 +73,10 @@ instauto.api.actions.search module
    :undoc-members:
    :show-inheritance:
 
-instauto.api.actions.stubs module
+instauto.api.actions.stub module
 ---------------------------------
 
-.. automodule:: instauto.api.actions.stubs
+.. automodule:: instauto.api.actions.stub
    :members:
    :undoc-members:
    :show-inheritance:

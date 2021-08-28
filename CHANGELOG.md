@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.6 (2021-08-28)
+
+#### New Features
+
+* add error message to generic bad response exception ([#206](https://github.com/stanvanrooy/instauto/issues/206))
+
+Full set of changes: [`2.0.5...2.0.6`](https://github.com/stanvanrooy/instauto/compare/2.0.5...2.0.6)
+
 ## 2.0.5 (2021-08-12)
 
 #### Fixes 

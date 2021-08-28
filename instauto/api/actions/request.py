@@ -95,13 +95,16 @@ class RequestMixin(StubMixin):
         if message in ("checkpoint_required", "challenge_required"):
             if self._handle_checkpoint(resp):
                 return
-        if message == 'feedback_required':
+        if error_type == 'feedback_required':
             self._handle_feedback_required(parsed)
-        if message == 'rate_limit_error':
-            raise TimeoutError("Calm down. Please try again in a few minutes.")
-        if message == 'Not authorized to view user':
+        if error_type == 'rate_limit_error':
+            raise Exception("Calm down. Please try again in a few minutes.")
+        if error_type == 'Not authorized to view user':
             raise AuthorizationError("This is a private user, which you do not follow.")
-        raise BadResponse("Received a non-200 response from Instagram")
+        raise BadResponse(
+            f"Received a non-200 response from Instagram: \
+            {message}" 
+        )
 
     def _handle_checkpoint(self, resp: Response) -> bool:
         if not hasattr(self, '_handle_challenge'):

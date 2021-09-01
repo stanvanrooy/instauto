@@ -132,7 +132,9 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, Frie
             })
     
     @classmethod
-    def from_json(cls, data: str) -> "ApiClient":
+    def from_json(cls, jsondata: str) -> "ApiClient":
+        data = orjson.loads(jsondata)
+
         state = data['State']
         state['logged_in_account_data'] = data['LoggedInAccountData']
 
@@ -165,11 +167,9 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, Frie
     def initiate_from_file(cls, file_name: str) -> "ApiClient":
         with open(file_name, "rb") as f:
             try:
-                data = orjson.loads(f.read())
+                return cls.from_json(f.read())
             except orjson.JSONDecodeError:
                 raise CorruptedSaveData(f"Save file {file_name} couldn't be parsed.")
-        
-        return cls.from_json(data)
 
     @staticmethod
     # pyre-ignore[40]: invalid override

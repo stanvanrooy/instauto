@@ -115,25 +115,47 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, Frie
     def _grab_cookies(self) -> dict:
         return self._session.cookies.get_dict()
 
-    def save_to_disk(self, file_name: str, overwrite: Optional[bool] = None) -> bool:
+    def to_json(self) -> str:
         cookies = self._grab_cookies()
-        overwrite = overwrite or False
-
+        state_as_dict = self.state.__dict__
         try:
-            f = open(file_name, "w" if not overwrite else "w+")
-            state_as_dict = self.state.__dict__
-            try:
-                logged_in_data = state_as_dict.pop('logged_in_account_data').__dict__
-            except KeyError:
-                logged_in_data = {}
+            logged_in_data = state_as_dict.pop('logged_in_account_data').__dict__
+        except KeyError:
+            logged_in_data = {}
 
-            as_json = self._json_dumps({
+        return self._json_dumps({
                 'State': state_as_dict,
                 'IGProfile': self.ig_profile.__dict__,
                 'DeviceProfile': self.device_profile.__dict__,
                 'LoggedInAccountData': logged_in_data,
                 'session.cookies': cookies
             })
+    
+    @classmethod
+    def from_json(cls, jsondata: str) -> "ApiClient":
+        data = orjson.loads(jsondata)
+
+        state = data['State']
+        state['logged_in_account_data'] = data['LoggedInAccountData']
+
+        ig_profile = data['IGProfile']
+        device_profile = data['DeviceProfile']
+
+        session_cookies = data['session.cookies']
+        session_cookies.pop('csrftoken')
+
+        instance = cls(IGProfile(**ig_profile), DeviceProfile(**device_profile), State(**state), session_cookies=session_cookies)
+        instance._update_token()
+        instance._sync()
+
+        return instance
+
+    def save_to_disk(self, file_name: str, overwrite: bool = False) -> bool:
+        file_mode = "w" if not overwrite else "w+"
+
+        try:
+            f = open(file_name, file_mode)
+            as_json = self.to_json()
             f.write(as_json)
         except Exception as e:
             return False
@@ -145,19 +167,9 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, Frie
     def initiate_from_file(cls, file_name: str) -> "ApiClient":
         with open(file_name, "rb") as f:
             try:
-                data = orjson.loads(f.read())
+                return cls.from_json(f.read())
             except orjson.JSONDecodeError:
                 raise CorruptedSaveData(f"Save file {file_name} couldn't be parsed.")
-        state = data['State']
-        state['logged_in_account_data'] = data['LoggedInAccountData']
-        ig_profile = data['IGProfile']
-        device_profile = data['DeviceProfile']
-
-        data['session.cookies'].pop('csrftoken')
-        i = cls(IGProfile(**ig_profile), DeviceProfile(**device_profile), State(**state), session_cookies=data['session.cookies'])
-        i._update_token()
-        i._sync()
-        return i
 
     @staticmethod
     # pyre-ignore[40]: invalid override

@@ -8,7 +8,7 @@ import requests
 import base64
 import time
 
-from typing import Callable, Optional
+from typing import Callable, Optional, Union
 
 # pyre-ignore[21]
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -139,8 +139,8 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin,
             })
     
     @classmethod
-    def from_json(cls, jsondata: str) -> "ApiClient":
-        data = orjson.loads(jsondata)
+    def from_json(cls, j: Union[str, bytes]) -> "ApiClient":
+        data = orjson.loads(j)
 
         state = data['State']
         state['logged_in_account_data'] = data['LoggedInAccountData']

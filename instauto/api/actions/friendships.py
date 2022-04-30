@@ -50,7 +50,6 @@ class FriendshipsMixin(StubMixin):
         """Retrieve all follow requests"""
         resp = self._request('friendships/pending/', Method.GET)
         parsed = self._json_loads(resp.text)
-        # pyre-ignore[6]
         return parsed['users']
 
     def follow_request_approve(self, obj: ApproveRequest) -> Response:
@@ -85,7 +84,6 @@ class FriendshipsMixin(StubMixin):
         as_json = self._json_loads(resp.text)
         if 'next_max_id' not in as_json:
             return obj, False
-        # pyre-ignore[6]
         obj.max_id = as_json['next_max_id']
         # pyre-ignore[58]
         obj.page = data.get('page', 0) + 1

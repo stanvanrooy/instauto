@@ -91,10 +91,8 @@ class PostMixin(StubMixin):
         resp = self._request(f'feed/user/{obj.user_id}/', Method.GET, query=as_dict)
         resp_as_json = self._json_loads(resp.text)
 
-        # pyre-ignore[16]
         obj.max_id = resp_as_json.get('next_max_id')
         obj.page += 1
-        # pyre-ignore[6]
         return obj, resp_as_json['items']
 
     def post_retrieve_story(self, obj: RetrieveStory) -> requests.Response:
@@ -114,24 +112,20 @@ class PostMixin(StubMixin):
         resp = self._request(f'feed/tag/{obj.tag_name}/', Method.GET, query=as_dict)
         resp_as_json = self._json_loads(resp.text)
 
-        # pyre-ignore[16]
         obj.max_id = resp_as_json.get('next_max_id')
         obj.page += 1
-        # pyre-ignore[6]
         return obj, resp_as_json['items']
 
     def post_get_likers(self, obj: RetrieveLikers) -> List[Dict]:
         """Retrieve all likers of specific media_id"""
         endpoint = 'media/{media_id}/likers'.format(media_id=obj.media_id)
         resp = self._request(endpoint=endpoint, method=Method.GET)
-        # pyre-ignore[6]
         users_as_json = self._json_loads(resp.text)['users']
         return users_as_json
 
     def post_get_commenters(self, obj: RetrieveCommenters) -> List[Dict]:
         endpoint = 'media/{media_id}/comments'.format(media_id=obj.media_id)
         resp = self._request(endpoint=endpoint, method=Method.GET)
-        # pyre-ignore[6]
         users_as_json = [c['user'] for c in self._json_loads(resp.text)['comments']]
         return users_as_json
 
@@ -164,11 +158,8 @@ class PostMixin(StubMixin):
                 "timezone_offset": post.timezone_offset,
                 "source_type": str(post.source_type),
                 "scene_type": None,
-                # pyre-ignore[6]
                 "edits": self._json_dumps(post.to_dict()['edits']),
-                # pyre-ignore[6]
                 "extra": self._json_dumps(post.to_dict()['extra']),
-                # pyre-ignore[6]
                 "device": self._json_dumps(post.to_dict()['device'])
             })
             if hasattr(post, 'user_tags'):
@@ -213,11 +204,9 @@ class PostMixin(StubMixin):
             resp = self._request("location_search", Method.GET, query=query)
 
         as_json = self._json_loads(resp.text)
-        # pyre-ignore[6]
         if as_json['status'] != 'ok':
             raise BadResponse
 
-        # pyre-ignore[6]
         return str(as_json['venues'][0]['external_id'])
 
     def _upload_image(self, obj: Union[PostStory, PostFeed], quality: int, is_sidecar: bool = False) -> Tuple[Response, dict]:

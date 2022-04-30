@@ -31,7 +31,6 @@ class DirectMixin(StubMixin):
             bool: True if the inbox has been updated
         """
         resp = self._request('direct_v2/inbox', Method.GET)
-        # pyre-ignore[6]
         stat = self._set_inbox_from_json(self._json_loads(resp.text))
         return resp.ok and stat
 
@@ -45,7 +44,6 @@ class DirectMixin(StubMixin):
             Thread: The retrieved thread.
         """
         resp = self._request(f"direct_v2/threads/{obj.thread_id}", Method.GET)
-        # pyre-ignore[6]
         thread = self._json_loads(resp.text)['thread']
         thread = Thread(thread.pop('thread_id'), thread.pop('thread_v2_id'), thread.pop('users'),
                         thread.pop('left_users'), thread.pop('admin_user_ids'), thread.pop('items'),

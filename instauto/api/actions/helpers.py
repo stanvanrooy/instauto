@@ -33,7 +33,7 @@ class HelperMixin(StubMixin):
             "is_sidecar": str(int(is_sidecar))
         }
 
-    def _json_loads(self, text: Union[bytes, bytearray, memoryview, str]) -> Any:
+    def _json_loads(self, text: Union[bytes, str]) -> Any:
         return orjson.loads(text)
 
     def _json_dumps(self, obj: Any) -> str:

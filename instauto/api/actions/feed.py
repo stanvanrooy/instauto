@@ -18,6 +18,5 @@ class FeedMixin(StubMixin):
         if obj.reason == 'cold_start_fetch':
             obj.reason = 'pagination'
 
-        # pyre-ignore[6]
         obj.max_id = data['next_max_id']
         return obj, resp

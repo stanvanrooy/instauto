@@ -61,7 +61,6 @@ class RequestMixin(StubMixin):
 
     def _build_body(self, data: Optional[Union[dict, list, bytes]], sign_request):
         if sign_request:
-            # pyre-ignore[6]
             as_json = self._json_dumps(data)
             data = {
                 'ig_sig_key_version': self.ig_profile.signature_key_version,
@@ -74,8 +73,7 @@ class RequestMixin(StubMixin):
             return
 
         try:
-            # pyre-ignore[9]: assume the response is a dictionary
-            parsed: Dict[Any, Any] = self._json_loads(resp.text)
+            parsed = self._json_loads(resp.text)
         except orjson.JSONDecodeError:
             if resp.status_code == 404 and '/friendships/' in resp.url:
                 raise InvalidUserId(f"account id: {resp.url.split('/')[-2]} is not recognized "

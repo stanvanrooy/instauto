@@ -38,14 +38,12 @@ class UserTag:
     def to_dict(self) -> dict:
         if self.x is None or self.y is None:
             raise Exception("Invalid x, y coordinates.")
+        rounded_x = round(self.x, ndigits=8)
+        # pyre-ignore[6]
+        rounded_y = round(self.y, ndigits=8)
         data = {
             "user_id": self.user_id,
-            "position": [
-                # pyre-ignore[6]
-                round(self.x, ndigits=8),
-                # pyre-ignore[6]
-                round(self.y, ndigits=8)
-            ]
+            "position": [rounded_x, rounded_y]
         }
         return data
 

@@ -44,7 +44,7 @@ class StubMixin:
     _request_finished_callbacks: list
     _handle_challenge: Callable
     _2fa_function: Optional[Callable[[str], str]]
-    _handle_2fa: Optional[Callable[[dict], None]]
+    _handle_2fa: Callable[[dict], None]
     _request: _request
     _username: Optional[str]
     _plain_password: Optional[str]

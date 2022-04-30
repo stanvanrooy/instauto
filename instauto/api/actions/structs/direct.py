@@ -54,10 +54,14 @@ class MediaShare(_Base):
 class LinkShare(_Base):
     REQUEST = 'direct/linkshare.json'
 
-    def __init__(self, text: str, links: Union[List[str], str], recipients: Optional[List[List[str]]] = None,
-                 threads: Optional[List[str]] = None, *args, **kwargs):
-        if type(links) != list:
-            # pyre-ignore[9]: we check if it's a list
+    def __init__(
+        self, 
+        text: str, 
+        links: Union[List[str], str], 
+        recipients: Optional[List[List[str]]] = None,
+        threads: Optional[List[str]] = None, *args, **kwargs
+    ):
+        if type(links) == str:
             links = [links]
         self.link_text = text
         self.link_urls = orjson.dumps(links).decode()

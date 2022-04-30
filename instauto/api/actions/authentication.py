@@ -37,11 +37,11 @@ class AuthenticationMixin(StubMixin):
         }
         resp = self._request('accounts/login/', Method.POST, body=body, sign_request=True)
         try:
-            # pyre-ignore[6]
             self.state.logged_in_account_data = LoggedInAccountData(**self._json_loads(resp.text)['logged_in_user'])
         except KeyError as e:
-            # The response can be empty if challenge was needed. In that case, the logged_in_account_data
-            # attribute should've been set from within in the challenge handler.
+            # The response can be empty if challenge was needed. In that
+            # case, the logged_in_account_data attribute should've been
+            # set from within in the challenge handler.
             if self.state.logged_in_account_data is None:
                 raise e
 
@@ -104,6 +104,7 @@ class AuthenticationMixin(StubMixin):
         aes = AES.new(key, AES.MODE_GCM, nonce=iv)
         aes.update(str(time).encode('utf-8'))
 
+        # pyre-ignore[6]: we do check if either password or plain_password
         encrypted_password, cipher_tag = aes.encrypt_and_digest(bytes(password or self._plain_password, 'utf-8'))
 
         encrypted = bytes([1,

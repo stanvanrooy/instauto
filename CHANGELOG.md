@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.7 (2022-04-30)
+
+* Create unfollow_user by @ItsFlorkast in https://github.com/stanvanrooy/instauto/pull/205
+* feat: add error message to generic bad response exception by @stanvanrooy in https://github.com/stanvanrooy/instauto/pull/206
+* save & load from/to json by @hiaselhans in https://github.com/stanvanrooy/instauto/pull/207
+* chore(deps): bump babel from 2.8.0 to 2.9.1 by @dependabot in https://github.com/stanvanrooy/instauto/pull/211
+
+**Full Changelog**: https://github.com/stanvanrooy/instauto/compare/2.0.5...2.0.7
+
 ## 2.0.6 (2021-08-28)
 
 #### New Features

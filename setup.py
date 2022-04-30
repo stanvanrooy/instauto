@@ -10,7 +10,7 @@ setup(
   author='Stan van Rooy',
   author_email='stan@rooy.dev',
   url='https://github.com/stanvanrooy/instauto',
-  download_url='https://github.com/stanvanrooy/instauto/archive/2.0.6.tar.gz',
+  download_url='https://github.com/stanvanrooy/instauto/archive/2.0.7.tar.gz',
   keywords=['instagram api', 'private instagram api'],
   install_requires=[
           'requests',

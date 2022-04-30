@@ -46,7 +46,7 @@ class AuthenticationMixin(StubMixin):
                 raise e
 
     def change_password(self, new_password: str, current_password: Optional[str] = None) -> requests.Response:
-        cp = current_password or self._raw_password
+        cp = current_password or self._plain_password
         if cp is None:
             raise ValueError("No current password provided")
 
@@ -88,7 +88,7 @@ class AuthenticationMixin(StubMixin):
         """Encrypts the raw password into a form that Instagram accepts."""
         if not self.state.public_api_key:
             return
-        if not any([password, self._raw_password]):
+        if not any([password, self._plain_password]):
             return
 
         key = Random.get_random_bytes(32)
@@ -104,7 +104,7 @@ class AuthenticationMixin(StubMixin):
         aes = AES.new(key, AES.MODE_GCM, nonce=iv)
         aes.update(str(time).encode('utf-8'))
 
-        encrypted_password, cipher_tag = aes.encrypt_and_digest(bytes(password or self._raw_password, 'utf-8'))
+        encrypted_password, cipher_tag = aes.encrypt_and_digest(bytes(password or self._plain_password, 'utf-8'))
 
         encrypted = bytes([1,
                            int(self.state.public_api_key_id),

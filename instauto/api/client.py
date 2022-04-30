@@ -15,7 +15,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from .actions.feed import FeedMixin
 from .actions.helpers import HelperMixin
-from .structs import IGProfile, DeviceProfile, State, Inbox
+from .structs import IGProfile, DeviceProfile, State
 from .constants import (DEFAULT_IG_PROFILE, DEFAULT_DEVICE_PROFILE, DEFAULT_STATE)
 from .exceptions import StateExpired, NoAuthDetailsProvided, CorruptedSaveData
 
@@ -33,32 +33,39 @@ logger = logging.getLogger(__name__)
 logging.captureWarnings(True)
 
 
-class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, FriendshipsMixin,
-                SearchMixin, ChallengeMixin, DirectMixin, HelperMixin, FeedMixin, ActivityMixin):
+class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin,
+        RequestMixin, FriendshipsMixin, SearchMixin, ChallengeMixin,
+        DirectMixin, HelperMixin, FeedMixin, ActivityMixin):
     breadcrumb_private_key = "iN4$aGr0m".encode()
     bc_hmac = hmac.HMAC(breadcrumb_private_key, digestmod='SHA256')
 
     def __init__(
-        self, ig_profile: Optional[IGProfile] = None, device_profile: Optional[DeviceProfile] = None,
-        state: Optional[State] = None, username: Optional[str] = None, password: Optional[str] = None,
-        session_cookies: Optional[dict] = None, testing=False, _2fa_function: Optional[Callable[[str], str]] = None
+        self, ig_profile: Optional[IGProfile] = None, device_profile:
+        Optional[DeviceProfile] = None, state: Optional[State] = None,
+        username: Optional[str] = None, password: Optional[str] = None,
+        session_cookies: Optional[dict] = None, testing=False,
+        _2fa_function: Optional[Callable[[str], str]] = None
     ) -> None:
         """Initializes all attributes. Can be instantiated with no params.
 
-        Needs to be provided with either:
-            1) state and session_cookies, to resume an old session, in this case all other params are optional
-            2) username and password, in this case all other params are optional
+        Needs to be provided with either: 1) state and session_cookies,
+        to resume an old session, in this case all other params are
+        optional 2) username and password, in this case all other params
+        are optional
 
-        In the case that the class is initialized without params, or with a few of the params not provided,
-        they will automatically be filled with default values from constants.py.
+        In the case that the class is initialized without params, or
+        with a few of the params not provided, they will automatically
+        be filled with default values from constants.py.
 
-        Using the default values should be fine for pretty much all use cases, but if for some reason you need to use
-        non-default values, that can be done by creating any of the profiles yourself and passing it in as an argument.
+        Using the default values should be fine for pretty much all use
+        cases, but if for some reason you need to use non-default
+        values, that can be done by creating any of the profiles
+        yourself and passing it in as an argument.
         """
         super().__init__()
         self._2fa_function = _2fa_function
         self._username = username
-        self._raw_password = password
+        self._plain_password = password
         self._encoded_password = None
 
         self._init_ig_profile(ig_profile)
@@ -67,7 +74,7 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin, RequestMixin, Frie
         self._user_agent = self._build_user_agent()
 
         if (username is None or password is None) and (state is None or session_cookies is None) and not testing:
-            raise NoAuthDetailsProvided("Username, password and state are all not provided.")
+            raise NoAuthDetailsProvided("Neither a username and username or existing state is provided.")
 
         self._init_session(session_cookies, testing)
         self._request_finished_callbacks = [self._update_state_from_headers]

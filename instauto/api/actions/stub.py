@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Callable, Union, Dict
+from typing import Any, Callable, Optional, Union, Dict
 
 import requests
 
@@ -27,11 +27,11 @@ class _build_default_rupload_params:
 
 
 class _json_loads:
-    def __call__(self, text: Union[str, bytes, bytearray]) -> Union[dict, list]: ...
+    def __call__(self, text: Union[bytes, bytearray, memoryview, str]) -> Any: ...
 
 
 class _json_dumps:
-    def __call__(self, obj: Union[dict, list]) -> str: ...
+    def __call__(self, obj: Any) -> str: ...
 
 
 class StubMixin:
@@ -43,12 +43,12 @@ class StubMixin:
     _session: requests.Session
     _request_finished_callbacks: list
     _handle_challenge: Callable
-    _2fa_function: Callable[[str], str]
-    _handle_2fa: Callable[[dict], None]
+    _2fa_function: Optional[Callable[[str], str]]
+    _handle_2fa: Optional[Callable[[dict], None]]
     _request: _request
-    _username: str
-    _raw_password: str
-    _encoded_password: str
+    _username: Optional[str]
+    _plain_password: Optional[str]
+    _encoded_password: Optional[str]
     _gen_uuid: Callable[[], str]
     _get_image_type: _get_image_type
     _build_default_rupload_params: _build_default_rupload_params

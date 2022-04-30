@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Union
+from typing import Any, Union
 
 import orjson
 
@@ -33,8 +33,9 @@ class HelperMixin(StubMixin):
             "is_sidecar": str(int(is_sidecar))
         }
 
-    def _json_loads(self, text: Union[str, bytes, bytearray]) -> Union[dict, list]:
+    def _json_loads(self, text: Union[bytes, bytearray, memoryview, str]) -> Any:
         return orjson.loads(text)
 
-    def _json_dumps(self, obj: Union[dict, list]) -> str:
+    def _json_dumps(self, obj: Any) -> str:
         return orjson.dumps(obj).decode()
+

@@ -14,10 +14,13 @@ logger.setLevel(logging.DEBUG)
 class ChallengeMixin(StubMixin):
     def _handle_challenge(self, resp: requests.Response) -> bool:
         resp_data = self._json_loads(resp.text)
-        # pyre-ignore[6]
+        logger.debug('_handle_challenge -> resp_data: %s', resp_data)
+
         if resp_data['message'] not in ('challenge_required', 'checkpoint_required'):
             raise BadResponse("Challenge required, but no URL provided.")
-        # pyre-ignore[6]
+
+        assert 'challenge' in resp_data, f"'challenge' not found in resp_data"
+        assert 'api_path' in resp_data['challenge'], f"'api_path' not found in resp_data"
         api_path = resp_data['challenge']['api_path'][1:]
 
         resp = self._request(
@@ -37,7 +40,6 @@ class ChallengeMixin(StubMixin):
             "post": 1,
         }
         body = base_body.copy()
-        # pyre-ignore[16]
         body["choice"] = int(data.get("step_data", {}).get("choice", 0))
 
         _ = self._request(endpoint=api_path, method=Method.POST, body=body)
@@ -51,8 +53,8 @@ class ChallengeMixin(StubMixin):
     def _handle_2fa(self, parsed: dict) -> None:
         endpoint = "accounts/two_factor_login/"
         username = parsed['two_factor_info']['username']
+        code = self._get_2fa_code(username)
 
-        code = input(f"Enter 2fa code for {username}: ") if self._2fa_function is None else self._2fa_function(username)
         logger.debug("2fa code is: %s", code)
 
         # 1 = phone verification, 3 = authenticator app verification
@@ -71,3 +73,9 @@ class ChallengeMixin(StubMixin):
             'verification_method': verification_method
         }
         self._request(endpoint, Method.POST, body=body)
+
+    def _get_2fa_code(self, username: str) -> str:
+        if self._2fa_function:
+            return self._2fa_function(username)
+        return input(f"Enter 2fa code for {username}: ")
+

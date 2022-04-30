@@ -16,7 +16,8 @@ setup(
           'requests',
           'apscheduler',
           'pycryptodomex',
-          'imagesize'
+          'imagesize',
+          'orjson'
       ],
   classifiers=[
     'Development Status :: 5 - Production/Stable',

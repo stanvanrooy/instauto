@@ -182,6 +182,7 @@ class PostMixin(StubMixin):
         for i, post in enumerate(posts):
             responses[f'post{i}'] = self._upload_image(post, quality, True)[0]
 
+        breakpoint()
         responses['configure_sidecar'] = self._request('media/configure_sidecar/', Method.POST, body=data, headers=headers, sign_request=True)
         return responses
 

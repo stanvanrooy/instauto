@@ -89,7 +89,7 @@ Stil no look? Submit a feature request!
 ## Support
 This is a hobby project, which means sometimes other things take priority. I will review issues and work on issues when I have the time. Spamming new issues, asking for a ton of updates, or things like that, will not speed up the process. It will probably even give me less motivation to work on it :)
 
-If you're looking for paid support, please reach out to me at [stan@rooy.dev](mailto:stan@rooy.dev).
+If you're looking for paid support, please reach out to me at [stanvanrooy6@gmail.com](mailto:stanvanrooy6@gmail.com).
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

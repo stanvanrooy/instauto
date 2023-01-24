@@ -161,7 +161,7 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin,
         file_mode = "w" if not overwrite else "w+"
 
         try:
-            f = open(file_name, file_mode)
+            f = open(file_name, file_mode, encoding="utf-8")
             as_json = self.to_json()
             f.write(as_json)
         except Exception as e:
@@ -172,7 +172,7 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin,
 
     @classmethod
     def initiate_from_file(cls, file_name: str) -> "ApiClient":
-        with open(file_name, "rb") as f:
+        with open(file_name, "r", encoding="utf-8") as f:
             try:
                 return cls.from_json(f.read())
             except orjson.JSONDecodeError:

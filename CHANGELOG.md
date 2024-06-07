@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.1.0
+
+### Fixes
+
+* remove usage of (deprecated?) csrf token
+* increase default ig version, previous is deprecated
+* typings for instagram posts
+* handle retrieve_story for accounts with no active stories
+
+**Full Changelog**: https://github.com/stanvanrooy/instauto/compare/2.0.7...2.1.0
+
 ## 2.0.7 (2022-04-30)
 
 * Create unfollow_user by @ItsFlorkast in https://github.com/stanvanrooy/instauto/pull/205

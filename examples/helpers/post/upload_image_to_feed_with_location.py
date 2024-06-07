@@ -1,8 +1,13 @@
+import os, sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+# Note: the above 2 lines are not necessary if you have installed the package.
+
 from instauto.api.client import ApiClient
 from instauto.helpers.post import upload_image_to_feed
 from instauto.api.actions.structs.post import Location
 
-client = ApiClient.initiate_from_file('.instauto.save')
+client = ApiClient.initiate_from_file('../../../.instauto.save')
 location = Location(name="The white house")
-upload_image_to_feed(client, "./test-feed.jpg", "Hello from instauto!", location)
+success = upload_image_to_feed(client, "../../../test_feed.jpg", "Hello from instauto!", location)
+assert success
 

@@ -1,6 +1,11 @@
+import os, sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+# Note: the above 2 lines are not necessary if you have installed the package.
+
 from instauto.api.client import ApiClient
 from instauto.helpers.post import unlike_post 
 
-client = ApiClient.initiate_from_file('.instauto.save')
-unlike_post(client, "media_id")
+client = ApiClient.initiate_from_file('../../../.instauto.save')
+success = unlike_post(client, "MEDIA_ID")
+assert success
 

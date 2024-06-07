@@ -7,17 +7,17 @@ from typing import ByteString, List, Optional, Tuple
 class FriendshipStatus:
     following: bool
     is_private: Optional[bool]
-    incoming_request: Optional[bool]
-    outgoing_request: Optional[bool]
     is_bestie: bool
     is_restricted: bool
+    is_muting_reel: Optional[bool]
+    is_feed_favorite: Optional[bool]
 
     @classmethod
     def parse(cls, friendship_status: dict) -> "FriendshipStatus":
         return cls(
             friendship_status['following'], friendship_status.get('is_private'),
-            friendship_status.get('incoming_request'), friendship_status['outgoing_request'],
-            friendship_status['is_bestie'], friendship_status['is_restricted']
+            friendship_status['is_bestie'], friendship_status['is_restricted'],
+            friendship_status.get('is_muting_reel'), friendship_status.get('is_feed_favorite')
         )
 
 
@@ -377,7 +377,6 @@ class Post:
     like_count: int
     has_liked: bool
     top_likers: List[str]
-    photo_of_you: bool
     usertags: List[Usertag]
     can_see_insights_as_brand: Optional[bool]
     video_versions: List[VideoVersion]
@@ -402,7 +401,7 @@ class Post:
         v = post.get('image_versions2')
         if v is not None:
             image_versions = [ImageVersion.parse('', p) for p in v['candidates']]
-            image_versions.extend([ImageVersion.parse(k, v) for k, v in (v.get('additional_candidates') or {}).items()])
+            image_versions.extend([ImageVersion.parse(k, v) for k, v in (v.get('additional_candidates', {})).items() if v is not None])
         else:
             image_versions = []
         return cls(
@@ -417,7 +416,7 @@ class Post:
             post.get('comment_count'), post.get('hide_view_all_comment_entrypoint'),
             post.get('inline_composer_display_condition'), post.get('inline_composer_imp_trigger_time'),
             image_versions, post.get('original_width'), post.get('original_height'), post['like_count'],
-            post['has_liked'], post.get('top_likers') or [], post['photo_of_you'],
+            post['has_liked'], post.get('top_likers') or [],
             [Usertag.parse(u) for u in (post.get('usertags') or {'in': []})['in']],
             post.get('can_see_insights_as_brand'),
             [VideoVersion.parse(v) for v in post.get('video_versions') or []],

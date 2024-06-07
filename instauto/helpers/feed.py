@@ -26,4 +26,4 @@ def get_feed(client: ApiClient, limit: int) -> List[models.Post]:
         if len(items) == 0:
             break
         ret.extend(items)
-    return [models.Post.parse(p) for p in ret]
+    return [models.Post.parse(p['media_or_ad']) for p in ret[:limit]]

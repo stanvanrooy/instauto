@@ -34,7 +34,6 @@ class ChallengeMixin(StubMixin):
         data = self._json_loads(resp.text)
 
         base_body = {
-            "_csrftoken": self._session.cookies['csrftoken'],
             "_uuid": self.state.uuid,
             "bloks_versioning_id": self.state.bloks_version_id,
             "post": 1,
@@ -63,7 +62,6 @@ class ChallengeMixin(StubMixin):
         body = {
             'verification_code': code,
             'phone_id': uuid.uuid4(),
-            '_csrftoken': self._session.cookies['csrftoken'],
             'two_factor_identifier': parsed['two_factor_info']['two_factor_identifier'],
             'username': username,
             'trust_this_device': 0,

@@ -138,7 +138,6 @@ class PostMixin(StubMixin):
         upload_id = str(time()).replace('.', '')
         data = {
             "timezone_offset": posts[0].timezone_offset,
-            "_csrftoken": self._session.cookies['csrftoken'],
             "source_type": str(PostLocation.Feed.value),
             "_uid": self.state.user_id,
             "device_id": self.state.android_id,

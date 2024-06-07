@@ -149,7 +149,6 @@ class ApiClient(ProfileMixin, AuthenticationMixin, PostMixin,
         device_profile = data['DeviceProfile']
 
         session_cookies = data['session.cookies']
-        session_cookies.pop('csrftoken')
 
         instance = cls(IGProfile(**ig_profile), DeviceProfile(**device_profile), State(**state), session_cookies=session_cookies)
         instance._update_token()

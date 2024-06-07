@@ -99,6 +99,9 @@ class RequestMixin(StubMixin):
             raise Exception("Calm down. Please try again in a few minutes.")
         if error_type == 'Not authorized to view user':
             raise AuthorizationError("This is a private user, which you do not follow.")
+        print(parsed)
+        if error_type == 'block_eu_user_login_in_old_app':
+            raise Exception("Instagram has blocked the login fromt this version of the app. You can update the version in the IGprofile object.")
         raise BadResponse(
             f"Received a non-200 response from Instagram: \
             {message}" 

@@ -473,9 +473,7 @@ class Story:
     organic_tracking_token: str
     original_height: int
     original_width: int
-    photo_of_you: bool
     pk: int
-    playlist_eligibility: bool
     product_type: str
     profile_grid_control_enabled: bool
     sharing_friction_info: SharingFrictionInfo
@@ -500,12 +498,11 @@ class Story:
             story.get('can_send_custom_emojis'), story.get('caption'), story['caption_is_edited'], story['caption_position'],
             story['client_cache_key'], story['code'], story['commerciality_status'], story['deleted_reason'],
             story['device_timestamp'], story['expiring_at'], story['filter_type'], story.get('has_audio'), story['id'],
-            image_versions, story.get('imported_taken_at'), story['integrity_review_decision'], story['is_commercial'],
+            image_versions, story.get('imported_taken_at'), story['integrity_review_decision'], story.get('is_commercial'),
             story.get('is_dash_eligible'), story['is_in_profile_grid'], story['is_paid_partnership'], story['is_reel_media'],
             story['is_unified_video'], story['like_and_view_counts_disabled'], story['media_type'],
             story.get('number_of_qualities', 0), story['organic_tracking_token'], story['original_height'],
-            story['original_width'], story['photo_of_you'], story['pk'], story['playlist_eligibility'],
-            story['product_type'], story['profile_grid_control_enabled'],
+            story['original_width'], story['pk'], story['product_type'], story['profile_grid_control_enabled'],
             SharingFrictionInfo.parse(story['sharing_friction_info']), story['supports_reel_reactions'],
             story['taken_at'], User.parse(story['user']), story.get('video_codec'), story.get('video_dash_manifest'),
             story.get('video_duration'), [VideoVersion.parse(v) for v in story.get('video_versions') or []]

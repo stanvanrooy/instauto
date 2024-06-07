@@ -269,6 +269,8 @@ def retrieve_story_from_user(
         raise NotFoundError(f"Couldn't find user {username}")
     obj = ps.RetrieveStory(user_id=user_id)
     resp = client.post_retrieve_story(obj).json()
+    if resp['reel'] is None:
+        return []
+
     items = resp['reel'].get('items')
     return [models.Story.parse(i) for i in items]
-

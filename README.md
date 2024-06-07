@@ -85,6 +85,10 @@ Looking for something else? We have more examples:
 
 Stil no look? Submit a feature request!
 
+## Tutorials
+- Scraping Instagram API with Instauto: https://www.trickster.dev/post/scraping-instagram-api-with-instauto/
+- How I made an instagram bot that posts a quote every day: https://joaoramiro.medium.com/how-i-made-an-instagram-bot-that-publishes-a-post-every-day-cc49e526bc54
+
 ## Support
 This is a hobby project, which means sometimes other things take priority. I will review issues and work on issues when I have the time. Spamming new issues, asking for a ton of updates, or things like that, will not speed up the process. It will probably even give me less motivation to work on it :)
 
